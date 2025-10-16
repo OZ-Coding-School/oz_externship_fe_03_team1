@@ -1,5 +1,9 @@
+import Studygroup from "../pages/Studygroup"
+
 function TestY() {
-  return <div>용균님의 테스트 페이지 입니다.</div>
+  return <div>
+    <Studygroup/>
+  </div>
 }
 
 export default TestY
