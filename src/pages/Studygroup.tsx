@@ -37,20 +37,23 @@ const StarIcon: React.FC<{ size?: number; color?: string }> = ({
   </svg>
 );
 
+// ✅ 리뷰 별 계산 함수 (소수점 버림, 반별 없음)
+const getStars = (review?: number) => {
+  const stars: { filled: boolean }[] = [];
+  const fullStars = review ? Math.floor(review) : 0;
+
+  for (let i = 0; i < fullStars; i++) stars.push({ filled: true });
+  while (stars.length < 5) stars.push({ filled: false });
+
+  return stars;
+};
+
 // ✅ 스터디 카드
 const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
   // 강의 관련 태그만 필터링
   const lectures = study.tags.filter((tag) => lectureTags.includes(tag));
 
-  // review가 있으면 별 개수 계산
-  const stars = [];
-  if (study.review) {
-    const fullStars = Math.floor(study.review);
-    const halfStar = study.review - fullStars >= 0.5;
-    for (let i = 0; i < fullStars; i++) stars.push(<StarIcon key={i} />);
-    if (halfStar) stars.push(<StarIcon key="half" />);
-    while (stars.length < 5) stars.push(<StarIcon key={`empty-${stars.length}`} color="#E5E7EB" />);
-  }
+  const stars = getStars(study.review);
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md flex flex-col min-h-[360px] transition relative">
@@ -90,7 +93,9 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
       {study.status === "완료" ? (
         <div className="relative border-t border-gray-100 px-5 py-5 flex flex-col items-center">
           <div className="flex items-center mb-2">
-            {stars}
+            {stars.map((star, idx) => (
+              <StarIcon key={idx} color={star.filled ? "#FBBF24" : "#E5E7EB"} />
+            ))}
             {study.review && (
               <span className="text-gray-500 text-xs ml-2">
                 {study.review.toFixed(1)} ({study.reviewCount || 0})
