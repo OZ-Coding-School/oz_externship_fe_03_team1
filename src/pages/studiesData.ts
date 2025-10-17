@@ -1,4 +1,4 @@
-// src/data/studiesData.ts
+// 더미 데이터
 export interface Study {
   id: number;
   title: string;
