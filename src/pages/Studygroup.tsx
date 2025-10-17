@@ -1,111 +1,41 @@
+"use client";
 import React, { useState } from "react";
 import { Plus } from "lucide-react";
+import { studiesOngoing, studiesCompleted } from "./studiesData";
 
-interface Study {
+// ✅ 스터디 데이터 타입 정의
+export interface Studiesdata {
   id: number;
   title: string;
   status: "진행중" | "완료";
-  period: string;
-  members: number;
-  tags: string[];
   image: string;
+  period: string;
+  tags: string[];
+  members: number;
+  maxMembers: number;
   review?: number;
+  reviewCount?: number;
 }
 
-// ✅ 임시 데이터
-const studiesOngoing: Study[] = [
-  {
-    id: 1,
-    title: "React 실무 프로젝트 스터디",
-    status: "진행중",
-    period: "2024년 4월 1일 ~ 2024년 4월 30일",
-    members: 8,
-    tags: ["React", "Next.js", "프론트엔드"],
-    image: "/images/react-study.jpg",
-  },
-  {
-    id: 2,
-    title: "Python 데이터 분석 스터디",
-    status: "진행중",
-    period: "2024년 1월 15일 ~ 2024년 3월 15일",
-    members: 6,
-    tags: ["Python", "데이터 분석", "머신러닝"],
-    image: "/images/python-study.jpg",
-  },
-  {
-    id: 3,
-    title: "AI 모델링 스터디",
-    status: "진행중",
-    period: "2024년 6월 1일 ~ 2024년 7월 31일",
-    members: 7,
-    tags: ["AI", "딥러닝"],
-    image: "/images/ai-study.jpg",
-  },
-  {
-    id: 4,
-    title: "Flutter 앱 개발 스터디",
-    status: "진행중",
-    period: "2024년 8월 1일 ~ 2024년 9월 30일",
-    members: 5,
-    tags: ["Flutter", "모바일"],
-    image: "/images/flutter-study.jpg",
-  },
-  {
-    id: 5,
-    title: "SQL 데이터베이스 스터디",
-    status: "진행중",
-    period: "2024년 5월 1일 ~ 2024년 6월 30일",
-    members: 6,
-    tags: ["SQL", "DB"],
-    image: "/images/sql-study.jpg",
-  },
-];
-
-const studiesCompleted: Study[] = [
-  {
-    id: 6,
-    title: "Node.js 백엔드 개발반",
-    status: "완료",
-    period: "2023년 10월 1일 ~ 2023년 12월 31일",
-    members: 4,
-    tags: ["Node.js", "Express"],
-    image: "/images/node-study.jpg",
-    review: 4.7,
-  },
-  {
-    id: 7,
-    title: "Vue.js 마스터 스터디",
-    status: "완료",
-    period: "2023년 9월 1일 ~ 2023년 11월 30일",
-    members: 5,
-    tags: ["Vue", "Vuex"],
-    image: "/images/vue-study.jpg",
-    review: 4.7,
-  },
-  {
-    id: 8,
-    title: "TypeScript 심화 스터디",
-    status: "완료",
-    period: "2023년 9월 1일 ~ 2023년 12월 15일",
-    members: 5,
-    tags: ["TypeScript", "프론트엔드"],
-    image: "/images/ts-study.jpg",
-    review: 4.7,
-  },
-  {
-    id: 9,
-    title: "Django 백엔드 스터디",
-    status: "완료",
-    period: "2023년 7월 1일 ~ 2023년 9월 30일",
-    members: 6,
-    tags: ["Django", "Python"],
-    image: "/images/django-study.jpg",
-    review: 4.8,
-  },
-];
+// ✅ 커스텀 별 아이콘
+const StarIcon: React.FC<{ size?: number; color?: string }> = ({
+  size = 16,
+  color = "#FBBF24",
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    fill={color}
+    viewBox="0 0 24 24"
+    className="inline-block mr-1"
+  >
+    <path d="M12 .587l3.668 7.431L24 9.748l-6 5.853L19.336 24 12 19.897 4.664 24 6 15.601 0 9.748l8.332-1.73z" />
+  </svg>
+);
 
 // ✅ 스터디 카드
-const StudyCard: React.FC<{ study: Study }> = ({ study }) => (
+const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => (
   <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md flex flex-col min-h-[360px] transition relative">
     <img
       src={study.image}
@@ -121,8 +51,11 @@ const StudyCard: React.FC<{ study: Study }> = ({ study }) => (
         >
           {study.status}
         </span>
-        <span>{study.members}명 참여</span>
+        <span>
+          {study.members}/{study.maxMembers}명 참여
+        </span>
       </div>
+
       <h3 className="text-lg font-semibold mb-1">{study.title}</h3>
       <p className="text-gray-500 text-sm mb-2">{study.period}</p>
       <div className="flex flex-wrap gap-1 mb-3">
@@ -135,15 +68,21 @@ const StudyCard: React.FC<{ study: Study }> = ({ study }) => (
           </span>
         ))}
       </div>
+
       {study.review && (
-        <div className="text-sm text-gray-600 mb-2">
-          ⭐ {study.review.toFixed(1)}
+        <div className="text-sm text-gray-600 mb-2 flex items-center">
+          <StarIcon size={16} color="#FBBF24" />
+          {study.review.toFixed(1)}
+          {study.reviewCount && (
+            <span className="text-gray-500 text-xs ml-1">
+              ({study.reviewCount})
+            </span>
+          )}
         </div>
       )}
     </div>
 
-    {/* ✅ 완료 스터디 버튼 영역 (버튼 살짝 아래로 내림) */}
-    {study.status === "완료" && (
+    {study.status === "완료" ? (
       <div className="relative border-t border-gray-100 px-5 py-10 flex justify-center items-center">
         <button className="bg-amber-500 text-white text-base font-semibold px-28 py-1.5 rounded-lg hover:bg-amber-600 transition cursor-pointer mt-2">
           리뷰 작성
@@ -152,10 +91,7 @@ const StudyCard: React.FC<{ study: Study }> = ({ study }) => (
           상세 보기
         </button>
       </div>
-    )}
-
-    {/* 진행중 스터디 버튼 영역 */}
-    {study.status === "진행중" && (
+    ) : (
       <div className="border-t border-gray-100 px-5 py-3 flex justify-end">
         <button className="text-amber-600 text-sm font-medium hover:underline cursor-pointer">
           자세히 보기 →
@@ -176,13 +112,13 @@ const SearchBar: React.FC = () => (
   </div>
 );
 
-// ✅ 섹션
-const StudySection: React.FC<{ title: string; studies: Study[] }> = ({
+// ✅ 섹션 (3열 × 3행 = 9개씩 페이지네이션)
+const StudySection: React.FC<{ title: string; studies: Studiesdata[] }> = ({
   title,
   studies,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const studiesPerPage = 3;
+  const studiesPerPage = 9;
   const totalPages = Math.ceil(studies.length / studiesPerPage);
 
   const indexOfLastStudy = currentPage * studiesPerPage;
@@ -194,7 +130,8 @@ const StudySection: React.FC<{ title: string; studies: Study[] }> = ({
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">{title}</h2>
         <span className="text-xs text-gray-500">
-          {studies.length}개 {title.includes("진행중") ? "진행중" : "완료"}
+          {studies.length}개{" "}
+          {title.includes("진행중") ? "진행중" : "완료"}
         </span>
       </div>
 
@@ -204,47 +141,53 @@ const StudySection: React.FC<{ title: string; studies: Study[] }> = ({
         ))}
       </div>
 
-      <div className="flex justify-center items-center gap-2 mt-8">
-        <button
-          onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-          disabled={currentPage === 1}
-          className="px-3 py-1 text-sm rounded-md border border-gray-300 text-gray-600 disabled:opacity-50"
-        >
-          이전
-        </button>
-        {[...Array(totalPages)].map((_, idx) => (
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 mt-8">
           <button
-            key={idx}
-            onClick={() => setCurrentPage(idx + 1)}
-            className={`px-3 py-1 text-sm rounded-md border ${
-              currentPage === idx + 1
-                ? "bg-amber-500 text-white border-amber-500"
-                : "border-gray-300 text-gray-600 hover:bg-gray-100"
-            }`}
+            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-3 py-1 text-sm rounded-md border border-gray-300 text-gray-600 disabled:opacity-50"
           >
-            {idx + 1}
+            이전
           </button>
-        ))}
-        <button
-          onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-          disabled={currentPage === totalPages}
-          className="px-3 py-1 text-sm rounded-md border border-gray-300 text-gray-600 disabled:opacity-50"
-        >
-          다음
-        </button>
-      </div>
+          {[...Array(totalPages)].map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentPage(idx + 1)}
+              className={`px-3 py-1 text-sm rounded-md border ${
+                currentPage === idx + 1
+                  ? "bg-amber-500 text-white border-amber-500"
+                  : "border-gray-300 text-gray-600 hover:bg-gray-100"
+              }`}
+            >
+              {idx + 1}
+            </button>
+          ))}
+          <button
+            onClick={() =>
+              setCurrentPage((p) => Math.min(p + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+            className="px-3 py-1 text-sm rounded-md border border-gray-300 text-gray-600 disabled:opacity-50"
+          >
+            다음
+          </button>
+        </div>
+      )}
     </section>
   );
 };
 
-// ✅ 메인 컴포넌트
+// ✅ 메인 페이지
 const Studygroup: React.FC = () => {
   return (
     <div className="min-h-screen bg-white px-8">
       <main className="max-w-7xl mx-auto pt-10 pb-20">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold mb-1 text-gray-800">스터디 그룹</h1>
+            <h1 className="text-3xl font-bold mb-1 text-gray-800">
+              스터디 그룹
+            </h1>
             <p className="text-gray-600 text-sm">
               함께 공부하며 성장하는 스터디 그룹에 참여해보세요
             </p>
@@ -256,6 +199,7 @@ const Studygroup: React.FC = () => {
 
         <SearchBar />
 
+        {/* ✅ 각각 독립된 9개 페이지네이션 */}
         <StudySection title="진행중인 스터디" studies={studiesOngoing} />
         <StudySection title="완료된 스터디" studies={studiesCompleted} />
       </main>

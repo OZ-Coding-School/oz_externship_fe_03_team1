@@ -1,0 +1,105 @@
+// src/data/studiesData.ts
+export interface Study {
+  id: number;
+  title: string;
+  status: "진행중" | "완료";
+  period: string;
+  members: number;
+  maxMembers: number;
+  tags: string[];
+  image: string;
+  review?: number;
+  reviewCount?: number;
+}
+
+export const studiesOngoing: Study[] = [
+  {
+    id: 1,
+    title: "React 실무 프로젝트 스터디",
+    status: "진행중",
+    period: "2024년 4월 1일 ~ 2024년 4월 30일",
+    members: 8,
+    maxMembers: 10,
+    tags: ["React", "Next.js", "프론트엔드"],
+    image: "/images/react-study.jpg",
+  },
+  {
+    id: 2,
+    title: "Python 데이터 분석 스터디",
+    status: "진행중",
+    period: "2024년 1월 15일 ~ 2024년 3월 15일",
+    members: 6,
+    maxMembers: 8,
+    tags: ["Python", "데이터 분석", "머신러닝"],
+    image: "/images/python-study.jpg",
+  },
+  {
+    id: 3,
+    title: "AI 모델링 스터디",
+    status: "진행중",
+    period: "2024년 6월 1일 ~ 2024년 7월 31일",
+    members: 7,
+    maxMembers: 10,
+    tags: ["AI", "딥러닝"],
+    image: "/images/ai-study.jpg",
+  },
+  {
+    id: 4,
+    title: "Flutter 앱 개발 스터디",
+    status: "진행중",
+    period: "2024년 8월 1일 ~ 2024년 9월 30일",
+    members: 5,
+    maxMembers: 10,
+    tags: ["Flutter", "모바일"],
+    image: "/images/flutter-study.jpg",
+  },
+  {
+    id: 5,
+    title: "SQL 데이터베이스 스터디",
+    status: "진행중",
+    period: "2024년 5월 1일 ~ 2024년 6월 30일",
+    members: 6,
+    maxMembers: 10,
+    tags: ["SQL", "DB"],
+    image: "/images/sql-study.jpg",
+  },
+];
+
+export const studiesCompleted: Study[] = [
+  {
+    id: 6,
+    title: "Node.js 백엔드 개발반",
+    status: "완료",
+    period: "2023년 10월 1일 ~ 2023년 12월 31일",
+    members: 4,
+    maxMembers: 6,
+    tags: ["Node.js", "Express"],
+    image: "/images/node-study.jpg",
+    review: 4.7,
+    reviewCount: 12,
+  },
+  {
+    id: 7,
+    title: "Vue.js 마스터 스터디",
+    status: "완료",
+    period: "2023년 9월 1일 ~ 2023년 11월 30일",
+    members: 5,
+    maxMembers: 6,
+    tags: ["Vue", "Vuex"],
+    image: "/images/vue-study.jpg",
+    review: 4.6,
+    reviewCount: 8,
+  },
+  {
+    id: 8,
+    title: "TypeScript 심화 스터디",
+    status: "완료",
+    period: "2023년 9월 1일 ~ 2023년 12월 15일",
+    members: 5,
+    maxMembers: 6,
+    tags: ["TypeScript", "프론트엔드"],
+    image: "/images/ts-study.jpg",
+    review: 4.8,
+    reviewCount: 15,
+  },
+];
