@@ -17,8 +17,20 @@ export interface Studiesdata {
   reviewCount?: number;
 }
 
-// ✅ 강의 관련 태그 필터링용 배열
-const lectureTags = ["프론트엔드", "백엔드", "데이터 분석", "머신러닝", "AI", "딥러닝", "모바일", "DB"];
+// ✅ 강의 관련 학습 목표 매핑
+const lectureMapping: Record<string, string[]> = {
+  "Node.js": ["Node.js 백엔드 완주", "Express.js 심화"],
+  "Vue.js": ["Vue.js 완벽 마스터", "Vuex 상태관리"],
+  "TypeScript": ["TypeScript 마스터"],
+  "프론트엔드": ["HTML/CSS/JS 심화", "반응형 웹 구현"],
+  "백엔드": ["API 설계", "데이터베이스 연동"],
+  "데이터 분석": ["Python 기반 데이터 처리", "시각화 및 분석"],
+  "머신러닝": ["ML 모델 학습", "평가 및 튜닝"],
+  "AI": ["AI 프로젝트 실습", "모델 배포"],
+  "딥러닝": ["딥러닝 모델 구현", "TensorFlow/PyTorch 실습"],
+  "모바일": ["React Native/Flutter 실습", "앱 배포"],
+  "DB": ["SQL/NoSQL 데이터베이스", "최적화 및 쿼리 작성"]
+};
 
 // ✅ 커스텀 별 아이콘
 const StarIcon: React.FC<{ size?: number; color?: string }> = ({
@@ -50,7 +62,10 @@ const getStars = (review?: number) => {
 
 // ✅ 스터디 카드
 const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
-  const lectures = study.tags.filter((tag) => lectureTags.includes(tag));
+  // 스터디 태그 기반으로 학습 목표 매핑
+  const lecturesMapped = study.tags.flatMap((tag) => lectureMapping[tag] || []);
+  const lecturesFinal = lecturesMapped.length > 0 ? lecturesMapped : ["기타 학습 내용 작성"];
+
   const stars = getStars(study.review);
 
   return (
@@ -74,15 +89,24 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
           </span>
         </div>
 
-        <h3 className="text-lg font-semibold mb-1">{study.title}</h3>
+        <h3 className="text-lg font-semibold mb-2">{study.title}</h3>
 
+        {/* ✅ 스터디 기간 */}
         <p className="text-sm text-gray-600 mb-1">
-          <span className="font-medium text-gray-800">📅 스터디 기간:</span> {study.period}
+          <span className="font-medium text-gray-800">📅 스터디 기간</span>
+          <br />
+          {study.period}
         </p>
 
+        {/* ✅ 스터디 강의 (자세히 설명) */}
         <p className="text-sm text-gray-600 mb-2">
-          <span className="font-medium text-gray-800">🎓 스터디 강의:</span>{" "}
-          {lectures.length > 0 ? lectures.join(", ") : "기타"}
+          <span className="font-medium text-gray-800">🎓 스터디 강의</span>
+          <br />
+          {lecturesFinal.map((lec, idx) => (
+            <span key={idx} className="block">
+              - {lec}
+            </span>
+          ))}
         </p>
       </div>
 
@@ -105,8 +129,8 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
             </button>
           </div>
 
-          {/* 리뷰 작성 버튼 (중앙 아래) */}
-          <button className="bg-amber-500 text-white text-base font-semibold px-28 py-1.5 rounded-lg hover:bg-amber-600 transition cursor-pointer mt-6">
+          {/* 리뷰 작성 버튼 (중앙 아래, 색상 연하게) */}
+          <button className="bg-amber-400 text-white text-base font-semibold px-28 py-1.5 rounded-lg hover:bg-amber-500 transition cursor-pointer mt-6">
             리뷰 작성
           </button>
         </div>
