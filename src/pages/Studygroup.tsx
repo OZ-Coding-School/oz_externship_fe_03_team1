@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { studiesOngoing, studiesCompleted } from "./studiesData";
 
 // ✅ 스터디 데이터 타입 정의
@@ -104,11 +104,17 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => (
 // ✅ 검색창
 const SearchBar: React.FC = () => (
   <div className="w-1/3 mb-8 flex items-center gap-2">
-    <input
-      type="text"
-      placeholder="스터디 그룹 검색..."
-      className="w-full border border-gray-300 rounded-xl py-2 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-    />
+    <div className="relative w-full">
+      <Search
+        className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+        size={18}
+      />
+      <input
+        type="text"
+        placeholder="스터디 그룹 검색..."
+        className="w-full border border-gray-300 rounded-xl py-2 pl-9 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+      />
+    </div>
   </div>
 );
 
