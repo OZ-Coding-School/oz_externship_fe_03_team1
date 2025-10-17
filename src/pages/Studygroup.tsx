@@ -37,7 +37,7 @@ const StarIcon: React.FC<{ size?: number; color?: string }> = ({
   </svg>
 );
 
-// ✅ 리뷰 별 계산 함수 (소수점 버림, 반별 없음)
+// ✅ 리뷰 별 계산 함수 (소수점 버림)
 const getStars = (review?: number) => {
   const stars: { filled: boolean }[] = [];
   const fullStars = review ? Math.floor(review) : 0;
@@ -50,9 +50,7 @@ const getStars = (review?: number) => {
 
 // ✅ 스터디 카드
 const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
-  // 강의 관련 태그만 필터링
   const lectures = study.tags.filter((tag) => lectureTags.includes(tag));
-
   const stars = getStars(study.review);
 
   return (
@@ -78,12 +76,10 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
 
         <h3 className="text-lg font-semibold mb-1">{study.title}</h3>
 
-        {/* ✅ 스터디 기간 */}
         <p className="text-sm text-gray-600 mb-1">
           <span className="font-medium text-gray-800">📅 스터디 기간:</span> {study.period}
         </p>
 
-        {/* ✅ 스터디 강의 */}
         <p className="text-sm text-gray-600 mb-2">
           <span className="font-medium text-gray-800">🎓 스터디 강의:</span>{" "}
           {lectures.length > 0 ? lectures.join(", ") : "기타"}
@@ -91,30 +87,28 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
       </div>
 
       {study.status === "완료" ? (
-        <div className="border-t border-gray-100 px-5 py-5 flex flex-col items-center">
-          {/* 평점 */}
-          <div className="flex items-center mb-2">
-            {stars.map((star, idx) => (
-              <StarIcon key={idx} color={star.filled ? "#FBBF24" : "#E5E7EB"} />
-            ))}
-            {study.review && (
-              <span className="text-gray-500 text-xs ml-2">
-                {study.review.toFixed(1)} ({study.reviewCount || 0})
-              </span>
-            )}
-          </div>
-
-          {/* 리뷰 작성 버튼 (중앙) */}
-          <button className="bg-amber-500 text-white text-base font-semibold px-28 py-1.5 rounded-lg hover:bg-amber-600 transition cursor-pointer mb-2">
-            리뷰 작성
-          </button>
-
-          {/* 상세 보기 버튼 (오른쪽 끝) */}
-          <div className="w-full flex justify-end">
+        <div className="relative border-t border-gray-100 px-5 py-5 flex flex-col items-center">
+          {/* 평점과 상세보기 텍스트 좌/우 상단 */}
+          <div className="w-full flex justify-between mb-2">
+            <div className="flex items-center">
+              {stars.map((star, idx) => (
+                <StarIcon key={idx} color={star.filled ? "#FBBF24" : "#E5E7EB"} />
+              ))}
+              {study.review && (
+                <span className="text-gray-500 text-xs ml-1">
+                  {study.review.toFixed(1)}
+                </span>
+              )}
+            </div>
             <button className="text-amber-600 text-sm font-medium hover:underline cursor-pointer">
-              상세 보기
+              상세보기
             </button>
           </div>
+
+          {/* 리뷰 작성 버튼 (중앙 아래) */}
+          <button className="bg-amber-500 text-white text-base font-semibold px-28 py-1.5 rounded-lg hover:bg-amber-600 transition cursor-pointer mt-6">
+            리뷰 작성
+          </button>
         </div>
       ) : (
         <div className="border-t border-gray-100 px-5 py-3 flex justify-end">
