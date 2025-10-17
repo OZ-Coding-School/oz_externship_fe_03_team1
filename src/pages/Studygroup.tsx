@@ -104,7 +104,9 @@ const Studygroup: React.FC = () => {
         {/* 헤더 영역 */}
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold mb-1 text-gray-800">스터디 그룹</h1>
+            <h1 className="text-3xl font-bold mb-1 text-gray-800">
+              스터디 그룹
+            </h1>
             <p className="text-gray-600 text-sm">
               함께 공부하며 성장하는 스터디 그룹에 참여해보세요
             </p>
