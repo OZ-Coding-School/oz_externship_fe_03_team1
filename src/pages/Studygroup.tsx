@@ -91,7 +91,8 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
       </div>
 
       {study.status === "완료" ? (
-        <div className="relative border-t border-gray-100 px-5 py-5 flex flex-col items-center">
+        <div className="border-t border-gray-100 px-5 py-5 flex flex-col items-center">
+          {/* 평점 */}
           <div className="flex items-center mb-2">
             {stars.map((star, idx) => (
               <StarIcon key={idx} color={star.filled ? "#FBBF24" : "#E5E7EB"} />
@@ -102,12 +103,18 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
               </span>
             )}
           </div>
+
+          {/* 리뷰 작성 버튼 (중앙) */}
           <button className="bg-amber-500 text-white text-base font-semibold px-28 py-1.5 rounded-lg hover:bg-amber-600 transition cursor-pointer mb-2">
             리뷰 작성
           </button>
-          <button className="text-amber-600 text-sm font-medium hover:underline cursor-pointer">
-            상세 보기
-          </button>
+
+          {/* 상세 보기 버튼 (오른쪽 끝) */}
+          <div className="w-full flex justify-end">
+            <button className="text-amber-600 text-sm font-medium hover:underline cursor-pointer">
+              상세 보기
+            </button>
+          </div>
         </div>
       ) : (
         <div className="border-t border-gray-100 px-5 py-3 flex justify-end">
