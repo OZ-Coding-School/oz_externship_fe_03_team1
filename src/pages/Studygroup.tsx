@@ -136,23 +136,25 @@ const StudyCard: React.FC<{ study: Study }> = ({ study }) => (
         ))}
       </div>
       {study.review && (
-        <div className="text-sm text-gray-600 mb-2">⭐ {study.review.toFixed(1)}</div>
+        <div className="text-sm text-gray-600 mb-2">
+          ⭐ {study.review.toFixed(1)}
+        </div>
       )}
     </div>
 
-    {/* 완료 스터디 버튼 영역 */}
+    {/* ✅ 완료 스터디 버튼 영역 (버튼 살짝 아래로 내림) */}
     {study.status === "완료" && (
-      <div className="relative border-t border-gray-100 px-5 py-8 flex justify-center items-center">
-        <button className="bg-amber-500 text-white text-base font-semibold px-6 py-3 rounded-lg hover:bg-amber-600 transition cursor-pointer">
+      <div className="relative border-t border-gray-100 px-5 py-10 flex justify-center items-center">
+        <button className="bg-amber-500 text-white text-base font-semibold px-28 py-1.5 rounded-lg hover:bg-amber-600 transition cursor-pointer mt-2">
           리뷰 작성
         </button>
         <button className="absolute top-3 right-5 text-amber-600 text-sm font-medium hover:underline cursor-pointer">
-          자세히 보기 →
+          상세 보기
         </button>
       </div>
     )}
 
-    {/* 진행중 스터디 버튼 영역 (기존) */}
+    {/* 진행중 스터디 버튼 영역 */}
     {study.status === "진행중" && (
       <div className="border-t border-gray-100 px-5 py-3 flex justify-end">
         <button className="text-amber-600 text-sm font-medium hover:underline cursor-pointer">
@@ -162,7 +164,6 @@ const StudyCard: React.FC<{ study: Study }> = ({ study }) => (
     )}
   </div>
 );
-
 
 // ✅ 검색창
 const SearchBar: React.FC = () => (
