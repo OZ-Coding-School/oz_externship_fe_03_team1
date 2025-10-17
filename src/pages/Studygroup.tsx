@@ -17,6 +17,9 @@ export interface Studiesdata {
   reviewCount?: number;
 }
 
+// ✅ 강의 관련 태그 필터링용 배열
+const lectureTags = ["프론트엔드", "백엔드", "데이터 분석", "머신러닝", "AI", "딥러닝", "모바일", "DB"];
+
 // ✅ 커스텀 별 아이콘
 const StarIcon: React.FC<{ size?: number; color?: string }> = ({
   size = 16,
@@ -35,71 +38,82 @@ const StarIcon: React.FC<{ size?: number; color?: string }> = ({
 );
 
 // ✅ 스터디 카드
-const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => (
-  <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md flex flex-col min-h-[360px] transition relative">
-    <img
-      src={study.image}
-      alt={study.title}
-      className="h-52 w-full object-cover"
-    />
-    <div className="p-5 flex flex-col flex-grow">
-      <div className="flex justify-between items-center text-xs text-gray-500 mb-2">
-        <span
-          className={`px-2 py-0.5 rounded-full text-white text-[11px] ${
-            study.status === "진행중" ? "bg-green-500" : "bg-gray-400"
-          }`}
-        >
-          {study.status}
-        </span>
-        <span>
-          {study.members}/{study.maxMembers}명 참여
-        </span>
-      </div>
+const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
+  // 강의 관련 태그만 필터링
+  const lectures = study.tags.filter((tag) => lectureTags.includes(tag));
 
-      <h3 className="text-lg font-semibold mb-1">{study.title}</h3>
-      <p className="text-gray-500 text-sm mb-2">{study.period}</p>
-      <div className="flex flex-wrap gap-1 mb-3">
-        {study.tags.map((tag, i) => (
+  // review가 있으면 별 개수 계산
+  const stars = [];
+  if (study.review) {
+    const fullStars = Math.floor(study.review);
+    const halfStar = study.review - fullStars >= 0.5;
+    for (let i = 0; i < fullStars; i++) stars.push(<StarIcon key={i} />);
+    if (halfStar) stars.push(<StarIcon key="half" />);
+    while (stars.length < 5) stars.push(<StarIcon key={`empty-${stars.length}`} color="#E5E7EB" />);
+  }
+
+  return (
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md flex flex-col min-h-[360px] transition relative">
+      <img
+        src={study.image}
+        alt={study.title}
+        className="h-52 w-full object-cover"
+      />
+      <div className="p-5 flex flex-col flex-grow">
+        <div className="flex justify-between items-center text-xs text-gray-500 mb-2">
           <span
-            key={i}
-            className="text-xs bg-gray-100 px-2 py-1 rounded-md text-gray-600"
+            className={`px-2 py-0.5 rounded-full text-white text-[11px] ${
+              study.status === "진행중" ? "bg-green-500" : "bg-gray-400"
+            }`}
           >
-            {tag}
+            {study.status}
           </span>
-        ))}
+          <span>
+            {study.members}/{study.maxMembers}명 참여
+          </span>
+        </div>
+
+        <h3 className="text-lg font-semibold mb-1">{study.title}</h3>
+
+        {/* ✅ 스터디 기간 */}
+        <p className="text-sm text-gray-600 mb-1">
+          <span className="font-medium text-gray-800">📅 스터디 기간:</span> {study.period}
+        </p>
+
+        {/* ✅ 스터디 강의 */}
+        <p className="text-sm text-gray-600 mb-2">
+          <span className="font-medium text-gray-800">🎓 스터디 강의:</span>{" "}
+          {lectures.length > 0 ? lectures.join(", ") : "기타"}
+        </p>
       </div>
 
-      {study.review && (
-        <div className="text-sm text-gray-600 mb-2 flex items-center">
-          <StarIcon size={16} color="#FBBF24" />
-          {study.review.toFixed(1)}
-          {study.reviewCount && (
-            <span className="text-gray-500 text-xs ml-1">
-              ({study.reviewCount})
-            </span>
-          )}
+      {study.status === "완료" ? (
+        <div className="relative border-t border-gray-100 px-5 py-5 flex flex-col items-center">
+          <div className="flex items-center mb-2">
+            {stars}
+            {study.review && (
+              <span className="text-gray-500 text-xs ml-2">
+                {study.review.toFixed(1)} ({study.reviewCount || 0})
+              </span>
+            )}
+          </div>
+          <button className="bg-amber-500 text-white text-base font-semibold px-28 py-1.5 rounded-lg hover:bg-amber-600 transition cursor-pointer mb-2">
+            리뷰 작성
+          </button>
+          <button className="text-amber-600 text-sm font-medium hover:underline cursor-pointer">
+            상세 보기
+          </button>
+        </div>
+      ) : (
+        <div className="border-t border-gray-100 px-5 py-3 flex justify-end">
+          <button className="text-amber-600 text-sm font-medium hover:underline cursor-pointer">
+            자세히 보기 →
+          </button>
         </div>
       )}
     </div>
-
-    {study.status === "완료" ? (
-      <div className="relative border-t border-gray-100 px-5 py-10 flex justify-center items-center">
-        <button className="bg-amber-500 text-white text-base font-semibold px-28 py-1.5 rounded-lg hover:bg-amber-600 transition cursor-pointer mt-2">
-          리뷰 작성
-        </button>
-        <button className="absolute top-3 right-5 text-amber-600 text-sm font-medium hover:underline cursor-pointer">
-          상세 보기
-        </button>
-      </div>
-    ) : (
-      <div className="border-t border-gray-100 px-5 py-3 flex justify-end">
-        <button className="text-amber-600 text-sm font-medium hover:underline cursor-pointer">
-          자세히 보기 →
-        </button>
-      </div>
-    )}
-  </div>
-);
+  );
+};
 
 // ✅ 검색창
 const SearchBar: React.FC = () => (
@@ -136,8 +150,7 @@ const StudySection: React.FC<{ title: string; studies: Studiesdata[] }> = ({
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">{title}</h2>
         <span className="text-xs text-gray-500">
-          {studies.length}개{" "}
-          {title.includes("진행중") ? "진행중" : "완료"}
+          {studies.length}개 {title.includes("진행중") ? "진행중" : "완료"}
         </span>
       </div>
 
@@ -170,9 +183,7 @@ const StudySection: React.FC<{ title: string; studies: Studiesdata[] }> = ({
             </button>
           ))}
           <button
-            onClick={() =>
-              setCurrentPage((p) => Math.min(p + 1, totalPages))
-            }
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
             disabled={currentPage === totalPages}
             className="px-3 py-1 text-sm rounded-md border border-gray-300 text-gray-600 disabled:opacity-50"
           >
@@ -205,7 +216,6 @@ const Studygroup: React.FC = () => {
 
         <SearchBar />
 
-        {/* ✅ 각각 독립된 9개 페이지네이션 */}
         <StudySection title="진행중인 스터디" studies={studiesOngoing} />
         <StudySection title="완료된 스터디" studies={studiesCompleted} />
       </main>
