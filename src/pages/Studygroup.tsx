@@ -126,7 +126,7 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
                 </span>
               )}
             </div>
-            <button className="text-amber-600 text-sm font-medium hover:underline cursor-pointer">
+            <button className="text-amber-400 text-sm font-medium hover:underline cursor-pointer">
               상세보기
             </button>
           </div>
@@ -138,7 +138,7 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
         </div>
       ) : (
         <div className="border-t border-gray-100 px-5 py-3 flex justify-end">
-          <button className="text-amber-600 text-sm font-medium hover:underline cursor-pointer">
+          <button className="text-amber-400 text-sm font-medium hover:underline cursor-pointer">
             자세히 보기 →
           </button>
         </div>
@@ -241,7 +241,7 @@ const Studygroup: React.FC = () => {
               함께 공부하며 성장하는 스터디 그룹에 참여해보세요
             </p>
           </div>
-          <button className="bg-amber-500 text-white flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-medium hover:bg-amber-600 transition cursor-pointer shadow-sm">
+          <button className="bg-amber-300 text-white flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-medium hover:bg-amber-600 transition cursor-pointer shadow-sm">
             <Plus size={16} /> 새 스터디 만들기
           </button>
         </div>
