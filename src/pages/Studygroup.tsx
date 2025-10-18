@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Plus, Search } from "lucide-react";
+import { Plus, Search, Calendar, Book } from "lucide-react"; // ✅ 아이콘 추가
 import { studiesOngoing, studiesCompleted } from "./studiesData";
 
 // ✅ 스터디 데이터 타입 정의
@@ -91,19 +91,21 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
 
         <h3 className="text-lg font-semibold mb-2">{study.title}</h3>
 
-        {/* ✅ 스터디 기간 */}
-        <p className="text-sm text-gray-600 mb-1">
-          <span className="font-medium text-gray-800">📅 스터디 기간</span>
-          <br />
-          {study.period}
+        {/* ✅ 스터디 기간 (Calendar 아이콘 사용) */}
+        <p className="text-sm text-gray-600 mb-3">
+          <span className="font-medium text-gray-800 flex items-center gap-1">
+            <Calendar size={16} className="text-gray-700" /> 스터디 기간
+          </span>
+          <span className="mt-1 block">{study.period}</span>
         </p>
 
-        {/* ✅ 스터디 강의 (자세히 설명) */}
+        {/* ✅ 스터디 강의 (Book 아이콘 사용, 닫힌 책) */}
         <p className="text-sm text-gray-600 mb-2">
-          <span className="font-medium text-gray-800">🎓 스터디 강의</span>
-          <br />
+          <span className="font-medium text-gray-800 flex items-center gap-1">
+            <Book size={16} className="text-gray-700" /> 스터디 강의
+          </span>
           {lecturesFinal.map((lec, idx) => (
-            <span key={idx} className="block">
+            <span key={idx} className="block mt-0.5">
               - {lec}
             </span>
           ))}
@@ -130,7 +132,7 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
           </div>
 
           {/* 리뷰 작성 버튼 (중앙 아래, 색상 연하게) */}
-          <button className="bg-amber-400 text-white text-base font-semibold px-28 py-1.5 rounded-lg hover:bg-amber-500 transition cursor-pointer mt-6">
+          <button className="bg-amber-300 text-white text-base font-semibold px-28 py-1.5 rounded-lg hover:bg-amber-400 transition cursor-pointer mt-6">
             리뷰 작성
           </button>
         </div>
@@ -162,7 +164,7 @@ const SearchBar: React.FC = () => (
   </div>
 );
 
-// ✅ 섹션 (3열 × 3행 = 9개씩 페이지네이션)
+// ✅ 섹션
 const StudySection: React.FC<{ title: string; studies: Studiesdata[] }> = ({
   title,
   studies,
