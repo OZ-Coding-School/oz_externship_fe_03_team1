@@ -1,9 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import { Plus, Search, Calendar, Book } from "lucide-react"; // ✅ 아이콘 추가
+import { Plus, Search, Calendar, Book } from "lucide-react";
 import { studiesOngoing, studiesCompleted } from "./studiesData";
 
-// ✅ 스터디 데이터 타입 정의
 export interface Studiesdata {
   id: number;
   title: string;
@@ -17,7 +16,6 @@ export interface Studiesdata {
   reviewCount?: number;
 }
 
-// ✅ 강의 관련 학습 목표 매핑
 const lectureMapping: Record<string, string[]> = {
   "Node.js": ["Node.js 백엔드 완주", "Express.js 심화"],
   "Vue.js": ["Vue.js 완벽 마스터", "Vuex 상태관리"],
@@ -29,10 +27,9 @@ const lectureMapping: Record<string, string[]> = {
   "AI": ["AI 프로젝트 실습", "모델 배포"],
   "딥러닝": ["딥러닝 모델 구현", "TensorFlow/PyTorch 실습"],
   "모바일": ["React Native/Flutter 실습", "앱 배포"],
-  "DB": ["SQL/NoSQL 데이터베이스", "최적화 및 쿼리 작성"]
+  "DB": ["SQL/NoSQL 데이터베이스", "최적화 및 쿼리 작성"],
 };
 
-// ✅ 커스텀 별 아이콘
 const StarIcon: React.FC<{ size?: number; color?: string }> = ({
   size = 16,
   color = "#FBBF24",
@@ -49,7 +46,6 @@ const StarIcon: React.FC<{ size?: number; color?: string }> = ({
   </svg>
 );
 
-// ✅ 리뷰 별 계산 함수 (소수점 버림)
 const getStars = (review?: number) => {
   const stars: { filled: boolean }[] = [];
   const fullStars = review ? Math.floor(review) : 0;
@@ -60,11 +56,10 @@ const getStars = (review?: number) => {
   return stars;
 };
 
-// ✅ 스터디 카드
 const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
-  // 스터디 태그 기반으로 학습 목표 매핑
   const lecturesMapped = study.tags.flatMap((tag) => lectureMapping[tag] || []);
-  const lecturesFinal = lecturesMapped.length > 0 ? lecturesMapped : ["기타 학습 내용 작성"];
+  const lecturesFinal =
+    lecturesMapped.length > 0 ? lecturesMapped : ["기타 학습 내용 작성"];
 
   const stars = getStars(study.review);
 
@@ -91,7 +86,6 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
 
         <h3 className="text-lg font-semibold mb-2">{study.title}</h3>
 
-        {/* ✅ 스터디 기간 (Calendar 아이콘 사용) */}
         <p className="text-sm text-gray-600 mb-3">
           <span className="font-medium text-gray-800 flex items-center gap-1">
             <Calendar size={16} className="text-gray-700" /> 스터디 기간
@@ -99,7 +93,6 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
           <span className="mt-1 block">{study.period}</span>
         </p>
 
-        {/* ✅ 스터디 강의 (Book 아이콘 사용, 닫힌 책) */}
         <p className="text-sm text-gray-600 mb-2">
           <span className="font-medium text-gray-800 flex items-center gap-1">
             <Book size={16} className="text-gray-700" /> 스터디 강의
@@ -114,11 +107,13 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
 
       {study.status === "완료" ? (
         <div className="relative border-t border-gray-100 px-5 py-5 flex flex-col items-center">
-          {/* 평점과 상세보기 텍스트 좌/우 상단 */}
           <div className="w-full flex justify-between mb-2">
             <div className="flex items-center">
               {stars.map((star, idx) => (
-                <StarIcon key={idx} color={star.filled ? "#FBBF24" : "#E5E7EB"} />
+                <StarIcon
+                  key={idx}
+                  color={star.filled ? "#FBBF24" : "#E5E7EB"}
+                />
               ))}
               {study.review && (
                 <span className="text-gray-500 text-xs ml-1">
@@ -131,7 +126,6 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
             </button>
           </div>
 
-          {/* 리뷰 작성 버튼 (중앙 아래, 색상 연하게) */}
           <button className="bg-amber-300 text-white text-base font-semibold px-28 py-1.5 rounded-lg hover:bg-amber-400 transition cursor-pointer mt-6">
             리뷰 작성
           </button>
@@ -147,7 +141,6 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
   );
 };
 
-// ✅ 검색창
 const SearchBar: React.FC = () => (
   <div className="w-1/3 mb-8 flex items-center gap-2">
     <div className="relative w-full">
@@ -164,7 +157,6 @@ const SearchBar: React.FC = () => (
   </div>
 );
 
-// ✅ 섹션
 const StudySection: React.FC<{ title: string; studies: Studiesdata[] }> = ({
   title,
   studies,
@@ -227,16 +219,13 @@ const StudySection: React.FC<{ title: string; studies: Studiesdata[] }> = ({
   );
 };
 
-// ✅ 메인 페이지
 const Studygroup: React.FC = () => {
   return (
-    <div className="min-h-screen bg-white px-8">
+    <div className="min-h-screen bg-white px-6"> {/* ✅ padding 수정 (32px → 24px) */}
       <main className="max-w-7xl mx-auto pt-10 pb-20">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold mb-1 text-gray-800">
-              스터디 그룹
-            </h1>
+            <h1 className="text-3xl font-bold mb-1 text-gray-800">스터디 그룹</h1>
             <p className="text-gray-600 text-sm">
               함께 공부하며 성장하는 스터디 그룹에 참여해보세요
             </p>
