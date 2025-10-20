@@ -69,7 +69,7 @@ type ButtonProps = {
   children: React.ReactNode
 }
 
-type ButtonSize = 'small' | 'medium' | 'large'
+type ButtonSize = 'small' | 'medium' | 'large' | 'review'
 
 type ButtonStatus = 'default' | 'hover' | 'active' | 'disabled' | 'loading'
 
@@ -104,6 +104,7 @@ export function BasicButton({
     small: 'px-2 h-8 text-sm',
     medium: 'px-3 h-10 text-base',
     large: 'px-4 h-12 text-lg',
+    review : 'px-30 h-10 text-base'
   }
 
   const buttonClass = clsx(
