@@ -106,7 +106,6 @@ export function BasicButton({
     small: 'px-2 h-8 text-sm',
     medium: 'px-3 h-10 text-base',
     large: 'px-4 h-12 text-lg',
-    review : 'px-30 h-12 text-base w-full',
   }
 
   const buttonClass = clsx(

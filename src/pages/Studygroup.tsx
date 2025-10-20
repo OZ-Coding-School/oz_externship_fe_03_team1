@@ -130,7 +130,7 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
             </span>
           </div>
 
-          <BasicButton type="primary" size="medium">
+          <BasicButton type="primary" size="review">
             리뷰 작성
           </BasicButton>
         </div>
