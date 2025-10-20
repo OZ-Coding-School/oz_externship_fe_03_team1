@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Plus, Search, Calendar, Book } from "lucide-react";
 import { studiesOngoing, studiesCompleted } from "./studiesData";
-import { BasicButton } from "@/components/basicComponents/BasicButton/BasicButton"; // ✅ 버튼 컴포넌트 import
+import { BasicButton } from "@/components/basicComponents/BasicButton/BasicButton";
 
 export interface Studiesdata {
   id: number;
@@ -106,6 +106,7 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
         </p>
       </div>
 
+      {/* ✅ 완료된 스터디 카드 하단 */}
       {study.status === "완료" ? (
         <div className="relative border-t border-gray-100 px-5 py-5 flex flex-col items-center">
           <div className="w-full flex justify-between mb-2">
@@ -122,9 +123,11 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
                 </span>
               )}
             </div>
-            <BasicButton type="ghost" size="small">
+
+            {/* ✅ 상세보기 → primary 색상으로 변경 */}
+            <span className="text-primary-500 text-sm font-medium hover:text-primary-600 hover:underline cursor-pointer transition">
               상세보기
-            </BasicButton>
+            </span>
           </div>
 
           <BasicButton type="primary" size="medium">
@@ -132,10 +135,11 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
           </BasicButton>
         </div>
       ) : (
+        /* ✅ 진행중 카드의 자세히 보기 → primary 색상으로 변경 */
         <div className="border-t border-gray-100 px-5 py-3 flex justify-end">
-          <BasicButton type="outline" size="small">
+          <span className="text-primary-500 text-sm font-medium hover:text-primary-600 hover:underline cursor-pointer transition">
             자세히 보기 →
-          </BasicButton>
+          </span>
         </div>
       )}
     </div>
@@ -221,7 +225,7 @@ const StudySection: React.FC<{ title: string; studies: Studiesdata[] }> = ({
 
 const Studygroup: React.FC = () => {
   return (
-    <div className="min-h-screen bg-white px-6"> {/* ✅ padding 24px 유지 */}
+    <div className="min-h-screen bg-white px-6">
       <main className="max-w-7xl mx-auto pt-10 pb-20">
         <div className="flex justify-between items-center mb-6">
           <div>
