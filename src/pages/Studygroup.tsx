@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Plus, Search, Calendar, Book } from "lucide-react";
 import { studiesOngoing, studiesCompleted } from "./studiesData";
+import { BasicButton } from "@/components/basicComponents/BasicButton/BasicButton"; // ✅ 버튼 컴포넌트 import
 
 export interface Studiesdata {
   id: number;
@@ -121,20 +122,20 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
                 </span>
               )}
             </div>
-            <button className="text-amber-400 text-sm font-medium hover:underline cursor-pointer">
+            <BasicButton type="ghost" size="small">
               상세보기
-            </button>
+            </BasicButton>
           </div>
 
-          <button className="bg-amber-300 text-white text-base font-semibold px-28 py-1.5 rounded-lg hover:bg-amber-400 transition cursor-pointer mt-6">
+          <BasicButton type="primary" size="medium">
             리뷰 작성
-          </button>
+          </BasicButton>
         </div>
       ) : (
         <div className="border-t border-gray-100 px-5 py-3 flex justify-end">
-          <button className="text-amber-400 text-sm font-medium hover:underline cursor-pointer">
+          <BasicButton type="outline" size="small">
             자세히 보기 →
-          </button>
+          </BasicButton>
         </div>
       )}
     </div>
@@ -186,33 +187,32 @@ const StudySection: React.FC<{ title: string; studies: Studiesdata[] }> = ({
 
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-2 mt-8">
-          <button
-            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+          <BasicButton
+            type="secondary"
+            size="small"
             disabled={currentPage === 1}
-            className="px-3 py-1 text-sm rounded-md border border-gray-300 text-gray-600 disabled:opacity-50"
+            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
           >
             이전
-          </button>
+          </BasicButton>
           {[...Array(totalPages)].map((_, idx) => (
-            <button
+            <BasicButton
               key={idx}
+              type={currentPage === idx + 1 ? "primary" : "outline"}
+              size="small"
               onClick={() => setCurrentPage(idx + 1)}
-              className={`px-3 py-1 text-sm rounded-md border ${
-                currentPage === idx + 1
-                  ? "bg-amber-500 text-white border-amber-500"
-                  : "border-gray-300 text-gray-600 hover:bg-gray-100"
-              }`}
             >
               {idx + 1}
-            </button>
+            </BasicButton>
           ))}
-          <button
-            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+          <BasicButton
+            type="secondary"
+            size="small"
             disabled={currentPage === totalPages}
-            className="px-3 py-1 text-sm rounded-md border border-gray-300 text-gray-600 disabled:opacity-50"
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
           >
             다음
-          </button>
+          </BasicButton>
         </div>
       )}
     </section>
@@ -221,7 +221,7 @@ const StudySection: React.FC<{ title: string; studies: Studiesdata[] }> = ({
 
 const Studygroup: React.FC = () => {
   return (
-    <div className="min-h-screen bg-white px-6"> {/* ✅ padding 수정 (32px → 24px) */}
+    <div className="min-h-screen bg-white px-6"> {/* ✅ padding 24px 유지 */}
       <main className="max-w-7xl mx-auto pt-10 pb-20">
         <div className="flex justify-between items-center mb-6">
           <div>
@@ -230,9 +230,9 @@ const Studygroup: React.FC = () => {
               함께 공부하며 성장하는 스터디 그룹에 참여해보세요
             </p>
           </div>
-          <button className="bg-amber-300 text-white flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-medium hover:bg-amber-600 transition cursor-pointer shadow-sm">
+          <BasicButton type="primary" size="medium">
             <Plus size={16} /> 새 스터디 만들기
-          </button>
+          </BasicButton>
         </div>
 
         <SearchBar />
