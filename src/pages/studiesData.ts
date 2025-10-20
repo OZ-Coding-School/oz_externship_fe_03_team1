@@ -1,4 +1,5 @@
-// 더미 데이터
+// studiesData.ts
+
 export interface Study {
   id: number;
   title: string;
@@ -10,6 +11,8 @@ export interface Study {
   image: string;
   review?: number;
   reviewCount?: number;
+  cardWidth?: string;   // ✅ 카드 너비
+  cardHeight?: string;  // ✅ 카드 높이
 }
 
 // 진행중 스터디
@@ -23,6 +26,8 @@ export const studiesOngoing: Study[] = [
     maxMembers: 10,
     tags: ["React", "Next.js", "프론트엔드"],
     image: "../images/IMG-76.png",
+    cardWidth: "340px",
+    cardHeight: "600px",
   },
   {
     id: 2,
@@ -33,6 +38,8 @@ export const studiesOngoing: Study[] = [
     maxMembers: 8,
     tags: ["Python", "데이터 분석", "머신러닝"],
     image: "../images/IMG-136.png",
+    cardWidth: "340px",
+    cardHeight: "600px",
   },
   {
     id: 3,
@@ -43,6 +50,8 @@ export const studiesOngoing: Study[] = [
     maxMembers: 10,
     tags: ["AI", "딥러닝"],
     image: "../images/IMG-206.png",
+    cardWidth: "340px",
+    cardHeight: "600px",
   },
   {
     id: 4,
@@ -53,6 +62,8 @@ export const studiesOngoing: Study[] = [
     maxMembers: 10,
     tags: ["Flutter", "모바일"],
     image: "../images/IMG-287.png",
+    cardWidth: "340px",
+    cardHeight: "600px",
   },
   {
     id: 5,
@@ -63,6 +74,8 @@ export const studiesOngoing: Study[] = [
     maxMembers: 10,
     tags: ["SQL", "DB"],
     image: "../images/IMG-363.png",
+    cardWidth: "340px",
+    cardHeight: "600px",
   },
 ];
 
@@ -79,6 +92,8 @@ export const studiesCompleted: Study[] = [
     image: "../images/IMG-76.png",
     review: 4.7,
     reviewCount: 12,
+    cardWidth: "340px",
+    cardHeight: "600px",
   },
   {
     id: 7,
@@ -91,6 +106,8 @@ export const studiesCompleted: Study[] = [
     image: "../images/IMG-136.png",
     review: 4.6,
     reviewCount: 8,
+    cardWidth: "340px",
+    cardHeight: "600px",
   },
   {
     id: 8,
@@ -103,5 +120,7 @@ export const studiesCompleted: Study[] = [
     image: "../images/IMG-206.png",
     review: 4.8,
     reviewCount: 15,
+    cardWidth: "340px",
+    cardHeight: "600px",
   },
 ];
