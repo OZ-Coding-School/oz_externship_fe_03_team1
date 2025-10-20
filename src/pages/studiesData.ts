@@ -12,6 +12,7 @@ export interface Study {
   reviewCount?: number;
 }
 
+// 진행중 스터디
 export const studiesOngoing: Study[] = [
   {
     id: 1,
@@ -21,7 +22,7 @@ export const studiesOngoing: Study[] = [
     members: 8,
     maxMembers: 10,
     tags: ["React", "Next.js", "프론트엔드"],
-    image: "/images/react-study.jpg",
+    image: "../images/IMG-76.png",
   },
   {
     id: 2,
@@ -31,7 +32,7 @@ export const studiesOngoing: Study[] = [
     members: 6,
     maxMembers: 8,
     tags: ["Python", "데이터 분석", "머신러닝"],
-    image: "/images/python-study.jpg",
+    image: "../images/IMG-136.png",
   },
   {
     id: 3,
@@ -41,7 +42,7 @@ export const studiesOngoing: Study[] = [
     members: 7,
     maxMembers: 10,
     tags: ["AI", "딥러닝"],
-    image: "/images/ai-study.jpg",
+    image: "../images/IMG-206.png",
   },
   {
     id: 4,
@@ -51,7 +52,7 @@ export const studiesOngoing: Study[] = [
     members: 5,
     maxMembers: 10,
     tags: ["Flutter", "모바일"],
-    image: "/images/flutter-study.jpg",
+    image: "../images/IMG-287.png",
   },
   {
     id: 5,
@@ -61,10 +62,11 @@ export const studiesOngoing: Study[] = [
     members: 6,
     maxMembers: 10,
     tags: ["SQL", "DB"],
-    image: "/images/sql-study.jpg",
+    image: "../images/IMG-363.png",
   },
 ];
 
+// 완료된 스터디
 export const studiesCompleted: Study[] = [
   {
     id: 6,
@@ -74,7 +76,7 @@ export const studiesCompleted: Study[] = [
     members: 4,
     maxMembers: 6,
     tags: ["Node.js", "Express"],
-    image: "/images/node-study.jpg",
+    image: "../images/IMG-76.png",
     review: 4.7,
     reviewCount: 12,
   },
@@ -86,7 +88,7 @@ export const studiesCompleted: Study[] = [
     members: 5,
     maxMembers: 6,
     tags: ["Vue", "Vuex"],
-    image: "/images/vue-study.jpg",
+    image: "../images/IMG-136.png",
     review: 4.6,
     reviewCount: 8,
   },
@@ -98,7 +100,7 @@ export const studiesCompleted: Study[] = [
     members: 5,
     maxMembers: 6,
     tags: ["TypeScript", "프론트엔드"],
-    image: "/images/ts-study.jpg",
+    image: "../images/IMG-206.png",
     review: 4.8,
     reviewCount: 15,
   },
