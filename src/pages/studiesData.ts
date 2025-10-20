@@ -1,9 +1,14 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // studiesData.ts
 
 =======
 // src/data/studiesData.ts
 >>>>>>> 6aa0c7f (fix : 한 화면에 9개 카드를 담은 후, 스터디 카드 더미데이터 분리 작업)
+=======
+// studiesData.ts
+
+>>>>>>> 59f6bf0 (fix : 패딩, 마진 크기 추가 중)
 export interface Study {
   id: number;
   title: string;
@@ -16,6 +21,9 @@ export interface Study {
   review?: number;
   reviewCount?: number;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 59f6bf0 (fix : 패딩, 마진 크기 추가 중)
   cardWidth?: string;   // ✅ 카드 너비
   cardHeight?: string;  // ✅ 카드 높이
 }
@@ -35,6 +43,8 @@ export const studiesOngoing: Study[] = [
     maxMembers: 10,
     tags: ["React", "Next.js", "프론트엔드"],
     image: "../images/IMG-76.png",
+    cardWidth: "340px",
+    cardHeight: "600px",
   },
   {
     id: 2,
@@ -45,6 +55,8 @@ export const studiesOngoing: Study[] = [
     maxMembers: 8,
     tags: ["Python", "데이터 분석", "머신러닝"],
     image: "../images/IMG-136.png",
+    cardWidth: "340px",
+    cardHeight: "600px",
   },
   {
     id: 3,
@@ -55,6 +67,8 @@ export const studiesOngoing: Study[] = [
     maxMembers: 10,
     tags: ["AI", "딥러닝"],
     image: "../images/IMG-206.png",
+    cardWidth: "340px",
+    cardHeight: "600px",
   },
   {
     id: 4,
@@ -65,6 +79,8 @@ export const studiesOngoing: Study[] = [
     maxMembers: 10,
     tags: ["Flutter", "모바일"],
     image: "../images/IMG-287.png",
+    cardWidth: "340px",
+    cardHeight: "600px",
   },
   {
     id: 5,
@@ -75,6 +91,8 @@ export const studiesOngoing: Study[] = [
     maxMembers: 10,
     tags: ["SQL", "DB"],
     image: "../images/IMG-363.png",
+    cardWidth: "340px",
+    cardHeight: "600px",
   },
 ];
 
@@ -91,7 +109,12 @@ export const studiesCompleted: Study[] = [
     image: "/images/node-study.jpg",
     review: 4.7,
     reviewCount: 12,
+<<<<<<< HEAD
 >>>>>>> 6aa0c7f (fix : 한 화면에 9개 카드를 담은 후, 스터디 카드 더미데이터 분리 작업)
+=======
+    cardWidth: "340px",
+    cardHeight: "600px",
+>>>>>>> 59f6bf0 (fix : 패딩, 마진 크기 추가 중)
   },
   {
     id: 7,
@@ -104,7 +127,12 @@ export const studiesCompleted: Study[] = [
     image: "../images/IMG-136.png",
     review: 4.6,
     reviewCount: 8,
+<<<<<<< HEAD
 >>>>>>> 6aa0c7f (fix : 한 화면에 9개 카드를 담은 후, 스터디 카드 더미데이터 분리 작업)
+=======
+    cardWidth: "340px",
+    cardHeight: "600px",
+>>>>>>> 59f6bf0 (fix : 패딩, 마진 크기 추가 중)
   },
   {
     id: 8,
@@ -117,6 +145,11 @@ export const studiesCompleted: Study[] = [
     image: "/images/ts-study.jpg",
     review: 4.8,
     reviewCount: 15,
+<<<<<<< HEAD
 >>>>>>> 6aa0c7f (fix : 한 화면에 9개 카드를 담은 후, 스터디 카드 더미데이터 분리 작업)
+=======
+    cardWidth: "340px",
+    cardHeight: "600px",
+>>>>>>> 59f6bf0 (fix : 패딩, 마진 크기 추가 중)
   },
 ];
