@@ -124,7 +124,6 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
               )}
             </div>
 
-            {/* ✅ 상세보기 */}
             <span className="text-primary-500 text-sm font-medium hover:text-primary-600 hover:underline cursor-pointer transition">
               상세보기
             </span>
@@ -225,7 +224,7 @@ const StudySection: React.FC<{ title: string; studies: Studiesdata[] }> = ({
 
 const Studygroup: React.FC = () => {
   return (
-    <div className="min-h-screen bg-white px-6">
+    <div className="min-h-screen bg-white px-[24px] pt-[65px]">
       <main className="max-w-7xl mx-auto pt-10 pb-20">
         <div className="flex justify-between items-center mb-6">
           <div>
