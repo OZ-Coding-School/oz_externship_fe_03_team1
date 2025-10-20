@@ -124,7 +124,7 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
               )}
             </div>
 
-            {/* ✅ 상세보기 → primary 색상으로 변경 */}
+            {/* ✅ 상세보기 */}
             <span className="text-primary-500 text-sm font-medium hover:text-primary-600 hover:underline cursor-pointer transition">
               상세보기
             </span>
@@ -135,7 +135,7 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
           </BasicButton>
         </div>
       ) : (
-        /* ✅ 진행중 카드의 자세히 보기 → primary 색상으로 변경 */
+        /* ✅ 진행중 카드의 자세히 보기 */
         <div className="border-t border-gray-100 px-5 py-3 flex justify-end">
           <span className="text-primary-500 text-sm font-medium hover:text-primary-600 hover:underline cursor-pointer transition">
             자세히 보기 →
