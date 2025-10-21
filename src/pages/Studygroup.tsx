@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Plus, Search } from "lucide-react";
-import { studiesOngoing, studiesCompleted } from "./studiesData";
+import { studiesOngoing, studiesCompleted } from "../assets/dummyData/studiesData";
 import { BasicButton } from "@/components/basicComponents/BasicButton/BasicButton";
 import StudySection from "../components/studyGroup/StudySection";
 

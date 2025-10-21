@@ -1,4 +1,4 @@
-import type { StudyGroup } from '@/types/StudyGroup'
+import type { StudyGroup } from '@/types/Study'
 
 export const studyGroup: StudyGroup = {
   id: 1,

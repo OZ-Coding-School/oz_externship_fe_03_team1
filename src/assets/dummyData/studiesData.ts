@@ -1,0 +1,60 @@
+import type { Study } from "../../types/Study";
+
+export const studiesOngoing: Study[] = [
+  {
+    id: 1,
+    title: "React 실무 프로젝트 스터디",
+    status: "진행중",
+    period: "2024년 4월 1일 ~ 2024년 4월 30일",
+    members: 8,
+    maxMembers: 10,
+    tags: ["React", "Next.js", "프론트엔드"],
+    image: "../images/IMG-76.png",
+    cardWidth: "320px",
+    cardHeight: "600px",
+    isLeader: true,
+  },
+  {
+    id: 2,
+    title: "Python 데이터 분석 스터디",
+    status: "진행중",
+    period: "2024년 1월 15일 ~ 2024년 3월 15일",
+    members: 6,
+    maxMembers: 8,
+    tags: ["Python", "데이터 분석", "머신러닝"],
+    image: "../images/IMG-136.png",
+    cardWidth: "320px",
+    cardHeight: "600px",
+  },
+];
+
+export const studiesCompleted: Study[] = [
+  {
+    id: 6,
+    title: "Node.js 백엔드 개발반",
+    status: "완료",
+    period: "2023년 10월 1일 ~ 2023년 12월 31일",
+    members: 4,
+    maxMembers: 6,
+    tags: ["Node.js", "Express"],
+    image: "../images/IMG-76.png",
+    review: 4.7,
+    reviewCount: 12,
+    cardWidth: "320px",
+    cardHeight: "600px",
+  },
+  {
+    id: 7,
+    title: "Vue.js 마스터 스터디",
+    status: "완료",
+    period: "2023년 9월 1일 ~ 2023년 11월 30일",
+    members: 5,
+    maxMembers: 6,
+    tags: ["Vue", "Vuex"],
+    image: "../images/IMG-136.png",
+    review: 4.6,
+    reviewCount: 8,
+    cardWidth: "320px",
+    cardHeight: "600px",
+  },
+];

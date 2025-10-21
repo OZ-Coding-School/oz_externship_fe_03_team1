@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BasicButton } from "@/components/basicComponents/BasicButton/BasicButton";
 import StudyCard from "./StudyCard";
-import type { Study } from "../../pages/studiesData"; // ✅ 타입 전용 import
+import type { Study } from "../../assets/dummyData/studiesData"; // ✅ 타입 전용 import
 
 const StudySection: React.FC<{ title: string; studies: Study[] }> = ({
   title,
