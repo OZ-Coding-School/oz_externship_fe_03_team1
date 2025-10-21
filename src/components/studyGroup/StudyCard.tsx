@@ -1,7 +1,7 @@
 import React from "react";
 import { Calendar, Book, Star, StarOff } from "lucide-react";
 import { BasicButton } from "@/components/basicComponents/BasicButton/BasicButton";
-import type { Study } from "../../assets/dummyData/studiesData"; // ✅ 타입 전용 import
+import type { Study } from "../../assets/dummyData/studiesData";
 
 // 강의 태그 매핑
 const lectureMapping: Record<string, string[]> = {

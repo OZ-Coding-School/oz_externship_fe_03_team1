@@ -1,4 +1,4 @@
-import type { Study } from "@/types/Study";
+import type { Study } from "../../types/Study"; // ✅ 경로 수정
 
 export const studiesOngoing: Study[] = [
   {
@@ -12,7 +12,6 @@ export const studiesOngoing: Study[] = [
     image: "../images/IMG-76.png",
     cardWidth: "320px",
     cardHeight: "600px",
-    isLeader: true,
   },
   {
     id: 2,
