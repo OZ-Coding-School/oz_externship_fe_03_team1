@@ -26,7 +26,7 @@ export const studiesOngoing: Study[] = [
     maxMembers: 10,
     tags: ["React", "Next.js", "프론트엔드"],
     image: "../images/IMG-76.png",
-    cardWidth: "340px",
+    cardWidth: "320px",
     cardHeight: "600px",
   },
   {
@@ -38,7 +38,7 @@ export const studiesOngoing: Study[] = [
     maxMembers: 8,
     tags: ["Python", "데이터 분석", "머신러닝"],
     image: "../images/IMG-136.png",
-    cardWidth: "340px",
+    cardWidth: "320px",
     cardHeight: "600px",
   },
   {
@@ -74,7 +74,7 @@ export const studiesOngoing: Study[] = [
     maxMembers: 10,
     tags: ["SQL", "DB"],
     image: "../images/IMG-363.png",
-    cardWidth: "340px",
+    cardWidth: "320px",
     cardHeight: "600px",
   },
 ];
@@ -92,7 +92,7 @@ export const studiesCompleted: Study[] = [
     image: "../images/IMG-76.png",
     review: 4.7,
     reviewCount: 12,
-    cardWidth: "340px",
+    cardWidth: "320px",
     cardHeight: "600px",
   },
   {
@@ -106,7 +106,7 @@ export const studiesCompleted: Study[] = [
     image: "../images/IMG-136.png",
     review: 4.6,
     reviewCount: 8,
-    cardWidth: "340px",
+    cardWidth: "320px",
     cardHeight: "600px",
   },
   {
@@ -120,7 +120,7 @@ export const studiesCompleted: Study[] = [
     image: "../images/IMG-206.png",
     review: 4.8,
     reviewCount: 15,
-    cardWidth: "340px",
+    cardWidth: "320px",
     cardHeight: "600px",
   },
 ];

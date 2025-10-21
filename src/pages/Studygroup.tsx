@@ -15,6 +15,7 @@ export interface Studiesdata {
   maxMembers: number;
   review?: number;
   reviewCount?: number;
+  isLeader?: boolean;
 }
 
 const lectureMapping: Record<string, string[]> = {
@@ -50,10 +51,8 @@ const StarIcon: React.FC<{ size?: number; color?: string }> = ({
 const getStars = (review?: number) => {
   const stars: { filled: boolean }[] = [];
   const fullStars = review ? Math.floor(review) : 0;
-
   for (let i = 0; i < fullStars; i++) stars.push({ filled: true });
   while (stars.length < 5) stars.push({ filled: false });
-
   return stars;
 };
 
@@ -61,30 +60,40 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
   const lecturesMapped = study.tags.flatMap((tag) => lectureMapping[tag] || []);
   const lecturesFinal =
     lecturesMapped.length > 0 ? lecturesMapped : ["기타 학습 내용 작성"];
-
   const stars = getStars(study.review);
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md flex flex-col min-h-[360px] transition relative">
-      <img
-        src={study.image}
-        alt={study.title}
-        className="h-52 w-full object-cover"
-      />
-      <div className="p-5 flex flex-col flex-grow">
-        <div className="flex justify-between items-center text-xs text-gray-500 mb-2">
-          <span
-            className={`px-2 py-0.5 rounded-full text-white text-[11px] ${
-              study.status === "진행중" ? "bg-green-500" : "bg-gray-400"
-            }`}
-          >
-            {study.status}
-          </span>
-          <span>
-            {study.members}/{study.maxMembers}명 참여
-          </span>
-        </div>
+      <div className="relative">
+        <img
+          src={study.image}
+          alt={study.title}
+          className="h-52 w-full object-cover"
+        />
 
+        {/* 진행 상태 - 좌측 상단 */}
+        <span
+          className={`absolute top-3 left-3 px-2 py-0.5 rounded-full text-white text-[11px] ${
+            study.status === "진행중" ? "bg-green-500" : "bg-gray-400"
+          }`}
+        >
+          {study.status}
+        </span>
+
+        {/* 리더 표시 - 우측 상단 */}
+        {study.isLeader && (
+          <span className="absolute top-3 right-3 px-3 py-1 text-xs font-semibold text-white border-2 border-primary-500 bg-primary-500 rounded-full shadow-sm">
+            리더
+          </span>
+        )}
+
+        {/* 인원수 - 좌측 하단 */}
+        <span className="absolute bottom-3 left-3 text-xs font-semibold text-gray-800 bg-white px-2 py-0.5 rounded-md border border-white">
+          {study.members}/{study.maxMembers}
+        </span>
+      </div>
+
+      <div className="p-5 flex flex-col flex-grow">
         <h3 className="text-lg font-semibold mb-2">{study.title}</h3>
 
         <p className="text-sm text-gray-600 mb-3">
@@ -106,7 +115,6 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
         </p>
       </div>
 
-      {/* ✅ 완료된 스터디 카드 하단 */}
       {study.status === "완료" ? (
         <div className="relative border-t border-gray-100 px-5 py-5 flex flex-col items-center">
           <div className="w-full flex justify-between mb-2">
@@ -128,13 +136,11 @@ const StudyCard: React.FC<{ study: Studiesdata }> = ({ study }) => {
               상세보기
             </span>
           </div>
-
           <BasicButton type="primary" size="review">
             리뷰 작성
           </BasicButton>
         </div>
       ) : (
-        /* ✅ 진행중 카드의 자세히 보기 */
         <div className="border-t border-gray-100 px-5 py-3 flex justify-end">
           <span className="text-primary-500 text-sm font-medium hover:text-primary-600 hover:underline cursor-pointer transition">
             자세히 보기 →
@@ -168,17 +174,26 @@ const StudySection: React.FC<{ title: string; studies: Studiesdata[] }> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const studiesPerPage = 9;
   const totalPages = Math.ceil(studies.length / studiesPerPage);
-
   const indexOfLastStudy = currentPage * studiesPerPage;
   const indexOfFirstStudy = indexOfLastStudy - studiesPerPage;
   const currentStudies = studies.slice(indexOfFirstStudy, indexOfLastStudy);
+
+  const isOngoing = title.includes("진행중");
 
   return (
     <section className="mb-16">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">{title}</h2>
-        <span className="text-xs text-gray-500">
-          {studies.length}개 {title.includes("진행중") ? "진행중" : "완료"}
+
+        {/* ✅ 개수 뱃지 스타일 변경 */}
+        <span
+          className={`text-xs font-medium px-3 py-1 rounded-full border ${
+            isOngoing
+              ? "border-green-300 bg-green-200 text-green-700"
+              : "border-gray-300 bg-gray-200 text-gray-700"
+          }`}
+        >
+          {studies.length}개 {isOngoing ? "진행중" : "완료"}
         </span>
       </div>
 
@@ -223,6 +238,13 @@ const StudySection: React.FC<{ title: string; studies: Studiesdata[] }> = ({
 };
 
 const Studygroup: React.FC = () => {
+  const ongoingWithLeader = studiesOngoing.map((s, i) =>
+    i === 0 ? { ...s, isLeader: true } : s
+  );
+  const completedWithLeader = studiesCompleted.map((s, i) =>
+    i === 0 ? { ...s, isLeader: true } : s
+  );
+
   return (
     <div className="min-h-screen bg-white px-[24px] pt-[65px]">
       <main className="max-w-7xl mx-auto pt-10 pb-20">
@@ -240,8 +262,8 @@ const Studygroup: React.FC = () => {
 
         <SearchBar />
 
-        <StudySection title="진행중인 스터디" studies={studiesOngoing} />
-        <StudySection title="완료된 스터디" studies={studiesCompleted} />
+        <StudySection title="진행중인 스터디" studies={ongoingWithLeader} />
+        <StudySection title="완료된 스터디" studies={completedWithLeader} />
       </main>
     </div>
   );
