@@ -43,7 +43,7 @@ export const studiesOngoing: Study[] = [
     maxMembers: 10,
     tags: ["React", "Next.js", "프론트엔드"],
     image: "../images/IMG-76.png",
-    cardWidth: "340px",
+    cardWidth: "320px",
     cardHeight: "600px",
   },
   {
@@ -55,7 +55,7 @@ export const studiesOngoing: Study[] = [
     maxMembers: 8,
     tags: ["Python", "데이터 분석", "머신러닝"],
     image: "../images/IMG-136.png",
-    cardWidth: "340px",
+    cardWidth: "320px",
     cardHeight: "600px",
   },
   {
@@ -91,7 +91,7 @@ export const studiesOngoing: Study[] = [
     maxMembers: 10,
     tags: ["SQL", "DB"],
     image: "../images/IMG-363.png",
-    cardWidth: "340px",
+    cardWidth: "320px",
     cardHeight: "600px",
   },
 ];
@@ -110,9 +110,13 @@ export const studiesCompleted: Study[] = [
     review: 4.7,
     reviewCount: 12,
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 6aa0c7f (fix : 한 화면에 9개 카드를 담은 후, 스터디 카드 더미데이터 분리 작업)
 =======
     cardWidth: "340px",
+=======
+    cardWidth: "320px",
+>>>>>>> a2f9dde (fix : 디테일 수정 2)
     cardHeight: "600px",
 >>>>>>> 59f6bf0 (fix : 패딩, 마진 크기 추가 중)
   },
@@ -128,9 +132,13 @@ export const studiesCompleted: Study[] = [
     review: 4.6,
     reviewCount: 8,
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 6aa0c7f (fix : 한 화면에 9개 카드를 담은 후, 스터디 카드 더미데이터 분리 작업)
 =======
     cardWidth: "340px",
+=======
+    cardWidth: "320px",
+>>>>>>> a2f9dde (fix : 디테일 수정 2)
     cardHeight: "600px",
 >>>>>>> 59f6bf0 (fix : 패딩, 마진 크기 추가 중)
   },
@@ -146,9 +154,13 @@ export const studiesCompleted: Study[] = [
     review: 4.8,
     reviewCount: 15,
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 6aa0c7f (fix : 한 화면에 9개 카드를 담은 후, 스터디 카드 더미데이터 분리 작업)
 =======
     cardWidth: "340px",
+=======
+    cardWidth: "320px",
+>>>>>>> a2f9dde (fix : 디테일 수정 2)
     cardHeight: "600px",
 >>>>>>> 59f6bf0 (fix : 패딩, 마진 크기 추가 중)
   },
