@@ -1,4 +1,3 @@
-// StudyCard.tsx
 import React from "react";
 import { Calendar, Book, Star, StarOff } from "lucide-react";
 import { BasicButton } from "@/components/basicComponents/BasicButton/BasicButton";
@@ -91,6 +90,7 @@ const StudyCard: React.FC<{ study: Study | any }> = ({ study }) => {
       {study.status === "완료" ? (
         <div className="relative border-t border-gray-100 px-5 py-5 flex flex-col items-center">
           <div className="w-full flex justify-between mb-2">
+            {/* 별점 부분 */}
             <div className="flex items-center">
               {stars.map((star, idx) =>
                 star.filled ? (

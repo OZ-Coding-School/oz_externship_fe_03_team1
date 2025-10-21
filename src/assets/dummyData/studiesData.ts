@@ -1,4 +1,4 @@
-import type { Study } from "../../types/Study";
+import type { Study } from "@/types/Study";
 
 export const studiesOngoing: Study[] = [
   {
