@@ -1,4 +1,4 @@
-import type { Study } from "../../types/Study"; // ✅ 경로 수정
+import type { Study } from "../../types/Study";
 
 export const studiesOngoing: Study[] = [
   {
@@ -9,7 +9,7 @@ export const studiesOngoing: Study[] = [
     members: 8,
     maxMembers: 10,
     tags: ["React", "Next.js", "프론트엔드"],
-    image: "../images/IMG-76.png",
+    image: "./images/IMG-76.png",
     cardWidth: "320px",
     cardHeight: "600px",
   },
@@ -21,7 +21,7 @@ export const studiesOngoing: Study[] = [
     members: 6,
     maxMembers: 8,
     tags: ["Python", "데이터 분석", "머신러닝"],
-    image: "../images/IMG-136.png",
+    image: "./images/IMG-136.png",
     cardWidth: "320px",
     cardHeight: "600px",
   },
@@ -36,7 +36,7 @@ export const studiesCompleted: Study[] = [
     members: 4,
     maxMembers: 6,
     tags: ["Node.js", "Express"],
-    image: "../images/IMG-76.png",
+    image: "./images/IMG-76.png",
     review: 4.7,
     reviewCount: 12,
     cardWidth: "320px",
@@ -50,10 +50,11 @@ export const studiesCompleted: Study[] = [
     members: 5,
     maxMembers: 6,
     tags: ["Vue", "Vuex"],
-    image: "../images/IMG-136.png",
+    image: "./images/IMG-136.png",
     review: 4.6,
     reviewCount: 8,
     cardWidth: "320px",
     cardHeight: "600px",
   },
 ];
+
