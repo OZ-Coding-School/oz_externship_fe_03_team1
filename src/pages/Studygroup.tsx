@@ -1,7 +1,6 @@
-"use client";
-import React, { useState } from "react";
-import { Plus, Search, Calendar, Book } from "lucide-react";
-import { studiesOngoing, studiesCompleted } from "./studiesData";
+import React from "react";
+import { Plus, Search } from "lucide-react";
+import { studiesOngoing, studiesCompleted } from "../assets/dummyData/studiesData";
 import { BasicButton } from "@/components/basicComponents/BasicButton/BasicButton";
 import { BasicInput } from "@/components/basicComponents/input/BasicInput";
 import StudySection from "../components/studyGroup/StudySection";
