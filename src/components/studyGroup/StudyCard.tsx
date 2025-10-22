@@ -1,7 +1,6 @@
-import React from "react";
 import { Calendar, Book, Star, StarOff } from "lucide-react";
 import { BasicButton } from "@/components/basicComponents/BasicButton/BasicButton";
-import type { Study } from "../../assets/dummyData/studiesData";
+import type { Study } from "@/types/Study";
 
 // 강의 태그 매핑
 const lectureMapping: Record<string, string[]> = {
@@ -18,7 +17,7 @@ const lectureMapping: Record<string, string[]> = {
   "DB": ["SQL/NoSQL 데이터베이스", "최적화 및 쿼리 작성"],
 };
 
-// 리뷰 별점 계산
+// 리뷰 별점 계산 함수
 const getStars = (review?: number) => {
   const stars: { filled: boolean }[] = [];
   const fullStars = review ? Math.floor(review) : 0;
@@ -28,14 +27,16 @@ const getStars = (review?: number) => {
 };
 
 // StudyCard 컴포넌트
-const StudyCard: React.FC<{ study: Study | any }> = ({ study }) => {
-  const lecturesMapped = study.tags?.flatMap((tag: string) => lectureMapping[tag] || []) || [];
+const StudyCard = ({ study }: { study: Study }) => {
+  const lecturesMapped =
+    study.tags?.flatMap((tag: string) => lectureMapping[tag] || []) || [];
   const lecturesFinal =
     lecturesMapped.length > 0 ? lecturesMapped : ["기타 학습 내용 작성"];
   const stars = getStars(study.review);
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md flex flex-col min-h-[360px] transition relative">
+      {/* 이미지 섹션 */}
       <div className="relative">
         <img
           src={study.image}
@@ -53,7 +54,7 @@ const StudyCard: React.FC<{ study: Study | any }> = ({ study }) => {
         </span>
 
         {/* 리더 표시 - 우측 상단 */}
-        {study.isLeader && (
+        {study.tags?.includes("리더") && (
           <span className="absolute top-3 right-3 px-3 py-1 text-xs font-semibold text-white border-2 border-primary-500 bg-primary-500 rounded-full shadow-sm">
             리더
           </span>
@@ -65,6 +66,7 @@ const StudyCard: React.FC<{ study: Study | any }> = ({ study }) => {
         </span>
       </div>
 
+      {/* 본문 */}
       <div className="p-5 flex flex-col flex-grow">
         <h3 className="text-lg font-semibold mb-2">{study.title}</h3>
 
@@ -87,10 +89,11 @@ const StudyCard: React.FC<{ study: Study | any }> = ({ study }) => {
         </p>
       </div>
 
+      {/* 완료 / 진행 상태 구분 */}
       {study.status === "완료" ? (
-        <div className="relative border-t border-gray-100 px-5 py-5 flex flex-col items-center">
+        <div className="relative border-t border-gray-100 px-5 py-5 flex flex-col items-stretch w-full">
           <div className="w-full flex justify-between mb-2">
-            {/* 별점 부분 */}
+            {/* 별점 표시 */}
             <div className="flex items-center">
               {stars.map((star, idx) =>
                 star.filled ? (
@@ -110,7 +113,9 @@ const StudyCard: React.FC<{ study: Study | any }> = ({ study }) => {
               상세보기
             </span>
           </div>
-          <BasicButton type="primary" size="large">
+
+          {/* 버튼이 카드 하단 전체를 꽉 채움 */}
+          <BasicButton type="primary" size="small">
             리뷰작성
           </BasicButton>
         </div>
