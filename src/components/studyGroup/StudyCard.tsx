@@ -110,8 +110,8 @@ const StudyCard: React.FC<{ study: Study | any }> = ({ study }) => {
               상세보기
             </span>
           </div>
-          <BasicButton type="primary" size="review">
-            리뷰 작성
+          <BasicButton type="primary" size="large">
+            리뷰작성
           </BasicButton>
         </div>
       ) : (

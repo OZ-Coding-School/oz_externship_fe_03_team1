@@ -30,8 +30,8 @@ const Studygroup: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-white px-[24px] pt-[65px]">
-      <main className="max-w-7xl mx-auto pt-10 pb-20">
+    <div className="min-h-screen bg-white px-20 pt-[65px] pb-20">
+      <main className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <div>
             <h1 className="text-3xl font-bold mb-1 text-gray-800">스터디 그룹</h1>
