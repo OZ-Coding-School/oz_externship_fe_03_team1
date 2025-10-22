@@ -70,7 +70,7 @@ type ButtonProps = {
   className?: string
 }
 
-type ButtonSize = 'small' | 'medium' | 'large' | 'review'
+type ButtonSize = 'small' | 'medium' | 'large'
 
 type ButtonStatus = 'default' | 'hover' | 'active' | 'disabled' | 'loading'
 
