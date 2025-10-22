@@ -3,7 +3,10 @@ import { Plus, Search } from "lucide-react";
 import { studiesOngoing, studiesCompleted } from "../assets/dummyData/studiesData";
 import { BasicButton } from "@/components/basicComponents/BasicButton/BasicButton";
 import { BasicInput } from "@/components/basicComponents/input/BasicInput";
-import StudySection from "../components/studyGroup/StudySection";
+import {useState} from "react";
+import type { Study } from "@/types/Study";
+import StudyCard from "@/components/studyGroup/StudyCard";
+
 
 const SearchBar: React.FC = () => (
   <div className="w-1/3 mb-8">
@@ -17,7 +20,7 @@ const SearchBar: React.FC = () => (
   </div>
 );
 
-const StudySection: React.FC<{ title: string; studies: Studiesdata[] }> = ({
+const StudySection: React.FC<{ title: string; studies: Study[] }> = ({
   title,
   studies,
 }) => {
