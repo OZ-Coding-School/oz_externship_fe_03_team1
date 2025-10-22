@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-// studiesData.ts
-
-=======
-// src/data/studiesData.ts
->>>>>>> 6aa0c7f (fix : 한 화면에 9개 카드를 담은 후, 스터디 카드 더미데이터 분리 작업)
-=======
-// studiesData.ts
-
->>>>>>> 59f6bf0 (fix : 패딩, 마진 크기 추가 중)
 export interface Study {
   id: number;
   title: string;
@@ -20,19 +9,12 @@ export interface Study {
   image: string;
   review?: number;
   reviewCount?: number;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 59f6bf0 (fix : 패딩, 마진 크기 추가 중)
   cardWidth?: string;   // ✅ 카드 너비
   cardHeight?: string;  // ✅ 카드 높이
 }
 
 // 진행중 스터디
-=======
-}
 
->>>>>>> 6aa0c7f (fix : 한 화면에 9개 카드를 담은 후, 스터디 카드 더미데이터 분리 작업)
 export const studiesOngoing: Study[] = [
   {
     id: 1,
@@ -109,16 +91,8 @@ export const studiesCompleted: Study[] = [
     image: "/images/node-study.jpg",
     review: 4.7,
     reviewCount: 12,
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 6aa0c7f (fix : 한 화면에 9개 카드를 담은 후, 스터디 카드 더미데이터 분리 작업)
-=======
-    cardWidth: "340px",
-=======
     cardWidth: "320px",
->>>>>>> a2f9dde (fix : 디테일 수정 2)
     cardHeight: "600px",
->>>>>>> 59f6bf0 (fix : 패딩, 마진 크기 추가 중)
   },
   {
     id: 7,
@@ -131,16 +105,8 @@ export const studiesCompleted: Study[] = [
     image: "../images/IMG-136.png",
     review: 4.6,
     reviewCount: 8,
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 6aa0c7f (fix : 한 화면에 9개 카드를 담은 후, 스터디 카드 더미데이터 분리 작업)
-=======
-    cardWidth: "340px",
-=======
     cardWidth: "320px",
->>>>>>> a2f9dde (fix : 디테일 수정 2)
     cardHeight: "600px",
->>>>>>> 59f6bf0 (fix : 패딩, 마진 크기 추가 중)
   },
   {
     id: 8,
@@ -153,15 +119,7 @@ export const studiesCompleted: Study[] = [
     image: "/images/ts-study.jpg",
     review: 4.8,
     reviewCount: 15,
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 6aa0c7f (fix : 한 화면에 9개 카드를 담은 후, 스터디 카드 더미데이터 분리 작업)
-=======
-    cardWidth: "340px",
-=======
     cardWidth: "320px",
->>>>>>> a2f9dde (fix : 디테일 수정 2)
     cardHeight: "600px",
->>>>>>> 59f6bf0 (fix : 패딩, 마진 크기 추가 중)
   },
 ];
