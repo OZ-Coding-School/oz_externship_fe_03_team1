@@ -14,7 +14,7 @@ export default function StudyRecordForm() {
 
   return (
     <div className="flex flex-col items-center w-full py-10 bg-gray-50 min-h-screen">
-      <div className="w-full max-w-3xl bg-white rounded-2xl shadow-sm border p-10">
+      <div className="w-full max-w-3xl bg-white rounded-2xl shadow-sm border border-gray-200 p-10">
         <div className="text-sm text-gray-500 mb-4">
           홈 / 스터디 그룹 / 스터디 상세 /{" "}
           <span className="text-gray-700">기록 작성</span>
@@ -36,7 +36,7 @@ export default function StudyRecordForm() {
             maxLength={100}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-gray-300 outline-none"
+            className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-gray-300 outline-none"
           />
           <div className="text-right text-sm text-gray-400 mt-1">
             {title.length}/100자
@@ -48,8 +48,8 @@ export default function StudyRecordForm() {
           <label className="block font-semibold mb-2">
             내용 <span className="text-red-500">*</span>
           </label>
-          <div className="border rounded-lg overflow-hidden">
-            <div className="flex space-x-4 border-b p-2 text-gray-500 text-sm bg-gray-50">
+          <div className="border border-gray-200 rounded-lg overflow-hidden">
+            <div className="flex space-x-4 border-b border-gray-200 p-2 text-gray-500 text-sm bg-gray-50">
               <button
                 type="button"
                 className="font-semibold text-gray-900 focus:outline-none"
@@ -70,7 +70,7 @@ export default function StudyRecordForm() {
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />
-            <div className="text-xs text-gray-400 border-t p-2 bg-gray-50">
+            <div className="text-xs text-gray-400 border-t border-gray-200 p-2 bg-gray-50">
               마크다운 문법을 사용할 수 있습니다. **굵게**, *기울임*, `코드`,
               [링크](URL), # 제목<br />
               이미지는 드래그 앤 드롭으로 첨부할 수 있습니다.
@@ -81,7 +81,7 @@ export default function StudyRecordForm() {
         {/* 파일 첨부 */}
         <div className="mb-10">
           <label className="block font-semibold mb-2">첨부 파일</label>
-          <div className="border-2 border-dashed border-gray-300 text-center py-10 rounded-xl">
+          <div className="border-2 border-dashed border-gray-200 text-center py-10 rounded-xl">
             <label className="cursor-pointer flex flex-col items-center gap-2 text-gray-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -122,7 +122,7 @@ export default function StudyRecordForm() {
         <div className="flex justify-end gap-3">
           <button
             type="button"
-            className="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100"
+            className="px-5 py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-100"
           >
             취소
           </button>
