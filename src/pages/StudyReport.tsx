@@ -15,9 +15,12 @@ export default function StudyRecordForm() {
   return (
     <div className="flex flex-col items-center w-full py-10 bg-gray-50 min-h-screen">
       <div className="w-full max-w-3xl bg-white rounded-2xl shadow-sm border border-gray-200 p-10">
+        {/* 경로 표시 */}
         <div className="text-sm text-gray-500 mb-4">
-          홈 / 스터디 그룹 / 스터디 상세 /{" "}
-          <span className="text-gray-700">기록 작성</span>
+          홈 <span className="mx-1 text-gray-400">{">"}</span>
+          스터디 그룹 <span className="mx-1 text-gray-400">{">"}</span>
+          스터디 상세 <span className="mx-1 text-gray-400">{">"}</span>
+          <span className="text-gray-700 font-medium">기록 작성</span>
         </div>
 
         <h1 className="text-2xl font-bold mb-2">스터디 기록 작성</h1>
