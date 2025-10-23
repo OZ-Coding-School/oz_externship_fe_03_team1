@@ -13,7 +13,7 @@ export default function StudyRecordForm() {
   };
 
   return (
-    <div className="flex flex-col items-center w-full py-10 bg-gray-50 min-h-screen">
+    <div className="flex flex-col items-center w-full bg-gray-50 min-h-screen pt-[65px] pb-20 px-20">
       <div className="w-full max-w-3xl bg-white rounded-2xl shadow-sm border border-gray-200 p-10">
         {/* 경로 표시 */}
         <div className="text-sm text-gray-500 mb-4">
