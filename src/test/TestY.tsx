@@ -1,8 +1,8 @@
-import StudyGroup from "@/pages/StudyGroup"
+import StudyReport from "@/pages/StudyReport"
 
 function TestY() {
   return <div>
-    <StudyGroup/>
+    <StudyReport/>
   </div>
 }
 
