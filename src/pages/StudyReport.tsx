@@ -1,4 +1,5 @@
 import { useState } from "react";
+import MarkdownWrite from "../components/markdown/MarkdownWrite"; // ✅ 새로 만든 마크다운 컴포넌트 불러오기
 
 export default function StudyRecordForm() {
   const [title, setTitle] = useState("");
@@ -39,52 +40,29 @@ export default function StudyRecordForm() {
             maxLength={100}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-gray-300 outline-none"
+            className="w-full border border-[#E5E7EB] rounded-lg px-4 py-2 focus:ring-2 focus:ring-gray-300 outline-none"
           />
           <div className="text-right text-sm text-gray-400 mt-1">
             {title.length}/100자
           </div>
         </div>
 
-        {/* 내용 */}
+        {/* ✅ 마크다운 작성 영역 */}
         <div className="mb-8">
           <label className="block font-semibold mb-2">
             내용 <span className="text-red-500">*</span>
           </label>
-          <div className="border border-gray-200 rounded-lg overflow-hidden">
-            <div className="flex space-x-4 border-b border-gray-200 p-2 text-gray-500 text-sm bg-gray-50">
-              <button
-                type="button"
-                className="font-semibold text-gray-900 focus:outline-none"
-              >
-                작성
-              </button>
-              <button
-                type="button"
-                className="hover:text-gray-700 focus:outline-none"
-              >
-                미리보기
-              </button>
-            </div>
-            <textarea
-              placeholder="학습한 내용을 마크다운 형식으로 작성하세요..."
-              rows={10}
-              className="w-full p-3 border-0 focus:ring-0 outline-none resize-none"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
-            <div className="text-xs text-gray-400 border-t border-gray-200 p-2 bg-gray-50">
-              마크다운 문법을 사용할 수 있습니다. **굵게**, *기울임*, `코드`,
-              [링크](URL), # 제목<br />
-              이미지는 드래그 앤 드롭으로 첨부할 수 있습니다.
-            </div>
-          </div>
+          <MarkdownWrite
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="학습한 내용을 마크다운 형식으로 작성하세요..."
+          />
         </div>
 
         {/* 파일 첨부 */}
         <div className="mb-10">
           <label className="block font-semibold mb-2">첨부 파일</label>
-          <div className="border-2 border-dashed border-gray-200 text-center py-10 rounded-xl">
+          <div className="border-2 border-dashed border-[#E5E7EB] text-center py-10 rounded-xl">
             <label className="cursor-pointer flex flex-col items-center gap-2 text-gray-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -125,7 +103,7 @@ export default function StudyRecordForm() {
         <div className="flex justify-end gap-3">
           <button
             type="button"
-            className="px-5 py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-100"
+            className="px-5 py-2 rounded-lg border border-[#E5E7EB] text-gray-700 hover:bg-gray-100"
           >
             취소
           </button>
