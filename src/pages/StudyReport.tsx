@@ -1,12 +1,12 @@
 import { useState } from "react";
-import MarkdownWrite from "../components/markdown/MarkdownWrite"; // ✅ 새로 만든 마크다운 컴포넌트 불러오기
+import MarkdownWrite from "../components/markdown/MarkdownWrite";
 
 export default function StudyRecordForm() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [file, setFile] = useState<File | null>(null);
 
-  const handleFileChange = (e: any) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
@@ -47,7 +47,7 @@ export default function StudyRecordForm() {
           </div>
         </div>
 
-        {/* ✅ 마크다운 작성 영역 */}
+        {/* 마크다운 작성 영역 */}
         <div className="mb-8">
           <label className="block font-semibold mb-2">
             내용 <span className="text-red-500">*</span>
@@ -64,20 +64,12 @@ export default function StudyRecordForm() {
           <label className="block font-semibold mb-2">첨부 파일</label>
           <div className="border-2 border-dashed border-[#E5E7EB] text-center py-10 rounded-xl">
             <label className="cursor-pointer flex flex-col items-center gap-2 text-gray-500">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-8 h-8"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
+              {/* public 폴더 이미지 사용 */}
+              <img
+                src="/images/Vector@2x.png"
+                alt="파일 업로드"
+                className="w-10 h-10"
+              />
               <span>
                 파일을 여기에 드래그하거나{" "}
                 <span className="text-yellow-600">클릭하여 선택</span>
