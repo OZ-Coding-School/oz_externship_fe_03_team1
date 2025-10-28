@@ -23,9 +23,12 @@ const RecordTitleInput: React.FC<RecordTitleInputProps> = ({
 
   return (
     <div className="mb-8">
+      {/* 레이블 구조를 MarkdownEditor와 통일 */}
+      <label className="block font-semibold mb-2">
+        제목 <span className="text-red-500">*</span>
+      </label>
+
       <BasicInput
-        // JSX 대신 문자열로 변경
-        label={`제목 *`}
         placeholder="스터디 기록의 제목을 입력하세요"
         maxLength={MAX_TITLE_LENGTH}
         value={title}
