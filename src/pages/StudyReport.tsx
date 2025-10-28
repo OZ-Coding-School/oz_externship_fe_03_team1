@@ -33,6 +33,10 @@ export default function StudyRecordForm() {
         <RecordTitleInput title={title} setTitle={setTitle} />
         <RecordMarkdownEditor content={content} setContent={setContent} />
         <RecordFileUpload file={file} onFileChange={handleFileChange} />
+      </div>
+
+      {/* 카드 바깥에 버튼 추가, RecordActionButtons 재사용 */}
+      <div className="w-full max-w-3xl flex justify-between mt-6 px-10">
         <RecordActionButtons onCancel={handleCancel} onSave={handleSave} />
       </div>
     </div>

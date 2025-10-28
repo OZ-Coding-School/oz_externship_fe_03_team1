@@ -1,25 +1,31 @@
+import { BasicButton } from '../basicComponents/BasicButton/BasicButton.tsx'
+
 interface RecordActionButtonsProps {
-  onCancel: () => void;
-  onSave: () => void;
+  onCancel: () => void
+  onSave: () => void
 }
 
-export default function RecordActionButtons({ onCancel, onSave }: RecordActionButtonsProps) {
+export default function RecordActionButtons({
+  onCancel,
+  onSave,
+}: RecordActionButtonsProps) {
   return (
-    <div className="flex justify-end gap-3">
-      <button
-        type="button"
+    <div className="flex justify-between w-full">
+      <BasicButton
+        type="outline"
+        size="medium"
         onClick={onCancel}
-        className="px-5 py-2 rounded-lg border border-[#E5E7EB] text-gray-700 hover:bg-gray-100"
       >
         취소
-      </button>
-      <button
-        type="button"
+      </BasicButton>
+
+      <BasicButton
+        type="primary"
+        size="medium"
         onClick={onSave}
-        className="px-5 py-2 rounded-lg bg-gray-800 text-white hover:bg-gray-900"
       >
         기록 저장
-      </button>
+      </BasicButton>
     </div>
-  );
+  )
 }
