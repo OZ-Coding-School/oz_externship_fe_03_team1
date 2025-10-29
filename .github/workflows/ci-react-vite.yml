@@ -20,14 +20,35 @@ jobs:
       - name: Use Node 22.20 with npm cache
         uses: actions/setup-node@v4
         with:
-          node-version: '22.20.0'
-          cache: 'npm'
+          node-version: "22.20.0"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
 
       - name: Lint
         run: npm run lint --if-present
+
+      - name: Debug - show repo files and tsc resolution
+        run: |
+          echo "=== pwd ==="
+          pwd
+          echo "=== ls -la src/types ==="
+          ls -la src/types || true
+          echo "=== git ls-files (ApiLinks) ==="
+          git ls-files | grep -i ApiLinks || true
+          echo "=== node/npm/npx versions ==="
+          node -v && npm -v && npx -v
+          echo "=== cat tsconfig.json ==="
+          cat tsconfig.json || true
+          echo "=== cat tsconfig.app.json ==="
+          cat tsconfig.app.json || true
+          echo "=== tsc verbose build ==="
+          npx tsc -b --verbose 2>&1 | sed -n '1,200p' || true
+          echo "=== tsc traceResolution (root) ==="
+          npx tsc --traceResolution -p tsconfig.json 2>&1 | sed -n '1,200p' || true
+          echo "=== tsc traceResolution (app) ==="
+          npx tsc --traceResolution -p tsconfig.app.json 2>&1 | sed -n '1,200p' || true
 
       - name: Build
         run: npm run build
