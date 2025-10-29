@@ -1,9 +1,9 @@
 import { useState } from "react";
-import RecordBreadcrumb from "@/components/Study-Report/RecordBreadcrumb";
-import RecordTitleInput from "@/components/Study-Report/RecordTitleInput";
-import RecordMarkdownEditor from "@/components/Study-Report/RecordMarkdownEditor";
-import RecordFileUpload from "@/components/Study-Report/RecordFileUpload";
-import RecordActionButtons from "@/components/Study-Report/RecordActionButtons";
+import RecordBreadcrumb from "@/components/studyReport/RecordBreadcrumb";
+import RecordTitleInput from "@/components/studyReport/RecordTitleInput";
+import RecordMarkdownEditor from "@/components/studyReport/RecordMarkdownEditor";
+import RecordFileUpload from "@/components/studyReport/RecordFileUpload";
+import RecordActionButtons from "@/components/studyReport/RecordActionButtons";
 
 export default function StudyRecordForm() {
   const [title, setTitle] = useState("");
