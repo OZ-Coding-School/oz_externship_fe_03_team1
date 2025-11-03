@@ -11,7 +11,11 @@ interface BasicInfoSectionProps {
   ) => void
 }
 
-export const BasicInfoSection = ({ form, setForm, handleChange }: Props) => {
+export const BasicInfoSection = ({
+  form,
+  setForm,
+  handleChange,
+}: BasicInfoSectionProps) => {
   const handleFileSelect = (file: File | null) => {
     setForm((prev) => ({ ...prev, image: file }))
   }
