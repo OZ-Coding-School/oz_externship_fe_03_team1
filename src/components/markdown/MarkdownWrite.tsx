@@ -48,6 +48,7 @@ export const MarkdownWrite = ({
             </button>
           ))}
         </div>
+
         <MarkdownToolbar textareaRef={textareaRef} onUpdate={onChange} />
       </div>
 
