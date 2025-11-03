@@ -1,4 +1,4 @@
-import { MarkdownWrite } from '../markdown/MarkdownWrite'
+import { MarkdownWrite } from '@/components/markdown/MarkdownWrite'
 
 interface RecordMarkdownEditorProps {
   content: string

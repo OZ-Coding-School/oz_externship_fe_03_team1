@@ -3,7 +3,7 @@ import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
 import { ImageUploadBox } from '../../../components/upload/ImageUploadBox'
 import { MarkdownWrite } from '../../../components/markdown/MarkdownWrite'
 
-interface Props {
+interface BasicInfoSectionProps {
   form: StudyGroupForm
   setForm: React.Dispatch<React.SetStateAction<StudyGroupForm>>
   handleChange: (
@@ -13,7 +13,7 @@ interface Props {
 
 export const BasicInfoSection = ({ form, setForm, handleChange }: Props) => {
   const handleFileSelect = (file: File | null) => {
-    setForm((prev: StudyGroupForm) => ({ ...prev, image: file }))
+    setForm((prev) => ({ ...prev, image: file }))
   }
 
   return (
@@ -39,7 +39,15 @@ export const BasicInfoSection = ({ form, setForm, handleChange }: Props) => {
         </label>
         <MarkdownWrite
           value={form.description}
-          onChange={handleChange}
+          onChange={(action) =>
+            setForm((prev) => ({
+              ...prev,
+              description:
+                typeof action === 'function'
+                  ? action(prev.description)
+                  : action,
+            }))
+          }
           placeholder="스터디 그룹에 대한 설명을 작성하세요. 마크다운 문법을 사용할 수 있습니다."
         />
       </div>

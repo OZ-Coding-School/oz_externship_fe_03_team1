@@ -1,11 +1,17 @@
-import { useEffect, useRef, useState } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { MarkdownToolbar } from './MarkdownToolbar'
 
 interface MarkdownWriteProps {
   value: string
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
+  onChange: Dispatch<SetStateAction<string>>
   placeholder?: string
 }
 
@@ -21,16 +27,9 @@ export const MarkdownWrite = ({
   useEffect(() => {
     const timer = setTimeout(() => {
       setPreviewValue(value)
-    }, 500)
+    }, 400)
     return () => clearTimeout(timer)
   }, [value])
-
-  const handleUpdate = (newValue: string) => {
-    const event = {
-      target: { value: newValue, name: 'description' },
-    } as unknown as React.ChangeEvent<HTMLTextAreaElement>
-    onChange(event)
-  }
 
   return (
     <div className="overflow-hidden rounded-lg border border-gray-300 bg-white">
@@ -60,7 +59,7 @@ export const MarkdownWrite = ({
           </button>
         </div>
 
-        <MarkdownToolbar textareaRef={textareaRef} onUpdate={handleUpdate} />
+        <MarkdownToolbar textareaRef={textareaRef} onUpdate={onChange} />
       </div>
 
       {tab === 'edit' ? (
@@ -68,7 +67,7 @@ export const MarkdownWrite = ({
           ref={textareaRef}
           name="description"
           value={value}
-          onChange={onChange}
+          onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className="min-h-[160px] w-full resize-none bg-white p-4 text-sm text-gray-700 focus:outline-none"
         />

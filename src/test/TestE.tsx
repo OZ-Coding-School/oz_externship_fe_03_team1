@@ -1,6 +1,8 @@
-import { StudyRecordDetail } from '../pages/study-records/StudyRecordDetail'
+import CreateStudyGroup from '../pages/study-groups/CreateStudyGroup'
 
 export default function TestE() {
+  // 아래줄 주석처리 후 링크 TestE 변경-생성 모드, 주석해제 후 링크 TestE 변경-수정 모드
+  // window.history.pushState({}, '', '/study-groups/edit')
   return (
     <>
       <nav className="fixed top-0 right-0 left-0 z-50 h-[65px] border-b border-gray-200 bg-white px-20">
@@ -23,8 +25,8 @@ export default function TestE() {
         </div>
       </nav>
 
-      <div className="min-h-screen bg-white pt-[65px]">
-        <StudyRecordDetail />
+      <div className="min-h-screen bg-gray-50 pt-[65px]">
+        <CreateStudyGroup />
       </div>
     </>
   )

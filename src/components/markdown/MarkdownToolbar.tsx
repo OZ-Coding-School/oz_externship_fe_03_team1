@@ -1,4 +1,9 @@
-import { useRef, type RefObject } from 'react'
+import {
+  useRef,
+  type RefObject,
+  type Dispatch,
+  type SetStateAction,
+} from 'react'
 import {
   Bold,
   Italic,
@@ -11,7 +16,7 @@ import {
 
 interface MarkdownToolbarProps {
   textareaRef: RefObject<HTMLTextAreaElement | null>
-  onUpdate: (newValue: string) => void
+  onUpdate: Dispatch<SetStateAction<string>>
 }
 
 export const MarkdownToolbar = ({
@@ -68,8 +73,30 @@ export const MarkdownToolbar = ({
 
     const imageURL = URL.createObjectURL(file)
     const markdownImage = `![${file.name}](${imageURL})`
+    onUpdate((prev) => prev + '\n' + markdownImage)
+  }
 
-    onUpdate((textareaRef.current?.value ?? '') + '\n' + markdownImage)
+  const handleLinkInsert = () => {
+    const textarea = textareaRef.current
+    if (!textarea) return
+
+    const { selectionStart, selectionEnd, value } = textarea
+    const selected = value.slice(selectionStart, selectionEnd).trim()
+    const isUrl = /^https?:\/\/|^www\./i.test(selected)
+    const linkTarget = isUrl ? selected : 'https://'
+
+    const newValue =
+      value.slice(0, selectionStart) +
+      `[${selected || '링크텍스트'}](${linkTarget})` +
+      value.slice(selectionEnd)
+
+    onUpdate(newValue)
+
+    requestAnimationFrame(() => {
+      textarea.focus()
+      const pos = selectionStart + `[${selected || '링크텍스트'}](`.length
+      textarea.selectionStart = textarea.selectionEnd = pos + linkTarget.length
+    })
   }
 
   return (
