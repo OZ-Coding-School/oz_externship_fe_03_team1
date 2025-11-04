@@ -14,7 +14,7 @@ import {
   Image as FileImage,
 } from 'lucide-react'
 
-interface MarkdownToolbarProps {
+export interface MarkdownToolbarProps {
   textareaRef: RefObject<HTMLTextAreaElement | null>
   onUpdate: Dispatch<SetStateAction<string>>
 }
@@ -116,6 +116,7 @@ export const MarkdownToolbar = ({
         className="cursor-pointer hover:text-amber-500"
         onClick={() => wrapSelectedText('`')}
       />
+
       <div className="relative">
         <FileImage
           size={18}
@@ -130,35 +131,12 @@ export const MarkdownToolbar = ({
           className="hidden"
         />
       </div>
+
       <LinkIcon
         size={18}
         className="cursor-pointer hover:text-amber-500"
-        onClick={() => {
-          const textarea = textareaRef.current
-          if (!textarea) return
-
-          const { selectionStart, selectionEnd, value } = textarea
-          const selected = value.slice(selectionStart, selectionEnd).trim()
-
-          const isUrl = /^https?:\/\/|^www\./i.test(selected)
-          const linkTarget = isUrl ? selected : 'https://'
-
-          const newValue =
-            value.slice(0, selectionStart) +
-            `[${selected || '링크텍스트'}](${linkTarget})` +
-            value.slice(selectionEnd)
-
-          onUpdate(newValue)
-
-          requestAnimationFrame(() => {
-            textarea.focus()
-            const pos = selectionStart + `[${selected || '링크텍스트'}](`.length
-            textarea.selectionStart = textarea.selectionEnd =
-              pos + linkTarget.length
-          })
-        }}
+        onClick={handleLinkInsert}
       />
-
       <Heading1
         size={18}
         className="cursor-pointer hover:text-amber-500"
