@@ -182,6 +182,7 @@ export const MarkdownToolbar = ({
         className="cursor-pointer hover:text-amber-500"
         onClick={toggleCode}
       />
+
       <div className="relative">
         <FileImage
           size={18}
@@ -196,6 +197,7 @@ export const MarkdownToolbar = ({
           className="hidden"
         />
       </div>
+
       <LinkIcon
         size={18}
         className="cursor-pointer hover:text-amber-500"
