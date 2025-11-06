@@ -1,9 +1,8 @@
-import { StudyGroup } from '@/pages/StudyGroup'
-
+import { StudyRecord } from '@/pages/study-groups/StudyRecord/StudyRecord.tsx'
 function TestY() {
   return (
     <div>
-      <StudyGroup />
+      <StudyRecord />
     </div>
   )
 }
