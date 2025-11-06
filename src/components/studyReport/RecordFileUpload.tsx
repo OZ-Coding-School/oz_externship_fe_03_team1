@@ -97,6 +97,55 @@ export const RecordFileUpload = ({
     }
   }
 
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(true)
+  }
+
+  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
+  }
+
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
+    const dropped = e.dataTransfer.files[0]
+    if (dropped) {
+      setDroppedFile(dropped)
+      const event = {
+        target: { files: e.dataTransfer.files },
+      } as unknown as React.ChangeEvent<HTMLInputElement>
+      onFileChange(event)
+    }
+  }
+
+  const handleRemoveFile = () => {
+    setDroppedFile(null)
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement
+    if (fileInput) fileInput.value = ''
+    const event = {
+      target: { files: [] },
+    } as unknown as React.ChangeEvent<HTMLInputElement>
+    onFileChange(event)
+  }
+
+  const getFileIcon = (file: File) => {
+    const type = file.type
+    if (type.startsWith('image/'))
+      return <Image className="text-blue-500" size={32} />
+    if (type.startsWith('video/'))
+      return <Video className="text-purple-500" size={32} />
+    if (type.startsWith('audio/'))
+      return <Music className="text-pink-500" size={32} />
+    if (type === 'application/pdf')
+      return <FileText className="text-red-500" size={32} />
+    return <FileIcon className="text-gray-500" size={32} />
+  }
+
   return (
     <div>
       <label className="mb-2 block font-semibold">첨부 파일</label>
