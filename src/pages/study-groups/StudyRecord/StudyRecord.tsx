@@ -21,7 +21,12 @@ export const StudyRecord = () => {
     setFile(null)
   }
 
-  const handleSave = () => {}
+  const handleSave = () => {
+    // 저장 로직 추가 예정
+  }
+
+  // 필수 입력값 검증 (제목과 내용)
+  const isSaveDisabled = title.trim() === '' || content.trim() === ''
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center px-20 pt-[65px] pb-20">
@@ -42,6 +47,7 @@ export const StudyRecord = () => {
           onCancel={handleCancel}
           onSave={handleSave}
           mode="create"
+          disabled={isSaveDisabled}
         />
       </div>
     </div>
