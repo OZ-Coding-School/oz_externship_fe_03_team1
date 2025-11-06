@@ -98,47 +98,87 @@ export const RecordFileUpload = ({
     }
   }
 
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(true)
+  }
+
+  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
+  }
+
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
+    const dropped = e.dataTransfer.files[0]
+    if (dropped) {
+      setDroppedFile(dropped)
+      const event = {
+        target: { files: e.dataTransfer.files },
+      } as unknown as React.ChangeEvent<HTMLInputElement>
+      onFileChange(event)
+    }
+  }
+
+  const handleRemoveFile = () => {
+    setDroppedFile(null)
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement
+    if (fileInput) fileInput.value = ''
+    const event = {
+      target: { files: [] },
+    } as unknown as React.ChangeEvent<HTMLInputElement>
+    onFileChange(event)
+  }
+
+  const getFileIcon = (file: File) => {
+    const type = file.type
+    if (type.startsWith('image/'))
+      return <Image className="text-blue-500" size={32} />
+    if (type.startsWith('video/'))
+      return <Video className="text-purple-500" size={32} />
+    if (type.startsWith('audio/'))
+      return <Music className="text-pink-500" size={32} />
+    if (type === 'application/pdf')
+      return <FileText className="text-red-500" size={32} />
+    return <FileIcon className="text-gray-500" size={32} />
+  }
+
   return (
     <div>
       <label className="mb-2 block font-semibold">첨부 파일</label>
-
-      {/* 업로드 영역 */}
-      <div
-        className={`cursor-pointer rounded-xl border-2 border-dashed py-10 text-center transition-colors ${
-          dragActive
-            ? 'border-yellow-500 bg-yellow-50'
-            : 'border-gray-200 bg-white'
-        }`}
-        onDragOver={(e) => {
-          e.preventDefault()
-          setDragActive(true)
-        }}
-        onDragLeave={(e) => {
-          e.preventDefault()
-          setDragActive(false)
-        }}
-        onDrop={handleDrop}
-        onClick={() => inputRef.current?.click()}
-      >
-        <img
-          src="/icons/Vector@2x.png"
-          alt="파일 업로드"
-          className="mx-auto mb-3 h-10 w-10 opacity-70"
-        />
-        <p className="text-gray-500">
-          파일을 여기에 드래그하거나{' '}
-          <span className="font-semibold text-yellow-600">클릭하여 선택</span>
-        </p>
+      <div className="rounded-xl border-2 border-dashed border-[#E5E7EB] py-10 text-center">
+        <span
+          className="flex cursor-pointer flex-col items-center gap-2 text-gray-500"
+          onClick={handleClick}
+        >
+          <img
+            src="../../public/icons/Vector@2x.png"
+            alt="파일 업로드"
+            className="h-10 w-10"
+          />
+          <span>
+            파일을 여기에 드래그하거나{' '}
+            <span className="text-yellow-600">클릭하여 선택</span>
+          </span>
+          <input
+            id="fileInput"
+            type="file"
+            className="hidden"
+            onChange={onFileChange}
+          />
+          {file && (
+            <p className="mt-2 text-sm text-gray-700">
+              선택된 파일: {file.name}
+            </p>
+          )}
+        </span>
         <p className="mt-2 text-xs text-gray-400">
           모든 파일 형식 지원 (최대 10MB)
         </p>
-        <input
-          ref={inputRef}
-          type="file"
-          multiple
-          className="hidden"
-          onChange={handleFileSelect}
-        />
       </div>
 
       {/* 파일 리스트 */}
