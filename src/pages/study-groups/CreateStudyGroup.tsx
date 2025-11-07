@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import { ArrowLeft } from 'lucide-react'
-import type { StudyGroupForm } from '../../types/StudyGroupTypes'
+import type { StudyGroupForm } from '@/types/StudyGroupTypes'
 import { BasicInfoSection } from './sections/BasicInfoSection'
 import { PeriodSection } from './sections/PeriodSection'
 import { LectureSection } from './sections/LectureSection'
-import { studyGroupFormMock } from '../../assets/dummyData/dummyStudyGroup'
-import { BasicButton } from '../../components/basicComponents/BasicButton/BasicButton'
+import { studyGroupFormMock } from '@/assets/dummyData/dummyStudyGroup'
+import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import dayjs from '@/lib/dayjs'
 import { useNavigate } from 'react-router'
 import { storeDatePicker } from '@/store/storeDatePicker'
@@ -22,9 +22,7 @@ export const CreateStudyGroup = () => {
   })
 
   const [isEdit, setIsEdit] = useState(false)
-
   const { startDate, endDate, reset } = storeDatePicker()
-
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -52,6 +50,7 @@ export const CreateStudyGroup = () => {
     } else {
       alert('스터디 그룹이 생성되었습니다.')
     }
+
     setForm({
       ...form,
       startDate: dayjs(startDate).format('YYYY-MM-DD'),
@@ -67,22 +66,22 @@ export const CreateStudyGroup = () => {
 
   return (
     <div className="relative min-h-screen w-full bg-[#FAFAFA] py-10">
-      <div className="mx-auto mb-8 flex h-[96px] w-[832px] items-center gap-[16px]">
+      <div className="mx-auto mb-8 flex h-[96px] w-[832px] items-center gap-4">
         <button
           onClick={handleBack}
-          className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-[#F3F4F6] text-gray-700 transition hover:bg-[#E5E7EB]"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition hover:bg-gray-200"
         >
           <ArrowLeft size={20} strokeWidth={2} />
         </button>
 
-        <div className="flex flex-col justify-center pt-[2px]">
-          <h1 className="text-[24px] leading-[32px] font-bold text-gray-800">
+        <div className="flex flex-col justify-center">
+          <h1 className="text-2xl font-bold text-gray-800">
             {isEdit ? '스터디 그룹 수정' : '새 스터디 그룹 만들기'}
           </h1>
-          <p className="mt-[4px] text-[14px] leading-[20px] text-gray-500">
+          <p className="mt-1 text-sm text-gray-500">
             {isEdit
               ? '스터디 그룹 정보를 수정해주세요.'
-              : '함께 공부할 멤버들과 스터디 그룹을 시작해보세요'}
+              : '함께 공부할 멤버들과 스터디 그룹을 시작해보세요.'}
           </p>
         </div>
       </div>
@@ -108,7 +107,7 @@ export const CreateStudyGroup = () => {
           <BasicButton
             variant="outline"
             onClick={handleBack}
-            className="h-[50px] min-w-[80px] px-[25px] py-[13px] text-[14px] font-medium text-[#374151] hover:bg-[#F9FAFB]"
+            className="h-[50px] min-w-[80px] px-6 text-sm font-medium text-gray-700 hover:bg-gray-50"
           >
             취소
           </BasicButton>

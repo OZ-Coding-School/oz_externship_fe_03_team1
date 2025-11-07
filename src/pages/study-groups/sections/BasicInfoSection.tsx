@@ -1,7 +1,7 @@
-import { BasicInput } from '../../../components/basicComponents/input/BasicInput'
-import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
-import { ImageUploadBox } from '../../../components/upload/ImageUploadBox'
-import { MarkdownWrite } from '../../../components/markdown/MarkdownWrite'
+import { BasicInput } from '@/components/basicComponents/input/BasicInput'
+import type { StudyGroupForm } from '@/types/StudyGroupTypes'
+import { ImageUploadBox } from '@/components/upload/ImageUploadBox'
+import { MarkdownWrite } from '@/components/markdown/MarkdownWrite'
 
 interface BasicInfoSectionProps {
   form: StudyGroupForm
@@ -25,8 +25,9 @@ export const BasicInfoSection = ({
       <h2 className="text-lg font-semibold text-gray-700">기본 정보</h2>
 
       <div className="w-[766px]">
-        <label className="mb-1 block text-[14px] font-medium text-gray-800">
-          스터디 그룹명<span className="ml-1 text-[#EF4444]">*</span>
+        <label className="mb-1 block text-sm font-medium text-gray-800">
+          스터디 그룹명
+          <span className="text-danger-500 ml-1">*</span>
         </label>
         <BasicInput
           name="name"

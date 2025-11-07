@@ -1,7 +1,7 @@
 import { Book } from 'lucide-react'
-import { BasicButton } from '../../../components/basicComponents/BasicButton/BasicButton'
+import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 // import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
-import { useModal } from '../../../hooks/useModal'
+import { useModal } from '@/hooks/useModal'
 import { storeLecture } from '@/store/storeLecture'
 import type { Lecture } from '@/types/Lecture'
 import clsx from 'clsx'
@@ -25,10 +25,10 @@ export const LectureSection = () => {
     <section className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-[20px] leading-[28px] font-medium text-[#111827]">
+          <h2 className="text-[20px] leading-[28px] font-medium text-gray-900">
             강의 선택
           </h2>
-          <p className="mt-[2px] text-[14px] leading-[20px] text-[#4B5563]">
+          <p className="mt-[2px] text-[14px] leading-[20px] text-gray-600">
             스터디에서 함께 공부할 강의를 선택하세요{' '}
             {previousLectureList.length > 0
               ? `(${previousLectureList.length}/5)`
@@ -55,7 +55,7 @@ export const LectureSection = () => {
       ) : (
         <div className="flex flex-col items-center justify-center py-12">
           <Book
-            className="mb-2 text-[#6B7280]"
+            className="mb-2 text-gray-500"
             style={{ width: '27px', height: '30px' }}
           />
           <p className="text-sm text-gray-600">아직 선택된 강의가 없습니다.</p>
@@ -92,7 +92,7 @@ const SelectedLectureCard = ({ lecture }: SelectedLectureCardProps) => {
         </p>
         <span
           className={clsx(
-            platform === 'inflearn' && 'bg-[#dcfce7] text-[#166534]',
+            platform === 'inflearn' && 'bg-success-100 text-success-800',
             platform === 'UDEMY' && 'bg-[#f3e8ff] text-[#6b21a8]',
             'rounded-sm px-2 py-1 text-center text-xs font-medium'
           )}

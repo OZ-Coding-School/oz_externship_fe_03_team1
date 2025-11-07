@@ -1,8 +1,7 @@
-// import { useEffect } from 'react'
-import { useModal } from '../../../hooks/useModal'
-import { BasicInput } from '../../../components/basicComponents/input/BasicInput'
-import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
-import { CustomSlider } from '../../../components/slider/CustomSlider'
+import { useModal } from '@/hooks/useModal'
+import { BasicInput } from '@/components/basicComponents/input/BasicInput'
+import type { StudyGroupForm } from '@/types/StudyGroupTypes'
+import { CustomSlider } from '@/components/slider/CustomSlider'
 import { Calendar } from 'lucide-react'
 import dayjs from '@/lib/dayjs'
 import { storeDatePicker } from '@/store/storeDatePicker'
@@ -40,7 +39,8 @@ export const PeriodSection = ({ form, setForm }: Props) => {
       <div className="flex gap-6">
         <div className="flex-1">
           <label className="mb-1 block text-sm font-medium text-gray-700">
-            스터디 시작일<span className="ml-1 text-[#EF4444]">*</span>
+            스터디 시작일
+            <span className="text-danger-500 ml-1">*</span>
           </label>
           <div className="relative">
             <BasicInput
@@ -59,7 +59,8 @@ export const PeriodSection = ({ form, setForm }: Props) => {
 
         <div className="flex-1">
           <label className="mb-1 block text-sm font-medium text-gray-700">
-            스터디 종료일<span className="ml-1 text-[#EF4444]">*</span>
+            스터디 종료일
+            <span className="text-danger-500 ml-1">*</span>
           </label>
           <div className="relative">
             <BasicInput
@@ -79,7 +80,7 @@ export const PeriodSection = ({ form, setForm }: Props) => {
 
       <div>
         <label className="mb-1 block text-sm font-medium text-gray-700">
-          최대 인원 수<span className="ml-1 text-[#EF4444]">*</span>
+          최대 인원 수<span className="text-danger-500 ml-1">*</span>
         </label>
 
         <div className="mt-3 flex items-center justify-between gap-8">
