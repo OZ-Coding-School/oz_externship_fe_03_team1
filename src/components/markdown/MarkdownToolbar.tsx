@@ -91,11 +91,12 @@ export const MarkdownToolbar = ({
 
     const allHaveHeading = lines.every((line) => /^##\s/.test(line))
 
-    const newLines = lines.map((line) =>
-      allHaveHeading
+    const newLines = lines.map((line) => {
+      if (!line.trim()) return line
+      return allHaveHeading
         ? line.replace(/^##\s?/, '')
         : `## ${line.replace(/^##\s?/, '')}`
-    )
+    })
 
     const newValue = before + newLines.join('\n') + after
 
