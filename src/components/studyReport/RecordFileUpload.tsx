@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState, useRef } from 'react'
 import type { DragEvent, ChangeEvent } from 'react'
 import {
   FileText,
@@ -7,146 +7,149 @@ import {
   Music,
   File as FileIcon,
   X,
+  Paperclip,
+  Download,
 } from 'lucide-react'
 
 interface RecordFileUploadProps {
-  file: File | null
-  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  files: File[]
+  onFilesChange: (files: File[]) => void
 }
 
+const MAX_TOTAL_SIZE = 10 * 1024 * 1024 // 10MB
+
 export const RecordFileUpload = ({
-  file,
-  onFileChange,
+  files,
+  onFilesChange,
 }: RecordFileUploadProps) => {
   const [dragActive, setDragActive] = useState(false)
-  const [droppedFile, setDroppedFile] = useState<File | null>(file)
+  const inputRef = useRef<HTMLInputElement | null>(null)
 
-  // ✅ 파일 선택 시 (클릭으로 선택)
+  // 파일 선택 (클릭)
   const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
-    const selected = e.target.files?.[0] ?? null
-    setDroppedFile(selected)
-    onFileChange(e)
+    const selected = e.target.files ? Array.from(e.target.files) : []
+    const totalSize =
+      selected.reduce((acc, f) => acc + f.size, 0) +
+      files.reduce((acc, f) => acc + f.size, 0)
+    if (totalSize > MAX_TOTAL_SIZE) {
+      alert('총 파일 용량은 10MB를 초과할 수 없습니다.')
+      return
+    }
+    onFilesChange([...files, ...selected])
   }
 
-  const handleClick = () => {
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement
-    fileInput?.click()
-  }
-
-  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragActive(true)
-  }
-
-  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragActive(false)
-  }
-
+  // 드래그 앤 드롭
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.stopPropagation()
     setDragActive(false)
-    const dropped = e.dataTransfer.files[0]
-    if (dropped) {
-      setDroppedFile(dropped)
-      const event = {
-        target: { files: e.dataTransfer.files },
-      } as unknown as React.ChangeEvent<HTMLInputElement>
-      onFileChange(event)
+    const dropped = Array.from(e.dataTransfer.files)
+    const totalSize =
+      dropped.reduce((acc, f) => acc + f.size, 0) +
+      files.reduce((acc, f) => acc + f.size, 0)
+    if (totalSize > MAX_TOTAL_SIZE) {
+      alert('총 파일 용량은 10MB를 초과할 수 없습니다.')
+      return
     }
+    onFilesChange([...files, ...dropped])
   }
 
-  const handleRemoveFile = () => {
-    setDroppedFile(null)
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement
-    if (fileInput) fileInput.value = ''
-    const event = {
-      target: { files: [] },
-    } as unknown as React.ChangeEvent<HTMLInputElement>
-    onFileChange(event)
+  const handleRemoveFile = (name: string) => {
+    onFilesChange(files.filter((f) => f.name !== name))
   }
 
   const getFileIcon = (file: File) => {
     const type = file.type
     if (type.startsWith('image/'))
-      return <Image className="text-blue-500" size={32} />
+      return <Image className="text-blue-500" size={18} />
     if (type.startsWith('video/'))
-      return <Video className="text-purple-500" size={32} />
+      return <Video className="text-purple-500" size={18} />
     if (type.startsWith('audio/'))
-      return <Music className="text-pink-500" size={32} />
+      return <Music className="text-pink-500" size={18} />
     if (type === 'application/pdf')
-      return <FileText className="text-red-500" size={32} />
-    return <FileIcon className="text-gray-500" size={32} />
+      return <FileText className="text-red-500" size={18} />
+    return <FileIcon className="text-gray-400" size={18} />
   }
 
   return (
     <div>
       <label className="mb-2 block font-semibold">첨부 파일</label>
+
+      {/* 업로드 영역 */}
       <div
         className={`rounded-xl border-2 border-dashed py-10 text-center transition-colors ${
           dragActive ? 'border-yellow-500 bg-yellow-50' : 'border-[#E5E7EB]'
         }`}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
+        onDragOver={(e) => {
+          e.preventDefault()
+          setDragActive(true)
+        }}
+        onDragLeave={(e) => {
+          e.preventDefault()
+          setDragActive(false)
+        }}
         onDrop={handleDrop}
+        onClick={() => inputRef.current?.click()}
       >
-        {!droppedFile ? (
-          <span
-            className="flex cursor-pointer flex-col items-center gap-2 text-gray-500"
-            onClick={handleClick}
-          >
-            <img
-              src="/icons/Vector@2x.png"
-              alt="파일 업로드"
-              className="h-10 w-10"
-            />
-            <span>
-              파일을 여기에 드래그하거나{' '}
-              <span className="font-semibold text-yellow-600">
-                클릭하여 선택
-              </span>
-            </span>
-            <input
-              id="fileInput"
-              type="file"
-              className="hidden"
-              onChange={handleFileSelect}
-            />
-            <p className="mt-2 text-xs text-gray-400">
-              모든 파일 형식 지원 (최대 10MB)
-            </p>
-          </span>
-        ) : (
-          <div className="flex flex-col items-center gap-3">
-            <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 shadow-sm">
-              {getFileIcon(droppedFile)}
-              <div className="text-left">
-                <p className="text-sm font-medium text-gray-800">
-                  {droppedFile.name}
-                </p>
-                <p className="text-xs text-gray-500">
-                  {(droppedFile.size / 1024 / 1024).toFixed(2)} MB
-                </p>
-              </div>
-              <button
-                onClick={handleRemoveFile}
-                className="ml-2 text-gray-400 hover:text-gray-600"
-              >
-                <X size={16} />
-              </button>
-            </div>
-            <button
-              onClick={handleClick}
-              className="text-xs text-yellow-600 hover:underline"
-            >
-              다른 파일로 교체하기
-            </button>
-          </div>
-        )}
+        <img
+          src="/icons/Vector@2x.png"
+          alt="파일 업로드"
+          className="mx-auto mb-3 h-10 w-10 opacity-70"
+        />
+        <p className="text-gray-500">
+          파일을 여기에 드래그하거나{' '}
+          <span className="font-semibold text-yellow-600">클릭하여 선택</span>
+        </p>
+        <p className="mt-2 text-xs text-gray-400">
+          모든 파일 형식 지원 (최대 10MB)
+        </p>
+        <input
+          ref={inputRef}
+          type="file"
+          multiple
+          className="hidden"
+          onChange={handleFileSelect}
+        />
       </div>
+
+      {/* 파일 리스트 */}
+      {files.length > 0 && (
+        <div className="mt-5 rounded-lg border bg-gray-50 p-4">
+          <div className="mb-3 flex items-center gap-2 font-medium">
+            <Paperclip className="text-gray-700" size={16} />
+            첨부 파일 ({files.length}개)
+          </div>
+
+          <div className="grid gap-2 sm:grid-cols-2">
+            {files.map((file) => (
+              <div
+                key={file.name}
+                className="flex items-center justify-between rounded-lg border bg-white px-4 py-3 shadow-sm hover:shadow"
+              >
+                <div className="flex items-center gap-2 text-sm text-gray-700">
+                  {getFileIcon(file)}
+                  <span className="truncate">{file.name}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <a
+                    href={URL.createObjectURL(file)}
+                    download={file.name}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
+                    <Download size={16} />
+                  </a>
+                  <button
+                    onClick={() => handleRemoveFile(file.name)}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
