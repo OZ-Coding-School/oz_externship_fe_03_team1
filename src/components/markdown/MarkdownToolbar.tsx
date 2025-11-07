@@ -165,37 +165,6 @@ export const MarkdownToolbar = ({
     })
   }
 
-  const insertHeading = () => {
-    const textarea = textareaRef.current
-    if (!textarea) return
-
-    const { selectionStart, selectionEnd, value } = textarea
-    const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1
-    const nextNewline = value.indexOf('\n', selectionEnd)
-    const lineEnd = nextNewline === -1 ? value.length : nextNewline
-
-    const line = value.slice(lineStart, lineEnd)
-    const headingRegex = /^##\s+/
-    let newLine: string
-
-    if (headingRegex.test(line)) {
-      newLine = line.replace(headingRegex, '')
-    } else {
-      newLine = `## ${line}`
-    }
-
-    const newValue = value.slice(0, lineStart) + newLine + value.slice(lineEnd)
-    const delta = newLine.length - line.length
-
-    onUpdate(newValue)
-
-    requestAnimationFrame(() => {
-      textarea.focus()
-      textarea.selectionStart = selectionStart + delta
-      textarea.selectionEnd = selectionEnd + delta
-    })
-  }
-
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
@@ -230,7 +199,6 @@ export const MarkdownToolbar = ({
         className="cursor-pointer hover:text-amber-500"
         onClick={toggleCodeBlock}
       />
-
       <div className="relative">
         <FileImage
           size={18}
@@ -245,19 +213,16 @@ export const MarkdownToolbar = ({
           className="hidden"
         />
       </div>
-
       <LinkIcon
         size={18}
         className="cursor-pointer hover:text-amber-500"
         onClick={toggleLink}
       />
-
       <Heading1
         size={18}
         className="cursor-pointer hover:text-amber-500"
         onClick={toggleHeading}
       />
-
       <List
         size={18}
         className="cursor-pointer hover:text-amber-500"
