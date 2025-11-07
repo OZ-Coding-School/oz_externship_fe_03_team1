@@ -114,37 +114,32 @@ export const RecordFileUpload = ({
     e.preventDefault()
     e.stopPropagation()
     setDragActive(false)
-    const dropped = e.dataTransfer.files[0]
-    if (dropped) {
-      setDroppedFile(dropped)
-      const event = {
-        target: { files: e.dataTransfer.files },
-      } as unknown as React.ChangeEvent<HTMLInputElement>
-      onFileChange(event)
+    const dropped = Array.from(e.dataTransfer.files)
+    const totalSize =
+      dropped.reduce((acc, f) => acc + f.size, 0) +
+      files.reduce((acc, f) => acc + f.size, 0)
+    if (totalSize > MAX_TOTAL_SIZE) {
+      alert('총 파일 용량은 10MB를 초과할 수 없습니다.')
+      return
     }
+    onFilesChange([...files, ...dropped])
   }
 
-  const handleRemoveFile = () => {
-    setDroppedFile(null)
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement
-    if (fileInput) fileInput.value = ''
-    const event = {
-      target: { files: [] },
-    } as unknown as React.ChangeEvent<HTMLInputElement>
-    onFileChange(event)
+  const handleRemoveFile = (name: string) => {
+    onFilesChange(files.filter((f) => f.name !== name))
   }
 
   const getFileIcon = (file: File) => {
     const type = file.type
     if (type.startsWith('image/'))
-      return <Image className="text-blue-500" size={32} />
+      return <Image className="text-blue-500" size={18} />
     if (type.startsWith('video/'))
-      return <Video className="text-purple-500" size={32} />
+      return <Video className="text-purple-500" size={18} />
     if (type.startsWith('audio/'))
-      return <Music className="text-pink-500" size={32} />
+      return <Music className="text-pink-500" size={18} />
     if (type === 'application/pdf')
-      return <FileText className="text-red-500" size={32} />
-    return <FileIcon className="text-gray-500" size={32} />
+      return <FileText className="text-red-500" size={18} />
+    return <FileIcon className="text-gray-400" size={18} />
   }
 
   return (
