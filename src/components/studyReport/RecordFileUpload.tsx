@@ -9,7 +9,6 @@ import {
   X,
   Paperclip,
 } from 'lucide-react'
-import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { GlobalToast } from '@/components/basicComponents/toast/ToastContainer'
 
@@ -27,23 +26,20 @@ export const RecordFileUpload = ({
   const [dragActive, setDragActive] = useState(false)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
+  // 파일 선택 (클릭)
   const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files ? Array.from(e.target.files) : []
     const totalSize =
       selected.reduce((acc, f) => acc + f.size, 0) +
       files.reduce((acc, f) => acc + f.size, 0)
     if (totalSize > MAX_TOTAL_SIZE) {
-      toast.error('총 파일 용량은 10MB를 초과할 수 없습니다.', {
-        position: 'top-center',
-      })
+      alert('총 파일 용량은 10MB를 초과할 수 없습니다.')
       return
     }
     onFilesChange([...files, ...selected])
-    toast.success(`${selected.length}개의 파일이 추가되었습니다.`, {
-      position: 'bottom-center',
-    })
   }
 
+  // 드래그 앤 드롭
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.stopPropagation()
@@ -53,97 +49,27 @@ export const RecordFileUpload = ({
       dropped.reduce((acc, f) => acc + f.size, 0) +
       files.reduce((acc, f) => acc + f.size, 0)
     if (totalSize > MAX_TOTAL_SIZE) {
-      toast.error('총 파일 용량은 10MB를 초과할 수 없습니다.', {
-        position: 'top-center',
-      })
+      alert('총 파일 용량은 10MB를 초과할 수 없습니다.')
       return
     }
     onFilesChange([...files, ...dropped])
-    toast.success(`${dropped.length}개의 파일이 추가되었습니다.`, {
-      position: 'bottom-center',
-    })
   }
 
   const handleRemoveFile = (name: string) => {
     onFilesChange(files.filter((f) => f.name !== name))
-    toast.info('파일이 삭제되었습니다.', {
-      position: 'bottom-center',
-    })
-  }
-
-  const getFileIcon = (file: File) => {
-    const type = file.type
-    const ext = file.name.split('.').pop()?.toLowerCase()
-
-    if (type.startsWith('image/'))
-      return <Image className="text-gray-500" size={18} />
-    if (type.startsWith('video/'))
-      return <Video className="text-gray-500" size={18} />
-    if (type.startsWith('audio/'))
-      return <Music className="text-gray-500" size={18} />
-
-    switch (ext) {
-      case 'pdf':
-      case 'doc':
-      case 'docx':
-      case 'xls':
-      case 'xlsx':
-      case 'ppt':
-      case 'pptx':
-      case 'txt':
-        return <FileText className="text-gray-500" size={18} />
-      default:
-        return <FileIcon className="text-gray-500" size={18} />
-    }
-  }
-
-  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragActive(true)
-  }
-
-  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragActive(false)
-  }
-
-  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragActive(false)
-    const dropped = e.dataTransfer.files[0]
-    if (dropped) {
-      setDroppedFile(dropped)
-      const event = {
-        target: { files: e.dataTransfer.files },
-      } as unknown as React.ChangeEvent<HTMLInputElement>
-      onFileChange(event)
-    }
-  }
-
-  const handleRemoveFile = () => {
-    setDroppedFile(null)
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement
-    if (fileInput) fileInput.value = ''
-    const event = {
-      target: { files: [] },
-    } as unknown as React.ChangeEvent<HTMLInputElement>
-    onFileChange(event)
   }
 
   const getFileIcon = (file: File) => {
     const type = file.type
     if (type.startsWith('image/'))
-      return <Image className="text-blue-500" size={32} />
+      return <Image className="text-blue-500" size={18} />
     if (type.startsWith('video/'))
-      return <Video className="text-purple-500" size={32} />
+      return <Video className="text-purple-500" size={18} />
     if (type.startsWith('audio/'))
-      return <Music className="text-pink-500" size={32} />
+      return <Music className="text-pink-500" size={18} />
     if (type === 'application/pdf')
-      return <FileText className="text-red-500" size={32} />
-    return <FileIcon className="text-gray-500" size={32} />
+      return <FileText className="text-red-500" size={18} />
+    return <FileIcon className="text-gray-400" size={18} />
   }
 
   return (
