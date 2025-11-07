@@ -112,16 +112,32 @@ export const MarkdownToolbar = ({
   const toggleList = () => {
     const ta = textareaRef.current
     if (!ta) return
-    const { value, selectionStart } = ta
-    const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1
-    const nextNewline = value.indexOf('\n', selectionStart)
-    const lineEnd = nextNewline === -1 ? value.length : nextNewline
-    const line = value.slice(lineStart, lineEnd)
+    const { value, selectionStart, selectionEnd } = ta
 
-    const hasList = /^-\s/.test(line)
-    const newLine = hasList ? line.replace(/^-+\s*/, '') : `- ${line}`
-    const newValue = value.slice(0, lineStart) + newLine + value.slice(lineEnd)
+    const before = value.slice(0, selectionStart)
+    const selected = value.slice(selectionStart, selectionEnd)
+    const after = value.slice(selectionEnd)
+
+    const lines = selected.split('\n')
+
+    const allHaveList = lines.every((line) => !line.trim() || /^-\s/.test(line))
+
+    const newLines = lines.map((line) => {
+      if (!line.trim()) return line
+      return allHaveList
+        ? line.replace(/^-\s?/, '')
+        : `- ${line.replace(/^-\s?/, '')}`
+    })
+
+    const newValue = before + newLines.join('\n') + after
+
     onUpdate(newValue)
+
+    requestAnimationFrame(() => {
+      ta.focus()
+      ta.selectionStart = selectionStart
+      ta.selectionEnd = selectionStart + newLines.join('\n').length
+    })
   }
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
