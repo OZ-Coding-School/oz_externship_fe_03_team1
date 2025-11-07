@@ -7,6 +7,7 @@ import {
 } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import remarkBreaks from 'remark-breaks'
 import { MarkdownToolbar } from './MarkdownToolbar'
 
 interface MarkdownWriteProps {
@@ -75,7 +76,7 @@ export const MarkdownWrite = ({
         <div className="min-h-[160px] bg-white p-4 text-sm text-gray-700">
           {previewValue.trim() ? (
             <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
+              remarkPlugins={[remarkGfm, remarkBreaks]}
               components={{
                 h2: ({ node, ...props }) => (
                   <h2
