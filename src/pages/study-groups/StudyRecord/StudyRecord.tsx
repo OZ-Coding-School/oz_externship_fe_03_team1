@@ -8,21 +8,26 @@ import { RecordBreadcrumb } from '@/components/breadcrumb/RecordBreadcrumb'
 export const StudyRecord = () => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [file, setFile] = useState<File | null>(null)
+  const [files, setFiles] = useState<File[]>([])
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0] ?? null
-    setFile(selectedFile)
+  // 파일 변경 핸들러 (RecordFileUpload에서 전달받음)
+  const handleFilesChange = (newFiles: File[]) => {
+    setFiles(newFiles)
   }
 
   const handleCancel = () => {
     setTitle('')
     setContent('')
-    setFile(null)
+    setFiles([])
   }
 
   const handleSave = () => {
     // 저장 로직 추가 예정
+    // 예시:
+    // const formData = new FormData()
+    // formData.append('title', title)
+    // formData.append('content', content)
+    // files.forEach(file => formData.append('files', file))
   }
 
   // 필수 입력값 검증 (제목과 내용)
@@ -39,7 +44,7 @@ export const StudyRecord = () => {
       <div className="w-full max-w-3xl rounded-2xl border border-gray-200 bg-white p-[25px]">
         <RecordTitleInput title={title} setTitle={setTitle} />
         <RecordMarkdownEditor content={content} setContent={setContent} />
-        <RecordFileUpload file={file} onFileChange={handleFileChange} />
+        <RecordFileUpload files={files} onFilesChange={handleFilesChange} />
       </div>
 
       <div className="mt-6 flex w-full max-w-3xl justify-between">
