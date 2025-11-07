@@ -13,6 +13,11 @@ import {
   List,
   Image as FileImage,
 } from 'lucide-react'
+import {
+  ALLOWED_IMAGE_TYPES,
+  MAX_IMAGE_SIZE_BYTES,
+  UPLOAD_ERROR_MESSAGES,
+} from '@/constants/upload'
 
 export interface MarkdownToolbarProps {
   textareaRef: RefObject<HTMLTextAreaElement | null>
@@ -25,7 +30,7 @@ export const MarkdownToolbar = ({
 }: MarkdownToolbarProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
-  const wrapSelectedText = (wrapper: string, closingWrapper?: string) => {
+  const wrapSelection = (wrapper: string, closingWrapper?: string) => {
     const textarea = textareaRef.current
     if (!textarea) return
 
@@ -61,13 +66,13 @@ export const MarkdownToolbar = ({
     const file = e.target.files?.[0]
     if (!file) return
 
-    if (!['image/png', 'image/jpeg'].includes(file.type)) {
-      alert('JPG 또는 PNG 파일만 업로드 가능합니다.')
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      alert(UPLOAD_ERROR_MESSAGES.invalidType)
       return
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      alert('5MB 이하의 이미지만 업로드 가능합니다.')
+    if (file.size > MAX_IMAGE_SIZE_BYTES) {
+      alert(UPLOAD_ERROR_MESSAGES.tooLarge)
       return
     }
 
@@ -104,17 +109,17 @@ export const MarkdownToolbar = ({
       <Bold
         size={18}
         className="cursor-pointer hover:text-amber-500"
-        onClick={() => wrapSelectedText('**')}
+        onClick={() => wrapSelection('**')}
       />
       <Italic
         size={18}
         className="cursor-pointer hover:text-amber-500"
-        onClick={() => wrapSelectedText('*')}
+        onClick={() => wrapSelection('*')}
       />
       <Code2
         size={18}
         className="cursor-pointer hover:text-amber-500"
-        onClick={() => wrapSelectedText('`')}
+        onClick={() => wrapSelection('`')}
       />
 
       <div className="relative">
@@ -126,7 +131,7 @@ export const MarkdownToolbar = ({
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/png, image/jpeg"
+          accept={ALLOWED_IMAGE_TYPES.join(',')}
           onChange={handleFileSelect}
           className="hidden"
         />
@@ -140,12 +145,12 @@ export const MarkdownToolbar = ({
       <Heading1
         size={18}
         className="cursor-pointer hover:text-amber-500"
-        onClick={() => wrapSelectedText('## ')}
+        onClick={() => wrapSelection('## ')}
       />
       <List
         size={18}
         className="cursor-pointer hover:text-amber-500"
-        onClick={() => wrapSelectedText('- ')}
+        onClick={() => wrapSelection('- ')}
       />
     </div>
   )
