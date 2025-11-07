@@ -30,108 +30,118 @@ export const MarkdownToolbar = ({
 }: MarkdownToolbarProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
-  const wrapSelection = (wrapper: string, closingWrapper?: string) => {
-    const textarea = textareaRef.current
-    if (!textarea) return
-    const { selectionStart, selectionEnd, value } = textarea
-    const selected = value.slice(selectionStart, selectionEnd)
+  const toggleWrap = (wrapper: string) => {
+    const ta = textareaRef.current
+    if (!ta) return
+    const { selectionStart: ss, selectionEnd: se, value } = ta
+    const selected = value.slice(ss, se)
 
-    const newValue = closingWrapper
-      ? value.slice(0, selectionStart) +
-        wrapper +
+    const before = value.slice(ss - wrapper.length, ss)
+    const after = value.slice(se, se + wrapper.length)
+    const isWrapped = before === wrapper && after === wrapper
+
+    if (isWrapped) {
+      const newValue =
+        value.slice(0, ss - wrapper.length) +
         selected +
-        closingWrapper +
-        value.slice(selectionEnd)
-      : value.slice(0, selectionStart) +
-        wrapper +
-        selected +
-        wrapper +
-        value.slice(selectionEnd)
-
-    onUpdate(newValue)
-
-    requestAnimationFrame(() => {
-      textarea.focus()
-      const pos =
-        selectionStart +
-        wrapper.length +
-        selected.length +
-        (closingWrapper ? closingWrapper.length : wrapper.length)
-      textarea.selectionStart = textarea.selectionEnd = pos
-    })
+        value.slice(se + wrapper.length)
+      onUpdate(newValue)
+      requestAnimationFrame(() => {
+        ta.focus()
+        ta.selectionStart = ss - wrapper.length
+        ta.selectionEnd = se - wrapper.length
+      })
+    } else {
+      const newValue =
+        value.slice(0, ss) + wrapper + selected + wrapper + value.slice(se)
+      onUpdate(newValue)
+      requestAnimationFrame(() => {
+        ta.focus()
+        ta.selectionStart = ss + wrapper.length
+        ta.selectionEnd = se + wrapper.length
+      })
+    }
   }
 
-  const insertHeading = () => {
-    const textarea = textareaRef.current
-    if (!textarea) return
+  const toggleCode = () => {
+    const ta = textareaRef.current
+    if (!ta) return
+    const { selectionStart: ss, selectionEnd: se, value } = ta
+    const selected = value.slice(ss, se)
+    const before = value.slice(ss - 1, ss)
+    const after = value.slice(se, se + 1)
+    const isWrapped = before === '`' && after === '`'
 
-    const { selectionStart, selectionEnd, value } = textarea
-    const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1
-    const nextNewline = value.indexOf('\n', selectionEnd)
-    const lineEnd = nextNewline === -1 ? value.length : nextNewline
-
-    const line = value.slice(lineStart, lineEnd)
-    const headingRegex = /^##\s+/
-    let newLine: string
-
-    if (headingRegex.test(line)) {
-      newLine = line.replace(headingRegex, '')
-    } else {
-      newLine = `## ${line}`
-    }
-
-    const newValue = value.slice(0, lineStart) + newLine + value.slice(lineEnd)
-    const delta = newLine.length - line.length
-
+    const newValue = isWrapped
+      ? value.slice(0, ss - 1) + selected + value.slice(se + 1)
+      : value.slice(0, ss) + '`' + selected + '`' + value.slice(se)
     onUpdate(newValue)
+  }
 
-    requestAnimationFrame(() => {
-      textarea.focus()
-      textarea.selectionStart = selectionStart + delta
-      textarea.selectionEnd = selectionEnd + delta
-    })
+  const toggleHeading = () => {
+    const ta = textareaRef.current
+    if (!ta) return
+    const { value, selectionStart } = ta
+
+    const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1
+    const nextNewline = value.indexOf('\n', selectionStart)
+    const lineEnd = nextNewline === -1 ? value.length : nextNewline
+    const line = value.slice(lineStart, lineEnd)
+
+    const hasHeading = /^##\s/.test(line)
+    const newLine = hasHeading ? line.replace(/^##\s/, '') : `## ${line}`
+    const newValue = value.slice(0, lineStart) + newLine + value.slice(lineEnd)
+    onUpdate(newValue)
+  }
+
+  const toggleList = () => {
+    const ta = textareaRef.current
+    if (!ta) return
+    const { value, selectionStart } = ta
+    const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1
+    const nextNewline = value.indexOf('\n', selectionStart)
+    const lineEnd = nextNewline === -1 ? value.length : nextNewline
+    const line = value.slice(lineStart, lineEnd)
+
+    const hasList = /^-\s/.test(line)
+    const newLine = hasList ? line.replace(/^-+\s*/, '') : `- ${line}`
+    const newValue = value.slice(0, lineStart) + newLine + value.slice(lineEnd)
+    onUpdate(newValue)
   }
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
-
     if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
       alert(UPLOAD_ERROR_MESSAGES.invalidType)
       return
     }
-
     if (file.size > MAX_IMAGE_SIZE_BYTES) {
       alert(UPLOAD_ERROR_MESSAGES.tooLarge)
       return
     }
-
     const imageURL = URL.createObjectURL(file)
     const markdownImage = `![${file.name}](${imageURL})`
     onUpdate((prev) => prev + '\n' + markdownImage)
   }
 
-  const handleLinkInsert = () => {
-    const textarea = textareaRef.current
-    if (!textarea) return
+  const toggleLink = () => {
+    const ta = textareaRef.current
+    if (!ta) return
+    const { selectionStart: ss, selectionEnd: se, value } = ta
+    const selected = value.slice(ss, se)
+    const linkPattern = /^\[.*?\]\(.*?\)$/
 
-    const { selectionStart, selectionEnd, value } = textarea
-    const selected = value.slice(selectionStart, selectionEnd).trim()
-    const isUrl = /^https?:\/\/|^www\./i.test(selected)
-    const linkTarget = isUrl ? selected : 'https://'
-
-    const newValue =
-      value.slice(0, selectionStart) +
-      `[${selected || '링크텍스트'}](${linkTarget})` +
-      value.slice(selectionEnd)
-
-    onUpdate(newValue)
-
-    requestAnimationFrame(() => {
-      textarea.focus()
-      const pos = selectionStart + `[${selected || '링크텍스트'}](`.length
-      textarea.selectionStart = textarea.selectionEnd = pos + linkTarget.length
-    })
+    if (linkPattern.test(selected)) {
+      const text = selected.replace(/^\[(.*?)\]\(.*?\)$/, '$1')
+      onUpdate(value.slice(0, ss) + text + value.slice(se))
+    } else {
+      const newValue =
+        value.slice(0, ss) +
+        `[${selected || '링크텍스트'}](https://)` +
+        value.slice(se)
+      onUpdate(newValue)
+    }
   }
 
   return (
@@ -139,19 +149,18 @@ export const MarkdownToolbar = ({
       <Bold
         size={18}
         className="cursor-pointer hover:text-amber-500"
-        onClick={() => wrapSelection('**')}
+        onClick={() => toggleWrap('**')}
       />
       <Italic
         size={18}
         className="cursor-pointer hover:text-amber-500"
-        onClick={() => wrapSelection('*')}
+        onClick={() => toggleWrap('_')}
       />
       <Code2
         size={18}
         className="cursor-pointer hover:text-amber-500"
-        onClick={() => wrapSelection('`')}
+        onClick={toggleCode}
       />
-
       <div className="relative">
         <FileImage
           size={18}
@@ -166,23 +175,20 @@ export const MarkdownToolbar = ({
           className="hidden"
         />
       </div>
-
       <LinkIcon
         size={18}
         className="cursor-pointer hover:text-amber-500"
-        onClick={handleLinkInsert}
+        onClick={toggleLink}
       />
-
       <Heading1
         size={18}
         className="cursor-pointer hover:text-amber-500"
-        onClick={insertHeading}
+        onClick={toggleHeading}
       />
-
       <List
         size={18}
         className="cursor-pointer hover:text-amber-500"
-        onClick={() => wrapSelection('- ')}
+        onClick={toggleList}
       />
     </div>
   )
