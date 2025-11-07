@@ -203,11 +203,13 @@ export const MarkdownToolbar = ({
         className="cursor-pointer hover:text-amber-500"
         onClick={toggleLink}
       />
+
       <Heading1
         size={18}
         className="cursor-pointer hover:text-amber-500"
         onClick={toggleHeading}
       />
+
       <List
         size={18}
         className="cursor-pointer hover:text-amber-500"
