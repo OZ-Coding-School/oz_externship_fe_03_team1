@@ -61,30 +61,23 @@ export const MarkdownToolbar = ({
     })
   }
 
-  const insertHeading = (level: 1 | 2 | 3 | 4 | 5 | 6 = 2) => {
+  const insertHeading = () => {
     const textarea = textareaRef.current
     if (!textarea) return
 
     const { selectionStart, selectionEnd, value } = textarea
-
     const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1
     const nextNewline = value.indexOf('\n', selectionEnd)
     const lineEnd = nextNewline === -1 ? value.length : nextNewline
 
     const line = value.slice(lineStart, lineEnd)
-
-    const headingRegex = /^(#{1,6})\s+/
+    const headingRegex = /^##\s+/
     let newLine: string
 
     if (headingRegex.test(line)) {
-      const currentLevel = (line.match(headingRegex)?.[1].length ?? 0) as number
-      if (currentLevel === level) {
-        newLine = line.replace(headingRegex, '')
-      } else {
-        newLine = line.replace(headingRegex, `${'#'.repeat(level)} `)
-      }
+      newLine = line.replace(headingRegex, '')
     } else {
-      newLine = `${'#'.repeat(level)} ${line}`
+      newLine = `## ${line}`
     }
 
     const newValue = value.slice(0, lineStart) + newLine + value.slice(lineEnd)
@@ -183,7 +176,7 @@ export const MarkdownToolbar = ({
       <Heading1
         size={18}
         className="cursor-pointer hover:text-amber-500"
-        onClick={() => insertHeading(2)}
+        onClick={insertHeading}
       />
 
       <List
