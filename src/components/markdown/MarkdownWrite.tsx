@@ -77,6 +77,12 @@ export const MarkdownWrite = ({
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
+                h2: ({ node, ...props }) => (
+                  <h2
+                    className="mb-1 text-xl font-semibold text-gray-800"
+                    {...props}
+                  />
+                ),
                 a: ({ node, ...props }) => {
                   const href = props.href?.startsWith('http')
                     ? props.href
