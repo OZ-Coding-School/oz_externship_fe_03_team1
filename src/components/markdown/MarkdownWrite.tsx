@@ -6,6 +6,7 @@ import {
   type SetStateAction,
 } from 'react'
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import remarkBreaks from 'remark-breaks'
 import { MarkdownToolbar } from './MarkdownToolbar'
 
@@ -64,7 +65,7 @@ export const MarkdownWrite = ({
         <div className="min-h-[180px] bg-white p-4 text-sm text-gray-700">
           {previewValue.trim() ? (
             <ReactMarkdown
-              remarkPlugins={[remarkBreaks]}
+              remarkPlugins={[remarkGfm, remarkBreaks]}
               components={{
                 h2: ({ node: _, ...props }) => (
                   <h2
