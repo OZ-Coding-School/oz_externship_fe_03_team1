@@ -18,6 +18,7 @@ import {
   MAX_IMAGE_SIZE_BYTES,
   UPLOAD_ERROR_MESSAGES,
 } from '@/constants/upload'
+import { toast } from 'react-toastify'
 
 export interface MarkdownToolbarProps {
   textareaRef: RefObject<HTMLTextAreaElement | null>
@@ -30,21 +31,24 @@ export const MarkdownToolbar = ({
 }: MarkdownToolbarProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
+  const getLineRange = (value: string, caret: number) => {
+    const start = value.lastIndexOf('\n', Math.max(0, caret - 1)) + 1
+    const nextNewline = value.indexOf('\n', caret)
+    const end = nextNewline === -1 ? value.length : nextNewline
+    return [start, end] as const
+  }
+
   const toggleWrap = (wrapper: string) => {
     const ta = textareaRef.current
     if (!ta) return
     const { selectionStart: ss, selectionEnd: se, value } = ta
     const selected = value.slice(ss, se)
-
     const isWrapped = selected.startsWith(wrapper) && selected.endsWith(wrapper)
-
     const newSelected = isWrapped
       ? selected.slice(wrapper.length, selected.length - wrapper.length)
       : `${wrapper}${selected}${wrapper}`
-
     const newValue = value.slice(0, ss) + newSelected + value.slice(se)
     onUpdate(newValue)
-
     requestAnimationFrame(() => {
       ta.focus()
       ta.selectionStart = ss
@@ -55,11 +59,13 @@ export const MarkdownToolbar = ({
   const toggleHeading = () => {
     const ta = textareaRef.current
     if (!ta) return
-    const { selectionStart: ss, selectionEnd: se, value } = ta
+    const { value } = ta
+    let ss = ta.selectionStart
+    let se = ta.selectionEnd
+    if (ss === se) [ss, se] = getLineRange(value, ss)
     const selected = value.slice(ss, se)
     const lines = selected.split('\n')
     const allHaveHeading = lines.every((line) => /^##\s/.test(line))
-
     const newLines = lines.map((line) =>
       !line.trim()
         ? line
@@ -67,11 +73,9 @@ export const MarkdownToolbar = ({
           ? line.replace(/^##\s?/, '')
           : `## ${line.replace(/^##\s?/, '')}`
     )
-
     const newSelected = newLines.join('\n')
     const newValue = value.slice(0, ss) + newSelected + value.slice(se)
     onUpdate(newValue)
-
     requestAnimationFrame(() => {
       ta.focus()
       ta.selectionStart = ss
@@ -82,11 +86,13 @@ export const MarkdownToolbar = ({
   const toggleList = () => {
     const ta = textareaRef.current
     if (!ta) return
-    const { selectionStart: ss, selectionEnd: se, value } = ta
+    const { value } = ta
+    let ss = ta.selectionStart
+    let se = ta.selectionEnd
+    if (ss === se) [ss, se] = getLineRange(value, ss)
     const selected = value.slice(ss, se)
     const lines = selected.split('\n')
     const allHaveList = lines.every((line) => /^-\s/.test(line))
-
     const newLines = lines.map((line) =>
       !line.trim()
         ? line
@@ -94,11 +100,9 @@ export const MarkdownToolbar = ({
           ? line.replace(/^-\s?/, '')
           : `- ${line.replace(/^-\s?/, '')}`
     )
-
     const newSelected = newLines.join('\n')
     const newValue = value.slice(0, ss) + newSelected + value.slice(se)
     onUpdate(newValue)
-
     requestAnimationFrame(() => {
       ta.focus()
       ta.selectionStart = ss
@@ -106,63 +110,76 @@ export const MarkdownToolbar = ({
     })
   }
 
-  const toggleCode = () => toggleWrap('`')
+  const toggleCodeBlock = () => {
+    const ta = textareaRef.current
+    if (!ta) return
+    const { selectionStart: ss, selectionEnd: se, value } = ta
+    const selected = value.slice(ss, se).trim()
+    const isBlock = /^```[\s\S]*```$/.test(selected)
+    const newSelected = isBlock
+      ? selected.replace(/^```|```$/g, '').trim()
+      : `\`\`\`\n${selected}\n\`\`\``
+    const newValue = value.slice(0, ss) + newSelected + value.slice(se)
+    onUpdate(newValue)
+    requestAnimationFrame(() => {
+      ta.focus()
+      ta.selectionStart = ss
+      ta.selectionEnd = ss + newSelected.length
+    })
+  }
 
   const toggleLink = () => {
     const ta = textareaRef.current
     if (!ta) return
-    const { selectionStart: ss, selectionEnd: se, value } = ta
-    const selected = value.slice(ss, se)
+    const { value } = ta
+    let ss = ta.selectionStart
+    let se = ta.selectionEnd
+    let selected = value.slice(ss, se)
+    const linkRegex = /\[[^\]]+\]\((?:https?:\/\/)?[^\s)]+\)/
 
-    const linkPattern = /^\[.*?\]\(.*?\)$/
-    const newValue = linkPattern.test(selected)
-      ? value.slice(0, ss) +
-        selected.replace(/^\[(.*?)\]\(.*?\)$/, '$1') +
-        value.slice(se)
-      : value.slice(0, ss) +
-        `[${selected || '링크텍스트'}](https://)` +
-        value.slice(se)
+    if (ss === se) {
+      const [ls, le] = getLineRange(value, ss)
+      const line = value.slice(ls, le)
+      const match = [...line.matchAll(linkRegex)].find((m) => {
+        const start = ls + (m.index ?? 0)
+        const end = start + m[0].length
+        return start <= ss && ss <= end
+      })
+      if (match) {
+        ss = ls + (match.index ?? 0)
+        se = ss + match[0].length
+        selected = match[0]
+      }
+    }
 
+    const isLink = linkRegex.test(selected)
+    const newSelected = isLink
+      ? selected.replace(/^\[([^\]]+)\]\([^)]*\)$/, '$1')
+      : `[${selected || '링크텍스트'}](https://)`
+    const newValue = value.slice(0, ss) + newSelected + value.slice(se)
     onUpdate(newValue)
+    requestAnimationFrame(() => {
+      ta.focus()
+      ta.selectionStart = ss
+      ta.selectionEnd = ss + newSelected.length
+    })
   }
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
     if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-      alert(UPLOAD_ERROR_MESSAGES.invalidType)
+      toast.error(UPLOAD_ERROR_MESSAGES.invalidType)
       return
     }
     if (file.size > MAX_IMAGE_SIZE_BYTES) {
-      alert(UPLOAD_ERROR_MESSAGES.tooLarge)
+      toast.error(UPLOAD_ERROR_MESSAGES.tooLarge)
       return
     }
     const imageURL = URL.createObjectURL(file)
     const markdownImage = `![${file.name}](${imageURL})`
     onUpdate((prev) => prev + '\n' + markdownImage)
-  }
-
-  const handleLinkInsert = () => {
-    const textarea = textareaRef.current
-    if (!textarea) return
-
-    const { selectionStart, selectionEnd, value } = textarea
-    const selected = value.slice(selectionStart, selectionEnd).trim()
-    const isUrl = /^https?:\/\/|^www\./i.test(selected)
-    const linkTarget = isUrl ? selected : 'https://'
-
-    const newValue =
-      value.slice(0, selectionStart) +
-      `[${selected || '링크텍스트'}](${linkTarget})` +
-      value.slice(selectionEnd)
-
-    onUpdate(newValue)
-
-    requestAnimationFrame(() => {
-      textarea.focus()
-      const pos = selectionStart + `[${selected || '링크텍스트'}](`.length
-      textarea.selectionStart = textarea.selectionEnd = pos + linkTarget.length
-    })
+    toast.success('이미지가 추가되었습니다.')
   }
 
   return (
@@ -180,9 +197,8 @@ export const MarkdownToolbar = ({
       <Code2
         size={18}
         className="cursor-pointer hover:text-amber-500"
-        onClick={toggleCode}
+        onClick={toggleCodeBlock}
       />
-
       <div className="relative">
         <FileImage
           size={18}
@@ -197,19 +213,16 @@ export const MarkdownToolbar = ({
           className="hidden"
         />
       </div>
-
       <LinkIcon
         size={18}
         className="cursor-pointer hover:text-amber-500"
         onClick={toggleLink}
       />
-
       <Heading1
         size={18}
         className="cursor-pointer hover:text-amber-500"
         onClick={toggleHeading}
       />
-
       <List
         size={18}
         className="cursor-pointer hover:text-amber-500"
