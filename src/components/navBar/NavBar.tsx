@@ -40,9 +40,9 @@ const Logo = () => {
 }
 
 const linkArr = [
-  { path: '/courses', label: '강의 목록' },
+  { path: 'https://learn.ozcoding.site/lecture', label: '강의 목록' },
   { path: '/', label: '스터디 그룹' },
-  { path: '/jobs', label: '구인 공고' },
+  { path: 'https://learn.ozcoding.site/recruit/manage', label: '구인 공고' },
 ]
 
 const Links = () => {
