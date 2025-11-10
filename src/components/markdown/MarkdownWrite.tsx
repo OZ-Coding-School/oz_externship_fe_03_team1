@@ -88,7 +88,7 @@ export const MarkdownWrite = ({
       <div className="border-t border-gray-200 bg-[#F9FAFB] px-4 py-2 text-xs text-gray-600">
         마크다운 문법을 사용할 수 있습니다.{` `}
         <span className="font-medium text-gray-600">
-          **굵게** _기울임_ `코드` [링크](URL) ## 제목 - 리스트
+          **굵게** _기울임_ `코드` [링크](URL) ## 제목
         </span>
       </div>
     </div>
