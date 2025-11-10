@@ -1,22 +1,31 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router'
+import { useParams, useNavigate } from 'react-router'
 import { RecordTitleInput } from '@/components/studyReport/RecordTitleInput'
 import { RecordMarkdownEditor } from '@/components/studyReport/RecordMarkdownEditor'
 import { RecordFileUpload } from '@/components/studyReport/RecordFileUpload'
 import { RecordActionButtons } from '@/components/studyReport/RecordActionButtons'
 import { RecordBreadcrumb } from '@/components/breadcrumb/RecordBreadcrumb'
 
+// 목 데이터 예시
+const MOCK_RECORD = {
+  title: '예시 스터디 기록 제목',
+  content: '여기에 학습 내용을 작성해보세요.',
+  files: [],
+}
+
 export const StudyRecord = () => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [files, setFiles] = useState<File[]>([])
   const [mode, setMode] = useState<'create' | 'edit'>('create')
+  const navigate = useNavigate()
 
   const { studyGroupId, studyRecordId } = useParams<{
     studyGroupId: string
     studyRecordId: string
   }>()
 
+  // 드래그 앤 드롭 방지
   useEffect(() => {
     const preventDefault = (e: DragEvent) => {
       e.preventDefault()
@@ -32,25 +41,13 @@ export const StudyRecord = () => {
     }
   }, [])
 
-  // 스터디 그룹 ID를 활용하여 특정 그룹 내의 기록 불러오기
+  // 기록 데이터 불러오기 (목 데이터)
   const loadStudyRecord = async (groupId: string, recordId: string) => {
-    try {
-      console.log(
-        `그룹 ID ${groupId} / 기록 ID ${recordId}의 데이터를 불러오는 중...`
-      )
-      const response = await fetch(
-        `/api/study_groups/${groupId}/records/${recordId}`
-      )
-
-      if (!response.ok) throw new Error('네트워크 응답이 올바르지 않습니다.')
-
-      const fetchedData = await response.json()
-      setTitle(fetchedData.title || '')
-      setContent(fetchedData.content || '')
-      // 파일 데이터는 별도로 처리 필요
-    } catch (error) {
-      console.error('기록 데이터를 불러오는 중 오류 발생:', error)
-    }
+    console.log(`(MOCK) 그룹 ${groupId} 기록 ${recordId} 불러오기`)
+    await new Promise((resolve) => setTimeout(resolve, 300)) // 목 지연
+    setTitle(MOCK_RECORD.title)
+    setContent(MOCK_RECORD.content)
+    setFiles(MOCK_RECORD.files)
   }
 
   useEffect(() => {
@@ -73,30 +70,19 @@ export const StudyRecord = () => {
   }
 
   const handleSave = async () => {
-    const recordData = { title, content }
+    const recordData = { title, content, files }
+    console.log('(MOCK) 저장 데이터:', recordData)
 
-    try {
-      if (mode === 'edit' && studyGroupId && studyRecordId) {
-        console.log(`그룹 ${studyGroupId}의 기록(${studyRecordId}) 수정 저장`)
-        await fetch(
-          `/api/study_groups/${studyGroupId}/records/${studyRecordId}`,
-          {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(recordData),
-          }
-        )
-      } else if (studyGroupId) {
-        console.log(`그룹 ${studyGroupId}에 새 기록 생성`)
-        await fetch(`/api/study_groups/${studyGroupId}/records`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(recordData),
-        })
-      }
-    } catch (error) {
-      console.error('기록 저장 중 오류 발생:', error)
+    await new Promise((resolve) => setTimeout(resolve, 300)) // 목 지연
+
+    if (mode === 'edit') {
+      alert('(MOCK) 기록이 성공적으로 수정되었습니다.')
+    } else {
+      alert('(MOCK) 새 기록이 성공적으로 저장되었습니다.')
     }
+
+    // 저장 후 목록 페이지로 이동 (MOCK)
+    if (studyGroupId) navigate(`/study-groups/${studyGroupId}/records`)
   }
 
   const isSaveDisabled = title.trim() === '' || content.trim() === ''
