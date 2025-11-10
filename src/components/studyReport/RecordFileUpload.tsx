@@ -62,13 +62,13 @@ export const RecordFileUpload = ({
   const getFileIcon = (file: File) => {
     const type = file.type
     if (type.startsWith('image/'))
-      return <Image className="text-blue-500" size={18} />
+      return <Image className="text-gray-500" size={18} />
     if (type.startsWith('video/'))
-      return <Video className="text-purple-500" size={18} />
+      return <Video className="text-gray-500" size={18} />
     if (type.startsWith('audio/'))
-      return <Music className="text-pink-500" size={18} />
+      return <Music className="text-gray-500" size={18} />
     if (type === 'application/pdf')
-      return <FileText className="text-red-500" size={18} />
+      return <FileText className="text-gray-500" size={18} />
     return <FileIcon className="text-gray-400" size={18} />
   }
 
@@ -78,7 +78,7 @@ export const RecordFileUpload = ({
 
       {/* 업로드 영역 */}
       <div
-        className={`cursor-pointer rounded-xl border-2 border-dashed py-10 text-center transition-colors ${
+        className={`rounded-xl border-2 border-dashed py-10 text-center transition-colors ${
           dragActive
             ? 'border-yellow-500 bg-yellow-50'
             : 'border-gray-200 bg-white'
