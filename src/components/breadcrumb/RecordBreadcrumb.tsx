@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router'
 import { ChevronRight } from 'lucide-react'
 
 interface RecordBreadcrumbProps {
-  current: '작성' | '상세'
+  current: '작성' | '상세' | '수정'
   homeTo?: string
   groupsTo?: string
 }
