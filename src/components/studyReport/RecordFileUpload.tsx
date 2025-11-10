@@ -128,11 +128,14 @@ export const RecordFileUpload = ({
                 key={file.name}
                 className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm hover:shadow"
               >
-                <div className="flex items-center gap-2 text-sm text-gray-700">
+                <div className="flex min-w-0 items-center gap-2 text-sm text-gray-700">
                   {getFileIcon(file)}
-                  <span className="truncate">{file.name}</span>
+                  {/* 파일명 말줄임 처리 */}
+                  <span className="max-w-[180px] truncate overflow-hidden whitespace-nowrap">
+                    {file.name}
+                  </span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-shrink-0 items-center gap-2">
                   <a
                     href={URL.createObjectURL(file)}
                     download={file.name}
