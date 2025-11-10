@@ -16,7 +16,7 @@ export const RecordMarkdownEditor = ({
       </span>
       <MarkdownWrite
         value={content}
-        onChange={(e) => setContent(e.target.value)}
+        onChange={setContent}
         placeholder="학습한 내용을 마크다운 형식으로 작성하세요..."
       />
     </div>
