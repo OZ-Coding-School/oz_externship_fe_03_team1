@@ -92,7 +92,7 @@ export const StudyRecord = () => {
       <div className="mb-6 w-full max-w-3xl">
         <RecordBreadcrumb current="작성" />
         <h1 className="mb-2 text-2xl font-bold">
-          {mode === 'edit' ? '스터디 기록 편집' : '스터디 기록 작성'}
+          {mode === 'edit' ? '스터디 기록 수정' : '스터디 기록 작성'}
         </h1>
         <p className="text-gray-600">
           {mode === 'edit'
