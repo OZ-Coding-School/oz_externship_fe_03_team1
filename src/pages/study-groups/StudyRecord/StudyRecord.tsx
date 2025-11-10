@@ -59,6 +59,22 @@ export const StudyRecord = () => {
     }
   }, [studyGroupId, studyRecordId])
 
+  useEffect(() => {
+    const preventDefault = (e: DragEvent) => {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+
+    window.addEventListener('dragover', preventDefault)
+    window.addEventListener('drop', preventDefault)
+
+    return () => {
+      window.removeEventListener('dragover', preventDefault)
+      window.removeEventListener('drop', preventDefault)
+    }
+  }, [])
+
+  // 파일 변경 핸들러
   const handleFilesChange = (newFiles: File[]) => {
     setFiles(newFiles)
   }
