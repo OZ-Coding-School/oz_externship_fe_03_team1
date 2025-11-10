@@ -77,7 +77,7 @@ export const RecordFileUpload = ({
 
       {/* 업로드 영역 */}
       <div
-        className={`rounded-xl border-2 border-dashed py-10 text-center transition-colors ${
+        className={`cursor-pointer rounded-xl border-2 border-dashed py-10 text-center transition-colors ${
           dragActive
             ? 'border-yellow-500 bg-yellow-50'
             : 'border-gray-200 bg-white'
