@@ -36,108 +36,94 @@ export const MarkdownToolbar = ({
     const { selectionStart: ss, selectionEnd: se, value } = ta
     const selected = value.slice(ss, se)
 
-    const before = value.slice(ss - wrapper.length, ss)
-    const after = value.slice(se, se + wrapper.length)
-    const isWrapped = before === wrapper && after === wrapper
+    const isWrapped = selected.startsWith(wrapper) && selected.endsWith(wrapper)
 
-    if (isWrapped) {
-      const newValue =
-        value.slice(0, ss - wrapper.length) +
-        selected +
-        value.slice(se + wrapper.length)
-      onUpdate(newValue)
-      requestAnimationFrame(() => {
-        ta.focus()
-        ta.selectionStart = ss - wrapper.length
-        ta.selectionEnd = se - wrapper.length
-      })
-    } else {
-      const newValue =
-        value.slice(0, ss) + wrapper + selected + wrapper + value.slice(se)
-      onUpdate(newValue)
-      requestAnimationFrame(() => {
-        ta.focus()
-        ta.selectionStart = ss + wrapper.length
-        ta.selectionEnd = se + wrapper.length
-      })
-    }
-  }
+    const newSelected = isWrapped
+      ? selected.slice(wrapper.length, selected.length - wrapper.length)
+      : `${wrapper}${selected}${wrapper}`
 
-  const toggleCode = () => {
-    const ta = textareaRef.current
-    if (!ta) return
-    const { selectionStart: ss, selectionEnd: se, value } = ta
-    const selected = value.slice(ss, se)
-    const before = value.slice(ss - 1, ss)
-    const after = value.slice(se, se + 1)
-    const isWrapped = before === '`' && after === '`'
-
-    const newValue = isWrapped
-      ? value.slice(0, ss - 1) + selected + value.slice(se + 1)
-      : value.slice(0, ss) + '`' + selected + '`' + value.slice(se)
+    const newValue = value.slice(0, ss) + newSelected + value.slice(se)
     onUpdate(newValue)
+
+    requestAnimationFrame(() => {
+      ta.focus()
+      ta.selectionStart = ss
+      ta.selectionEnd = ss + newSelected.length
+    })
   }
 
   const toggleHeading = () => {
     const ta = textareaRef.current
     if (!ta) return
-    const { value, selectionStart, selectionEnd } = ta
-
-    const before = value.slice(0, selectionStart)
-    const selected = value.slice(selectionStart, selectionEnd)
-    const after = value.slice(selectionEnd)
-
+    const { selectionStart: ss, selectionEnd: se, value } = ta
+    const selected = value.slice(ss, se)
     const lines = selected.split('\n')
-
     const allHaveHeading = lines.every((line) => /^##\s/.test(line))
 
-    const newLines = lines.map((line) => {
-      if (!line.trim()) return line
-      return allHaveHeading
-        ? line.replace(/^##\s?/, '')
-        : `## ${line.replace(/^##\s?/, '')}`
-    })
+    const newLines = lines.map((line) =>
+      !line.trim()
+        ? line
+        : allHaveHeading
+          ? line.replace(/^##\s?/, '')
+          : `## ${line.replace(/^##\s?/, '')}`
+    )
 
-    const newValue = before + newLines.join('\n') + after
-
+    const newSelected = newLines.join('\n')
+    const newValue = value.slice(0, ss) + newSelected + value.slice(se)
     onUpdate(newValue)
 
     requestAnimationFrame(() => {
       ta.focus()
-      ta.selectionStart = selectionStart
-      ta.selectionEnd = selectionStart + newLines.join('\n').length
+      ta.selectionStart = ss
+      ta.selectionEnd = ss + newSelected.length
     })
   }
 
   const toggleList = () => {
     const ta = textareaRef.current
     if (!ta) return
-    const { value, selectionStart, selectionEnd } = ta
-
-    const before = value.slice(0, selectionStart)
-    const selected = value.slice(selectionStart, selectionEnd)
-    const after = value.slice(selectionEnd)
-
+    const { selectionStart: ss, selectionEnd: se, value } = ta
+    const selected = value.slice(ss, se)
     const lines = selected.split('\n')
+    const allHaveList = lines.every((line) => /^-\s/.test(line))
 
-    const allHaveList = lines.every((line) => !line.trim() || /^-\s/.test(line))
+    const newLines = lines.map((line) =>
+      !line.trim()
+        ? line
+        : allHaveList
+          ? line.replace(/^-\s?/, '')
+          : `- ${line.replace(/^-\s?/, '')}`
+    )
 
-    const newLines = lines.map((line) => {
-      if (!line.trim()) return line
-      return allHaveList
-        ? line.replace(/^-\s?/, '')
-        : `- ${line.replace(/^-\s?/, '')}`
-    })
-
-    const newValue = before + newLines.join('\n') + after
-
+    const newSelected = newLines.join('\n')
+    const newValue = value.slice(0, ss) + newSelected + value.slice(se)
     onUpdate(newValue)
 
     requestAnimationFrame(() => {
       ta.focus()
-      ta.selectionStart = selectionStart
-      ta.selectionEnd = selectionStart + newLines.join('\n').length
+      ta.selectionStart = ss
+      ta.selectionEnd = ss + newSelected.length
     })
+  }
+
+  const toggleCode = () => toggleWrap('`')
+
+  const toggleLink = () => {
+    const ta = textareaRef.current
+    if (!ta) return
+    const { selectionStart: ss, selectionEnd: se, value } = ta
+    const selected = value.slice(ss, se)
+
+    const linkPattern = /^\[.*?\]\(.*?\)$/
+    const newValue = linkPattern.test(selected)
+      ? value.slice(0, ss) +
+        selected.replace(/^\[(.*?)\]\(.*?\)$/, '$1') +
+        value.slice(se)
+      : value.slice(0, ss) +
+        `[${selected || '링크텍스트'}](https://)` +
+        value.slice(se)
+
+    onUpdate(newValue)
   }
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -154,25 +140,6 @@ export const MarkdownToolbar = ({
     const imageURL = URL.createObjectURL(file)
     const markdownImage = `![${file.name}](${imageURL})`
     onUpdate((prev) => prev + '\n' + markdownImage)
-  }
-
-  const toggleLink = () => {
-    const ta = textareaRef.current
-    if (!ta) return
-    const { selectionStart: ss, selectionEnd: se, value } = ta
-    const selected = value.slice(ss, se)
-    const linkPattern = /^\[.*?\]\(.*?\)$/
-
-    if (linkPattern.test(selected)) {
-      const text = selected.replace(/^\[(.*?)\]\(.*?\)$/, '$1')
-      onUpdate(value.slice(0, ss) + text + value.slice(se))
-    } else {
-      const newValue =
-        value.slice(0, ss) +
-        `[${selected || '링크텍스트'}](https://)` +
-        value.slice(se)
-      onUpdate(newValue)
-    }
   }
 
   return (
