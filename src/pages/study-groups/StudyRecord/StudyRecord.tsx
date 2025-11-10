@@ -88,9 +88,9 @@ export const StudyRecord = () => {
   const isSaveDisabled = title.trim() === '' || content.trim() === ''
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center px-20 pt-[65px] pb-20">
+    <div className="flex min-h-screen w-[896px] flex-col items-center px-8 pt-[65px] pb-20">
       <div className="mb-6 w-full max-w-3xl">
-        <RecordBreadcrumb current="작성" />
+        <RecordBreadcrumb current={mode === 'edit' ? '수정' : '작성'} />
         <h1 className="mb-2 text-2xl font-bold">
           {mode === 'edit' ? '스터디 기록 수정' : '스터디 기록 작성'}
         </h1>
