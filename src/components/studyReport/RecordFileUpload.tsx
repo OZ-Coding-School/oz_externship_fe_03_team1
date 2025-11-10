@@ -8,7 +8,6 @@ import {
   File as FileIcon,
   X,
   Paperclip,
-  Download,
 } from 'lucide-react'
 
 interface RecordFileUploadProps {
@@ -130,26 +129,16 @@ export const RecordFileUpload = ({
               >
                 <div className="flex min-w-0 items-center gap-2 text-sm text-gray-700">
                   {getFileIcon(file)}
-                  {/* 파일명 말줄임 처리 */}
                   <span className="max-w-[180px] truncate overflow-hidden whitespace-nowrap">
                     {file.name}
                   </span>
                 </div>
-                <div className="flex flex-shrink-0 items-center gap-2">
-                  <a
-                    href={URL.createObjectURL(file)}
-                    download={file.name}
-                    className="text-gray-400 hover:text-gray-600"
-                  >
-                    <Download size={16} />
-                  </a>
-                  <button
-                    onClick={() => handleRemoveFile(file.name)}
-                    className="text-gray-400 hover:text-gray-600"
-                  >
-                    <X size={16} />
-                  </button>
-                </div>
+                <button
+                  onClick={() => handleRemoveFile(file.name)}
+                  className="cursor-pointer text-gray-400 hover:text-gray-600"
+                >
+                  <X size={16} />
+                </button>
               </div>
             ))}
           </div>
