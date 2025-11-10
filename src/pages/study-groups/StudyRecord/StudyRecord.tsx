@@ -59,6 +59,7 @@ export const StudyRecord = () => {
     }
   }, [studyGroupId, studyRecordId])
 
+  // 드래그 앤 드롭 방지
   useEffect(() => {
     const preventDefault = (e: DragEvent) => {
       e.preventDefault()
@@ -74,25 +75,46 @@ export const StudyRecord = () => {
     }
   }, [])
 
-  // 스터디 그룹 ID를 활용하여 특정 그룹 내의 기록 불러오기
+  // 기록 데이터 불러오기 (목 데이터)
   const loadStudyRecord = async (groupId: string, recordId: string) => {
-    try {
-      console.log(
-        `그룹 ID ${groupId} / 기록 ID ${recordId}의 데이터를 불러오는 중...`
-      )
-      const response = await fetch(
-        `/api/study_groups/${groupId}/records/${recordId}`
-      )
+    console.log(`(MOCK) 그룹 ${groupId} 기록 ${recordId} 불러오기`)
+    await new Promise((resolve) => setTimeout(resolve, 300)) // 목 지연
+    setTitle(MOCK_RECORD.title)
+    setContent(MOCK_RECORD.content)
+    setFiles(MOCK_RECORD.files)
+  }
 
-      if (!response.ok) throw new Error('네트워크 응답이 올바르지 않습니다.')
-
-      const fetchedData = await response.json()
-      setTitle(fetchedData.title || '')
-      setContent(fetchedData.content || '')
-      // 파일 데이터는 별도로 처리 필요
-    } catch (error) {
-      console.error('기록 데이터를 불러오는 중 오류 발생:', error)
+  useEffect(() => {
+    if (studyGroupId && studyRecordId) {
+      setMode('edit')
+      loadStudyRecord(studyGroupId, studyRecordId)
+    } else if (window.location.pathname.includes('edit')) {
+      setMode('edit')
     }
+  }, [studyGroupId, studyRecordId])
+
+  useEffect(() => {
+    const preventDefault = (e: DragEvent) => {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+
+    window.addEventListener('dragover', preventDefault)
+    window.addEventListener('drop', preventDefault)
+
+    return () => {
+      window.removeEventListener('dragover', preventDefault)
+      window.removeEventListener('drop', preventDefault)
+    }
+  }, [])
+
+  // 기록 데이터 불러오기 (목 데이터)
+  const loadStudyRecord = async (groupId: string, recordId: string) => {
+    console.log(`(MOCK) 그룹 ${groupId} 기록 ${recordId} 불러오기`)
+    await new Promise((resolve) => setTimeout(resolve, 300)) // 목 지연
+    setTitle(MOCK_RECORD.title)
+    setContent(MOCK_RECORD.content)
+    setFiles(MOCK_RECORD.files)
   }
 
   useEffect(() => {

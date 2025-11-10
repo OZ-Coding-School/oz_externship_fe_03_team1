@@ -131,15 +131,32 @@ export const RecordFileUpload = ({
 
   const getFileIcon = (file: File) => {
     const type = file.type
+    const ext = file.name.split('.').pop()?.toLowerCase()
+
     if (type.startsWith('image/'))
       return <Image className="text-gray-500" size={18} />
     if (type.startsWith('video/'))
       return <Video className="text-gray-500" size={18} />
     if (type.startsWith('audio/'))
       return <Music className="text-gray-500" size={18} />
-    if (type === 'application/pdf')
-      return <FileText className="text-gray-500" size={18} />
-    return <FileIcon className="text-gray-400" size={18} />
+
+    switch (ext) {
+      case 'pdf':
+        return <FileText className="text-gray-500" size={18} />
+      case 'doc':
+      case 'docx':
+        return <FileText className="text-gray-500" size={18} />
+      case 'xls':
+      case 'xlsx':
+        return <FileText className="text-gray-500" size={18} />
+      case 'ppt':
+      case 'pptx':
+        return <FileText className="text-gray-500" size={18} />
+      case 'txt':
+        return <FileText className="text-gray-500" size={18} />
+      default:
+        return <FileIcon className="text-gray-500" size={18} />
+    }
   }
 
   return (
