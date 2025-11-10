@@ -74,7 +74,36 @@ export const StudyRecord = () => {
     }
   }, [])
 
-  // 파일 변경 핸들러
+  // 스터디 그룹 ID를 활용하여 특정 그룹 내의 기록 불러오기
+  const loadStudyRecord = async (groupId: string, recordId: string) => {
+    try {
+      console.log(
+        `그룹 ID ${groupId} / 기록 ID ${recordId}의 데이터를 불러오는 중...`
+      )
+      const response = await fetch(
+        `/api/study_groups/${groupId}/records/${recordId}`
+      )
+
+      if (!response.ok) throw new Error('네트워크 응답이 올바르지 않습니다.')
+
+      const fetchedData = await response.json()
+      setTitle(fetchedData.title || '')
+      setContent(fetchedData.content || '')
+      // 파일 데이터는 별도로 처리 필요
+    } catch (error) {
+      console.error('기록 데이터를 불러오는 중 오류 발생:', error)
+    }
+  }
+
+  useEffect(() => {
+    if (studyGroupId && studyRecordId) {
+      setMode('edit')
+      loadStudyRecord(studyGroupId, studyRecordId)
+    } else if (window.location.pathname.includes('edit')) {
+      setMode('edit')
+    }
+  }, [studyGroupId, studyRecordId])
+
   const handleFilesChange = (newFiles: File[]) => {
     setFiles(newFiles)
   }
