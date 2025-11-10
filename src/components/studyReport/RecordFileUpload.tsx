@@ -61,13 +61,13 @@ export const RecordFileUpload = ({
   const getFileIcon = (file: File) => {
     const type = file.type
     if (type.startsWith('image/'))
-      return <Image className="text-blue-500" size={18} />
+      return <Image className="text-gray-500" size={18} />
     if (type.startsWith('video/'))
-      return <Video className="text-purple-500" size={18} />
+      return <Video className="text-gray-500" size={18} />
     if (type.startsWith('audio/'))
-      return <Music className="text-pink-500" size={18} />
+      return <Music className="text-gray-500" size={18} />
     if (type === 'application/pdf')
-      return <FileText className="text-red-500" size={18} />
+      return <FileText className="text-gray-500" size={18} />
     return <FileIcon className="text-gray-400" size={18} />
   }
 
@@ -78,7 +78,9 @@ export const RecordFileUpload = ({
       {/* 업로드 영역 */}
       <div
         className={`rounded-xl border-2 border-dashed py-10 text-center transition-colors ${
-          dragActive ? 'border-yellow-500 bg-yellow-50' : 'border-[#E5E7EB]'
+          dragActive
+            ? 'border-yellow-500 bg-yellow-50'
+            : 'border-gray-200 bg-white'
         }`}
         onDragOver={(e) => {
           e.preventDefault()
@@ -114,7 +116,7 @@ export const RecordFileUpload = ({
 
       {/* 파일 리스트 */}
       {files.length > 0 && (
-        <div className="mt-5 rounded-lg border bg-gray-50 p-4">
+        <div className="mt-5 rounded-lg border border-gray-200 bg-gray-50 p-4">
           <div className="mb-3 flex items-center gap-2 font-medium">
             <Paperclip className="text-gray-700" size={16} />
             첨부 파일 ({files.length}개)
@@ -124,7 +126,7 @@ export const RecordFileUpload = ({
             {files.map((file) => (
               <div
                 key={file.name}
-                className="flex items-center justify-between rounded-lg border bg-white px-4 py-3 shadow-sm hover:shadow"
+                className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm hover:shadow"
               >
                 <div className="flex items-center gap-2 text-sm text-gray-700">
                   {getFileIcon(file)}

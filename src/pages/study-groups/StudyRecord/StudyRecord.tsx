@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { RecordTitleInput } from '@/components/studyReport/RecordTitleInput'
 import { RecordMarkdownEditor } from '@/components/studyReport/RecordMarkdownEditor'
 import { RecordFileUpload } from '@/components/studyReport/RecordFileUpload'
@@ -10,7 +10,22 @@ export const StudyRecord = () => {
   const [content, setContent] = useState('')
   const [files, setFiles] = useState<File[]>([])
 
-  // 파일 변경 핸들러 (RecordFileUpload에서 전달받음)
+  useEffect(() => {
+    const preventDefault = (e: DragEvent) => {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+
+    window.addEventListener('dragover', preventDefault)
+    window.addEventListener('drop', preventDefault)
+
+    return () => {
+      window.removeEventListener('dragover', preventDefault)
+      window.removeEventListener('drop', preventDefault)
+    }
+  }, [])
+
+  // 파일 변경 핸들러
   const handleFilesChange = (newFiles: File[]) => {
     setFiles(newFiles)
   }
@@ -23,14 +38,8 @@ export const StudyRecord = () => {
 
   const handleSave = () => {
     // 저장 로직 추가 예정
-    // 예시:
-    // const formData = new FormData()
-    // formData.append('title', title)
-    // formData.append('content', content)
-    // files.forEach(file => formData.append('files', file))
   }
 
-  // 필수 입력값 검증 (제목과 내용)
   const isSaveDisabled = title.trim() === '' || content.trim() === ''
 
   return (

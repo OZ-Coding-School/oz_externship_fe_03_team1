@@ -51,6 +51,6 @@ export const RecordActionButtons = ({
         현재 선택된 모드:{' '}
         <strong>{currentMode === 'edit' ? '수정' : '생성'}</strong>
       </p>
-    </div> // 테스트용 - 사용시에는 제거 가능
+    </div> // 테스트용 - 사용 후에는 제거 가능
   )
 }
