@@ -9,6 +9,7 @@ import {
   X,
   Paperclip,
 } from 'lucide-react'
+import { toast } from 'react-hot-toast'
 
 interface RecordFileUploadProps {
   files: File[]
@@ -31,10 +32,11 @@ export const RecordFileUpload = ({
       selected.reduce((acc, f) => acc + f.size, 0) +
       files.reduce((acc, f) => acc + f.size, 0)
     if (totalSize > MAX_TOTAL_SIZE) {
-      alert('총 파일 용량은 10MB를 초과할 수 없습니다.')
+      toast.error('총 파일 용량은 10MB를 초과할 수 없습니다.')
       return
     }
     onFilesChange([...files, ...selected])
+    toast.success(`${selected.length}개의 파일이 추가되었습니다.`)
   }
 
   // 드래그 앤 드롭
@@ -47,14 +49,18 @@ export const RecordFileUpload = ({
       dropped.reduce((acc, f) => acc + f.size, 0) +
       files.reduce((acc, f) => acc + f.size, 0)
     if (totalSize > MAX_TOTAL_SIZE) {
-      alert('총 파일 용량은 10MB를 초과할 수 없습니다.')
+      toast.error('총 파일 용량은 10MB를 초과할 수 없습니다.')
       return
     }
     onFilesChange([...files, ...dropped])
+    toast.success(`${dropped.length}개의 파일이 추가되었습니다.`)
   }
 
   const handleRemoveFile = (name: string) => {
     onFilesChange(files.filter((f) => f.name !== name))
+    toast('파일이 삭제되었습니다.', {
+      icon: '🗑️',
+    }) // ✅ 사용자 피드백 추가
   }
 
   const getFileIcon = (file: File) => {
@@ -70,16 +76,12 @@ export const RecordFileUpload = ({
 
     switch (ext) {
       case 'pdf':
-        return <FileText className="text-gray-500" size={18} />
       case 'doc':
       case 'docx':
-        return <FileText className="text-gray-500" size={18} />
       case 'xls':
       case 'xlsx':
-        return <FileText className="text-gray-500" size={18} />
       case 'ppt':
       case 'pptx':
-        return <FileText className="text-gray-500" size={18} />
       case 'txt':
         return <FileText className="text-gray-500" size={18} />
       default:
