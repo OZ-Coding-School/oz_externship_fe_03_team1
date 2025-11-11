@@ -172,7 +172,7 @@ export const RecordFileUpload = ({
         </div>
       )}
 
-      {/* ✅ ToastContainer 실제 렌더링 */}
+      {/* ToastContainer 실제 렌더링 */}
       <GlobalToast />
     </div>
   )
