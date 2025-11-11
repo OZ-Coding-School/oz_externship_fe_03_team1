@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import 'react-toastify/dist/ReactToastify.css'
 import { GlobalToast } from '@/components/basicComponents/toast/ToastContainer'
+import { toast } from 'react-toastify' // 추가
 
 interface RecordFileUploadProps {
   files: File[]
@@ -33,9 +34,11 @@ export const RecordFileUpload = ({
       selected.reduce((acc, f) => acc + f.size, 0) +
       files.reduce((acc, f) => acc + f.size, 0)
     if (totalSize > MAX_TOTAL_SIZE) {
+      toast.error('총 파일 용량이 10MB를 초과했습니다.')
       return
     }
     onFilesChange([...files, ...selected])
+    toast.success(`${selected.length}개의 파일이 추가되었습니다.`)
   }
 
   // 드래그 앤 드롭
@@ -48,13 +51,16 @@ export const RecordFileUpload = ({
       dropped.reduce((acc, f) => acc + f.size, 0) +
       files.reduce((acc, f) => acc + f.size, 0)
     if (totalSize > MAX_TOTAL_SIZE) {
+      toast.error('총 파일 용량이 10MB를 초과했습니다.')
       return
     }
     onFilesChange([...files, ...dropped])
+    toast.success(`${dropped.length}개의 파일이 추가되었습니다.`)
   }
 
   const handleRemoveFile = (name: string) => {
     onFilesChange(files.filter((f) => f.name !== name))
+    toast.info(`파일 "${name}"이 삭제되었습니다.`)
   }
 
   const getFileIcon = (file: File) => {
