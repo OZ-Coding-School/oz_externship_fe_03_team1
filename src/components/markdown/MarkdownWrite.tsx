@@ -60,7 +60,7 @@ export const MarkdownWrite = ({
           className="min-h-[180px] w-full resize-none bg-white p-4 text-sm text-gray-700 focus:outline-none"
         />
       ) : (
-        <div className="min-h-[180px] bg-white p-4 text-sm whitespace-pre-wrap text-gray-700">
+        <div className="min-h-[180px] bg-white p-4 text-sm text-gray-700">
           {previewValue.trim() ? (
             <ReactMarkdown
               remarkPlugins={[remarkBreaks]}
@@ -71,7 +71,10 @@ export const MarkdownWrite = ({
                     className="my-1 text-lg font-semibold text-gray-800"
                   />
                 ),
-                li: ({ children }) => <div>- {children}</div>,
+                ul: ({ children }) => (
+                  <ul className="list-disc pl-6 text-gray-700">{children}</ul>
+                ),
+                li: ({ children }) => <li className="ml-2">{children}</li>,
               }}
             >
               {previewValue}
