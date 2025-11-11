@@ -83,7 +83,7 @@ export const StudyRecord = () => {
       toast.success('새 스터디 기록이 성공적으로 저장되었습니다.')
     }
 
-    if (studyGroupId) navigate(`/study-groups/${studyGroupId}/records`)
+    if (studyGroupId) navigate(`/study_group_detail/${studyGroupId}`)
   }
 
   const isSaveDisabled = title.trim() === '' || content.trim() === ''
