@@ -76,15 +76,6 @@ export const StudyRecord = () => {
     }
   }, [])
 
-  // 기록 데이터 불러오기 (목 데이터)
-  const loadStudyRecord = async (groupId: string, recordId: string) => {
-    console.log(`(MOCK) 그룹 ${groupId} 기록 ${recordId} 불러오기`)
-    await new Promise((resolve) => setTimeout(resolve, 300)) // 목 지연
-    setTitle(MOCK_RECORD.title)
-    setContent(MOCK_RECORD.content)
-    setFiles(MOCK_RECORD.files)
-  }
-
   useEffect(() => {
     if (studyGroupId && studyRecordId) {
       setMode('edit')
@@ -108,15 +99,6 @@ export const StudyRecord = () => {
       window.removeEventListener('drop', preventDefault)
     }
   }, [])
-
-  // 기록 데이터 불러오기 (목 데이터)
-  const loadStudyRecord = async (groupId: string, recordId: string) => {
-    console.log(`(MOCK) 그룹 ${groupId} 기록 ${recordId} 불러오기`)
-    await new Promise((resolve) => setTimeout(resolve, 300)) // 목 지연
-    setTitle(MOCK_RECORD.title)
-    setContent(MOCK_RECORD.content)
-    setFiles(MOCK_RECORD.files)
-  }
 
   useEffect(() => {
     if (studyGroupId && studyRecordId) {
