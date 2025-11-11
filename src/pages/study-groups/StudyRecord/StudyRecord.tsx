@@ -65,6 +65,7 @@ export const StudyRecord = () => {
     setContent('')
     setFiles([])
     toast.info('작성 중인 내용이 초기화되었습니다.')
+    toast.info('작성 중인 내용이 초기화되었습니다.')
   }
 
   const handleSave = async () => {
@@ -74,10 +75,13 @@ export const StudyRecord = () => {
 
     if (mode === 'edit') {
       toast.success('스터디 기록이 성공적으로 수정되었습니다.')
+      toast.success('스터디 기록이 성공적으로 수정되었습니다.')
     } else {
+      toast.success('새 스터디 기록이 성공적으로 저장되었습니다.')
       toast.success('새 스터디 기록이 성공적으로 저장되었습니다.')
     }
 
+    if (studyGroupId) navigate(`/study_group_detail/${studyGroupId}`)
     if (studyGroupId) navigate(`/study_group_detail/${studyGroupId}`)
   }
 
@@ -85,6 +89,18 @@ export const StudyRecord = () => {
 
   return (
     <div className="flex min-h-screen w-[896px] flex-col items-center px-8 pt-[65px] pb-20">
+      {/* ToastContainer 추가 */}
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+      />
+
       <div className="mb-6 w-full max-w-3xl">
         <RecordBreadcrumb current={mode === 'edit' ? '수정' : '작성'} />
         <h1 className="mb-2 text-2xl font-bold">
