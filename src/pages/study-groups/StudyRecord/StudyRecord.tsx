@@ -6,7 +6,6 @@ import { RecordFileUpload } from '@/components/studyReport/RecordFileUpload'
 import { RecordActionButtons } from '@/components/studyReport/RecordActionButtons'
 import { RecordBreadcrumb } from '@/components/breadcrumb/RecordBreadcrumb'
 import { toast } from 'react-toastify' // ✅ ToastContainer 제거, toast만 남김
-import { GlobalToast } from '@/components/basicComponents/toast/ToastContainer'
 
 const MOCK_RECORD = {
   title: '예시 스터디 기록 제목',
@@ -86,9 +85,6 @@ export const StudyRecord = () => {
 
   return (
     <div className="flex min-h-screen w-[896px] flex-col items-center px-8 pt-[65px] pb-20">
-      {/* ToastContainer 추가 */}
-      <GlobalToast />
-
       <div className="mb-6 w-full max-w-3xl">
         <RecordBreadcrumb current={mode === 'edit' ? '수정' : '작성'} />
         <h1 className="mb-2 text-2xl font-bold">
