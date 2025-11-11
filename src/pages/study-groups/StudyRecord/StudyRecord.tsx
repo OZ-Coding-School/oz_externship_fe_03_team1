@@ -5,7 +5,7 @@ import { RecordMarkdownEditor } from '@/components/studyReport/RecordMarkdownEdi
 import { RecordFileUpload } from '@/components/studyReport/RecordFileUpload'
 import { RecordActionButtons } from '@/components/studyReport/RecordActionButtons'
 import { RecordBreadcrumb } from '@/components/breadcrumb/RecordBreadcrumb'
-import { toast } from 'react-toastify' // ✅ ToastContainer 제거, toast만 남김
+import { toast } from 'react-toastify'
 
 const MOCK_RECORD = {
   title: '예시 스터디 기록 제목',
@@ -24,7 +24,7 @@ export const StudyRecord = () => {
     studyRecordId: string
   }>()
 
-  // ✅ 드래그 앤 드롭 방지
+  // 드래그 앤 드롭 방지
   useEffect(() => {
     const preventDefault = (e: DragEvent) => {
       e.preventDefault()
@@ -40,7 +40,7 @@ export const StudyRecord = () => {
     }
   }, [])
 
-  // ✅ 기록 데이터 불러오기
+  // 기록 데이터 불러오기
   const loadStudyRecord = async (groupId: string, recordId: string) => {
     console.log(`(MOCK) 그룹 ${groupId} 기록 ${recordId} 불러오기`)
     await new Promise((resolve) => setTimeout(resolve, 300))
