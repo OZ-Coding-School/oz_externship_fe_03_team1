@@ -9,8 +9,9 @@ import {
   X,
   Paperclip,
 } from 'lucide-react'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { GlobalToast } from '@/components/basicComponents/toast/ToastContainer'
 
 interface RecordFileUploadProps {
   files: File[]
@@ -26,7 +27,6 @@ export const RecordFileUpload = ({
   const [dragActive, setDragActive] = useState(false)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
-  // 파일 선택 (클릭)
   const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files ? Array.from(e.target.files) : []
     const totalSize =
@@ -44,7 +44,6 @@ export const RecordFileUpload = ({
     })
   }
 
-  // 드래그 앤 드롭
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.stopPropagation()
@@ -173,15 +172,8 @@ export const RecordFileUpload = ({
         </div>
       )}
 
-      {/* Toast 컨테이너 */}
-      <ToastContainer
-        position="bottom-center"
-        autoClose={2000}
-        hideProgressBar={true}
-        closeOnClick
-        pauseOnHover={false}
-        draggable
-      />
+      {/* ✅ ToastContainer 실제 렌더링 */}
+      <GlobalToast />
     </div>
   )
 }
