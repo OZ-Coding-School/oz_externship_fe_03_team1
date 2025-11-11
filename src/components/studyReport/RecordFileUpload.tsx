@@ -59,8 +59,8 @@ export const RecordFileUpload = ({
   const handleRemoveFile = (name: string) => {
     onFilesChange(files.filter((f) => f.name !== name))
     toast('파일이 삭제되었습니다.', {
-      icon: '🗑️',
-    }) // ✅ 사용자 피드백 추가
+      icon: '',
+    }) // 사용자 피드백 추가
   }
 
   const getFileIcon = (file: File) => {
