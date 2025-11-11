@@ -7,15 +7,30 @@ import { dummyStudyRecordDetail } from '@/assets/dummyData/dummyStudyRecordDetai
 import { StudyRecordHeader } from './sections/StudyRecordHeader'
 import { StudyRecordAISummary } from './sections/StudyRecordAISummary'
 import { StudyRecordAttachments } from './sections/StudyRecordAttachments'
+import { ToastContainer, toast } from 'react-toastify' // ✅ 추가
 
 export const StudyRecordDetail = () => {
   const { data } = dummyStudyRecordDetail
   const { title, author, content, ai_summary, attachments, created_at } = data
 
-  const handleBack = () => alert('스터디 그룹으로 돌아가기')
+  const handleBack = () => {
+    toast.info('스터디 그룹으로 돌아갑니다.') // ✅ toastify 사용
+  }
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-10">
+      {/* ToastContainer 추가 */}
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+      />
+
       <RecordBreadcrumb current="상세" />
 
       <div className="mt-4 overflow-hidden rounded-2xl border border-gray-200 bg-white">

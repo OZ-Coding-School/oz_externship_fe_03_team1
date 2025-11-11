@@ -5,6 +5,7 @@ import { RecordMarkdownEditor } from '@/components/studyReport/RecordMarkdownEdi
 import { RecordFileUpload } from '@/components/studyReport/RecordFileUpload'
 import { RecordActionButtons } from '@/components/studyReport/RecordActionButtons'
 import { RecordBreadcrumb } from '@/components/breadcrumb/RecordBreadcrumb'
+import { ToastContainer, toast } from 'react-toastify'
 
 // 목 데이터 예시
 const MOCK_RECORD = {
@@ -44,7 +45,7 @@ export const StudyRecord = () => {
   // 기록 데이터 불러오기 (목 데이터)
   const loadStudyRecord = async (groupId: string, recordId: string) => {
     console.log(`(MOCK) 그룹 ${groupId} 기록 ${recordId} 불러오기`)
-    await new Promise((resolve) => setTimeout(resolve, 300)) // 목 지연
+    await new Promise((resolve) => setTimeout(resolve, 300))
     setTitle(MOCK_RECORD.title)
     setContent(MOCK_RECORD.content)
     setFiles(MOCK_RECORD.files)
@@ -134,21 +135,21 @@ export const StudyRecord = () => {
     setTitle('')
     setContent('')
     setFiles([])
+    toast.info('작성 중인 내용이 초기화되었습니다.')
   }
 
   const handleSave = async () => {
     const recordData = { title, content, files }
     console.log('(MOCK) 저장 데이터:', recordData)
 
-    await new Promise((resolve) => setTimeout(resolve, 300)) // 목 지연
+    await new Promise((resolve) => setTimeout(resolve, 300))
 
     if (mode === 'edit') {
-      alert('(MOCK) 기록이 성공적으로 수정되었습니다.')
+      toast.success('스터디 기록이 성공적으로 수정되었습니다.')
     } else {
-      alert('(MOCK) 새 기록이 성공적으로 저장되었습니다.')
+      toast.success('새 스터디 기록이 성공적으로 저장되었습니다.')
     }
 
-    // 저장 후 목록 페이지로 이동 (MOCK)
     if (studyGroupId) navigate(`/study-groups/${studyGroupId}/records`)
   }
 
@@ -156,6 +157,18 @@ export const StudyRecord = () => {
 
   return (
     <div className="flex min-h-screen w-[896px] flex-col items-center px-8 pt-[65px] pb-20">
+      {/* ToastContainer 추가 */}
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+      />
+
       <div className="mb-6 w-full max-w-3xl">
         <RecordBreadcrumb current={mode === 'edit' ? '수정' : '작성'} />
         <h1 className="mb-2 text-2xl font-bold">
