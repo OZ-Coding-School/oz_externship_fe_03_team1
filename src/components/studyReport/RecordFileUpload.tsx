@@ -33,7 +33,6 @@ export const RecordFileUpload = ({
       selected.reduce((acc, f) => acc + f.size, 0) +
       files.reduce((acc, f) => acc + f.size, 0)
     if (totalSize > MAX_TOTAL_SIZE) {
-      alert('총 파일 용량은 10MB를 초과할 수 없습니다.')
       return
     }
     onFilesChange([...files, ...selected])
@@ -49,7 +48,6 @@ export const RecordFileUpload = ({
       dropped.reduce((acc, f) => acc + f.size, 0) +
       files.reduce((acc, f) => acc + f.size, 0)
     if (totalSize > MAX_TOTAL_SIZE) {
-      alert('총 파일 용량은 10MB를 초과할 수 없습니다.')
       return
     }
     onFilesChange([...files, ...dropped])
@@ -72,16 +70,12 @@ export const RecordFileUpload = ({
 
     switch (ext) {
       case 'pdf':
-        return <FileText className="text-gray-500" size={18} />
       case 'doc':
       case 'docx':
-        return <FileText className="text-gray-500" size={18} />
       case 'xls':
       case 'xlsx':
-        return <FileText className="text-gray-500" size={18} />
       case 'ppt':
       case 'pptx':
-        return <FileText className="text-gray-500" size={18} />
       case 'txt':
         return <FileText className="text-gray-500" size={18} />
       default:
