@@ -6,25 +6,21 @@ import { RecordFileUpload } from '@/components/studyReport/RecordFileUpload'
 import { RecordActionButtons } from '@/components/studyReport/RecordActionButtons'
 import { RecordBreadcrumb } from '@/components/breadcrumb/RecordBreadcrumb'
 import { toast } from 'react-toastify'
-
-const MOCK_RECORD = {
-  title: '예시 스터디 기록 제목',
-  content: '여기에 학습 내용을 작성해보세요.',
-  files: [],
-}
+import { api } from '@/api/api'
 
 export const StudyRecord = () => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [files, setFiles] = useState<File[]>([])
   const [mode, setMode] = useState<'create' | 'edit'>('create')
+  const [loading, setLoading] = useState(false)
+
   const navigate = useNavigate()
   const { studyGroupId, studyRecordId } = useParams<{
     studyGroupId: string
     studyRecordId: string
   }>()
 
-  // 드래그 앤 드롭 방지
   useEffect(() => {
     const preventDefault = (e: DragEvent) => {
       e.preventDefault()
@@ -40,23 +36,35 @@ export const StudyRecord = () => {
     }
   }, [])
 
-  // 기록 데이터 불러오기
-  const loadStudyRecord = async (groupId: string, recordId: string) => {
-    console.log(`(MOCK) 그룹 ${groupId} 기록 ${recordId} 불러오기`)
-    await new Promise((resolve) => setTimeout(resolve, 300))
-    setTitle(MOCK_RECORD.title)
-    setContent(MOCK_RECORD.content)
-    setFiles(MOCK_RECORD.files)
+  /** 기록 불러오기 */
+  const loadStudyRecord = async (recordId: string) => {
+    try {
+      setLoading(true)
+
+      const res = await api.v1.studies.notes(Number(recordId)).GET()
+      const data = res.data
+
+      if (!data) {
+        toast.error('기록 정보를 찾을 수 없습니다.')
+        return
+      }
+      setFiles([])
+    } catch {
+      toast.error('기록 정보를 불러오는 중 오류가 발생했습니다.')
+    } finally {
+      setLoading(false)
+    }
   }
 
+  /** 기록 수정 모드일 경우 데이터 불러오기 */
   useEffect(() => {
-    if (studyGroupId && studyRecordId) {
+    if (studyRecordId) {
       setMode('edit')
-      loadStudyRecord(studyGroupId, studyRecordId)
+      loadStudyRecord(studyRecordId)
     } else if (window.location.pathname.includes('edit')) {
       setMode('edit')
     }
-  }, [studyGroupId, studyRecordId])
+  }, [studyRecordId])
 
   const handleFilesChange = (newFiles: File[]) => setFiles(newFiles)
 
@@ -67,24 +75,58 @@ export const StudyRecord = () => {
     toast.info('작성 중인 내용이 초기화되었습니다.')
   }
 
+  /** 저장 / 수정 */
   const handleSave = async () => {
-    // 내용이 없으면 토스트로 안내하고 저장 막기
+    if (!studyGroupId) {
+      toast.error('잘못된 접근입니다. 그룹 정보가 없습니다.')
+      return
+    }
+
     if (title.trim() === '' || content.trim() === '') {
       toast.warn('제목과 내용을 모두 입력해야 저장할 수 있습니다.')
       return
     }
 
-    const recordData = { title, content, files }
-    console.log('(MOCK) 저장 데이터:', recordData)
-    await new Promise((resolve) => setTimeout(resolve, 300))
+    try {
+      setLoading(true)
 
-    if (mode === 'edit') {
-      toast.success('스터디 기록이 성공적으로 수정되었습니다.')
-    } else {
-      toast.success('새 스터디 기록이 성공적으로 저장되었습니다.')
+      const attachments: [] = [] // 파일 업로드 시 여기서 대체됨
+
+      if (mode === 'edit' && studyRecordId) {
+        const res = await api.v1.studies.notes(Number(studyRecordId)).PATCH({
+          title,
+          content_md: content,
+          attachments,
+        })
+
+        if (!res.data) {
+          toast.error('기록을 수정할 수 없습니다.')
+          return
+        }
+
+        toast.success('스터디 기록이 성공적으로 수정되었습니다.')
+      } else {
+        const res = await api.v1.studies.notes.POST({
+          group_id: studyGroupId,
+          title,
+          content_md: content,
+          attachments,
+        })
+
+        if (!res.data) {
+          toast.error('새 기록을 저장할 수 없습니다.')
+          return
+        }
+
+        toast.success('새 스터디 기록이 성공적으로 저장되었습니다.')
+      }
+
+      navigate(`/study_group_detail/${studyGroupId}`)
+    } catch {
+      toast.error('저장 중 오류가 발생했습니다.')
+    } finally {
+      setLoading(false)
     }
-
-    if (studyGroupId) navigate(`/study_group_detail/${studyGroupId}`)
   }
 
   return (
@@ -102,9 +144,15 @@ export const StudyRecord = () => {
       </div>
 
       <div className="w-full max-w-3xl rounded-2xl border border-gray-200 bg-white p-[25px]">
-        <RecordTitleInput title={title} setTitle={setTitle} />
-        <RecordMarkdownEditor content={content} setContent={setContent} />
-        <RecordFileUpload files={files} onFilesChange={handleFilesChange} />
+        {loading ? (
+          <p className="text-center text-gray-400">불러오는 중...</p>
+        ) : (
+          <>
+            <RecordTitleInput title={title} setTitle={setTitle} />
+            <RecordMarkdownEditor content={content} setContent={setContent} />
+            <RecordFileUpload files={files} onFilesChange={handleFilesChange} />
+          </>
+        )}
       </div>
 
       <div className="mt-6 flex w-full max-w-3xl justify-between">
