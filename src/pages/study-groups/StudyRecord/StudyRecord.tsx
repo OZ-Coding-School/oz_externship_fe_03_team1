@@ -45,9 +45,6 @@ export const StudyRecord = () => {
         toast.error('기록 정보를 찾을 수 없습니다.')
         return
       }
-      setTitle(data.title)
-      setContent(data.content_md)
-      setFiles(data.attachments || [])
     } catch {
       toast.error('기록 정보를 불러오는 중 오류가 발생했습니다.')
     } finally {
