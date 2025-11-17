@@ -7,22 +7,11 @@ import { RecordActionButtons } from '@/components/studyReport/RecordActionButton
 import { RecordBreadcrumb } from '@/components/breadcrumb/RecordBreadcrumb'
 import { toast } from 'react-toastify'
 import { api } from '@/api/api'
-import {
-  useStudyRecordMutation,
-  CreateStudyRecordParams,
-} from '@/api/mutations/useStudyRecordMutation'
-
-interface Note {
-  id: number
-  title: string
-  content_md: string
-  attachments?: any[]
-}
 
 export const StudyRecord = () => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [files, setFiles] = useState<any[]>([])
+  const [files, setFiles] = useState<File[]>([])
   const [mode, setMode] = useState<'create' | 'edit'>('create')
   const [loading, setLoading] = useState(false)
 
@@ -31,9 +20,6 @@ export const StudyRecord = () => {
     studyGroupId: string
     studyRecordId: string
   }>()
-
-  // mutation 훅 초기화
-  const { createRecordMutation } = useStudyRecordMutation(studyGroupId || '')
 
   useEffect(() => {
     const preventDefault = (e: DragEvent) => {
@@ -50,20 +36,19 @@ export const StudyRecord = () => {
     }
   }, [])
 
+  /** 기록 불러오기 */
   const loadStudyRecord = async (recordId: string) => {
     try {
       setLoading(true)
-      const res = await api.v1.studies.notes(Number(recordId)).GET()
-      const note: Note | undefined = res.data?.data
 
-      if (!note) {
+      const res = await api.v1.studies.notes(Number(recordId)).GET()
+      const data = res.data
+
+      if (!data) {
         toast.error('기록 정보를 찾을 수 없습니다.')
         return
       }
-
-      setTitle(note.title)
-      setContent(note.content_md)
-      setFiles(note.attachments || [])
+      setFiles([])
     } catch {
       toast.error('기록 정보를 불러오는 중 오류가 발생했습니다.')
     } finally {
@@ -71,6 +56,7 @@ export const StudyRecord = () => {
     }
   }
 
+  /** 기록 수정 모드일 경우 데이터 불러오기 */
   useEffect(() => {
     if (studyRecordId) {
       setMode('edit')
@@ -80,6 +66,8 @@ export const StudyRecord = () => {
     }
   }, [studyRecordId])
 
+  const handleFilesChange = (newFiles: File[]) => setFiles(newFiles)
+
   const handleCancel = () => {
     setTitle('')
     setContent('')
@@ -87,41 +75,58 @@ export const StudyRecord = () => {
     toast.info('작성 중인 내용이 초기화되었습니다.')
   }
 
-  const handleSave = () => {
+  /** 저장 / 수정 */
+  const handleSave = async () => {
     if (!studyGroupId) {
       toast.error('잘못된 접근입니다. 그룹 정보가 없습니다.')
       return
     }
 
-    if (!title.trim() || !content.trim()) {
+    if (title.trim() === '' || content.trim() === '') {
       toast.warn('제목과 내용을 모두 입력해야 저장할 수 있습니다.')
       return
     }
 
-    const payload: CreateStudyRecordParams = {
-      title,
-      content_md: content,
-      attachments: files,
-      ...(mode === 'create' ? { group_id: studyGroupId } : {}),
-    }
+    try {
+      setLoading(true)
 
-    setLoading(true)
-    createRecordMutation.mutate(payload, {
-      onSuccess: () => {
-        toast.success(
-          mode === 'edit'
-            ? '스터디 기록이 성공적으로 수정되었습니다.'
-            : '새 스터디 기록이 성공적으로 저장되었습니다.'
-        )
-        navigate(`/study_group_detail/${studyGroupId}`)
-      },
-      onError: (error: any) => {
-        toast.error(error.message || '저장 중 오류가 발생했습니다.')
-      },
-      onSettled: () => {
-        setLoading(false)
-      },
-    })
+      const attachments: [] = [] // 파일 업로드 시 여기서 대체됨
+
+      if (mode === 'edit' && studyRecordId) {
+        const res = await api.v1.studies.notes(Number(studyRecordId)).PATCH({
+          title,
+          content_md: content,
+          attachments,
+        })
+
+        if (!res.data) {
+          toast.error('기록을 수정할 수 없습니다.')
+          return
+        }
+
+        toast.success('스터디 기록이 성공적으로 수정되었습니다.')
+      } else {
+        const res = await api.v1.studies.notes.POST({
+          group_id: studyGroupId,
+          title,
+          content_md: content,
+          attachments,
+        })
+
+        if (!res.data) {
+          toast.error('새 기록을 저장할 수 없습니다.')
+          return
+        }
+
+        toast.success('새 스터디 기록이 성공적으로 저장되었습니다.')
+      }
+
+      navigate(`/study_group_detail/${studyGroupId}`)
+    } catch {
+      toast.error('저장 중 오류가 발생했습니다.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -145,7 +150,7 @@ export const StudyRecord = () => {
           <>
             <RecordTitleInput title={title} setTitle={setTitle} />
             <RecordMarkdownEditor content={content} setContent={setContent} />
-            <RecordFileUpload files={files} onFilesChange={setFiles} />
+            <RecordFileUpload files={files} onFilesChange={handleFilesChange} />
           </>
         )}
       </div>

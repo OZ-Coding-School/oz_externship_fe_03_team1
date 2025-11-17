@@ -6,13 +6,13 @@ import { api } from '@/api/api'
 
 interface CreateStudyRecordParams {
   startDate?: string
-  endDate?: string  
+  endDate?: string
 }
 
 export const useStudyRecordMutation = (groupId: string) => {
   const createRecordMutation = useMutation({
     mutationFn: (params: CreateStudyRecordParams) =>
-      api.v1.studies.groups(groupId).schedules.GET(undefined,{params}),
+      api.v1.studies.groups(groupId).schedules.GET(undefined, { params }),
     onSuccess: () => {
       // 스터디 기록 목록 새로고침
       queryClient.invalidateQueries({
