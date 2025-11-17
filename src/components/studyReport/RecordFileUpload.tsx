@@ -8,27 +8,28 @@ import {
   X,
   Paperclip,
 } from 'lucide-react'
-import 'react-toastify/dist/ReactToastify.css'
 import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 interface RecordFileUploadProps {
   files: File[]
+  existingFiles?: { id: number; name: string }[]
   onFilesChange: (files: File[]) => void
+  onExistingFilesChange?: (files: { id: number; name: string }[]) => void
 }
 
 const MAX_TOTAL_SIZE = 10 * 1024 * 1024 // 10MB
 
 export const RecordFileUpload = ({
   files,
+  existingFiles = [],
   onFilesChange,
+  onExistingFilesChange,
 }: RecordFileUploadProps) => {
   const [dragActive, setDragActive] = useState(false)
   const inputRef = useRef<HTMLInputElement | null>(null)
-
-  // 모바일 환경 감지
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
 
-  // 파일 선택 (클릭/탭)
   const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files ? Array.from(e.target.files) : []
     const totalSize =
@@ -42,7 +43,6 @@ export const RecordFileUpload = ({
     toast.success(`${selected.length}개의 파일이 추가되었습니다.`)
   }
 
-  // 드래그 앤 드롭 (데스크톱 전용)
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.stopPropagation()
@@ -64,9 +64,14 @@ export const RecordFileUpload = ({
     toast.info(`파일 "${name}"이 삭제되었습니다.`)
   }
 
-  // 파일 아이콘 결정
-  const getFileIcon = (file: File) => {
-    const type = file.type
+  const handleRemoveExistingFile = (id: number, name: string) => {
+    if (!onExistingFilesChange) return
+    onExistingFilesChange(existingFiles.filter((f) => f.id !== id))
+    toast.info(`파일 "${name}"이 삭제되었습니다.`)
+  }
+
+  const getFileIcon = (file: File | { name: string }) => {
+    const type = 'type' in file ? file.type : ''
     const ext = file.name.split('.').pop()?.toLowerCase()
 
     if (type.startsWith('image/'))
@@ -100,7 +105,6 @@ export const RecordFileUpload = ({
     <div>
       <label className="mb-2 block font-semibold">첨부 파일</label>
 
-      {/* 업로드 영역 */}
       <div
         className={`cursor-pointer rounded-xl border-2 border-dashed py-10 text-center transition-colors ${
           dragActive
@@ -148,20 +152,18 @@ export const RecordFileUpload = ({
           type="file"
           multiple
           accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.json,.html"
-          capture="environment"
           className="hidden"
           onChange={handleFileSelect}
         />
       </div>
 
-      {/* 파일 리스트 */}
+      {/* 새 파일 리스트 */}
       {files.length > 0 && (
         <div className="mt-5 rounded-lg border border-gray-200 bg-gray-50 p-4">
           <div className="mb-3 flex items-center gap-2 font-medium">
-            <Paperclip className="text-gray-700" size={16} />
-            첨부 파일 ({files.length}개)
+            <Paperclip className="text-gray-700" size={16} />새 첨부 파일 (
+            {files.length}개)
           </div>
-
           <div className="grid gap-2 sm:grid-cols-2">
             {files.map((file) => (
               <div
@@ -176,6 +178,37 @@ export const RecordFileUpload = ({
                 </div>
                 <button
                   onClick={() => handleRemoveFile(file.name)}
+                  className="cursor-pointer text-gray-400 hover:text-gray-600"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 기존 파일 리스트 */}
+      {existingFiles.length > 0 && (
+        <div className="mt-3 rounded-lg border border-gray-200 bg-gray-50 p-4">
+          <div className="mb-3 flex items-center gap-2 font-medium">
+            <Paperclip className="text-gray-700" size={16} />
+            기존 첨부 파일 ({existingFiles.length}개)
+          </div>
+          <div className="grid gap-2 sm:grid-cols-2">
+            {existingFiles.map((file) => (
+              <div
+                key={file.id}
+                className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm hover:shadow"
+              >
+                <div className="flex min-w-0 items-center gap-2 text-sm text-gray-700">
+                  {getFileIcon(file)}
+                  <span className="max-w-[180px] truncate overflow-hidden whitespace-nowrap">
+                    {file.name}
+                  </span>
+                </div>
+                <button
+                  onClick={() => handleRemoveExistingFile(file.id, file.name)}
                   className="cursor-pointer text-gray-400 hover:text-gray-600"
                 >
                   <X size={16} />
